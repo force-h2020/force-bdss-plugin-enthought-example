@@ -1,0 +1,2 @@
+class ExamplePlugin():
+    pass
