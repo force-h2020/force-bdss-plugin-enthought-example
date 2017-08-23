@@ -1,7 +1,6 @@
 import math
 
-from force_bdss.api import BaseDataSource, DataValue
-from force_bdss.core.slot import Slot
+from force_bdss.api import BaseDataSource, DataValue, Slot
 
 
 class ExampleDataSource(BaseDataSource):
