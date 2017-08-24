@@ -30,7 +30,7 @@ class ExamplePlugin(BaseExtensionPlugin):
       database as they are computed.
     - UI Hooks: provides hook methods that are called in some
       specific moments of the FORCE UI.
-"""
+    """
     #: Define this id using the plugin_id function.
     #: The first parameter is your organization unique identifier.
     #: The second is a unique string of your liking. Make sure that

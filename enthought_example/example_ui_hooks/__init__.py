@@ -1,2 +1,1 @@
-from .example_ui_hooks_factory import ExampleUIHooksFactory
-from .example_ui_hooks_manager import ExampleUIHooksManager
+from .example_ui_hooks_factory import ExampleUIHooksFactory  # noqa
