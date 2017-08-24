@@ -4,6 +4,9 @@ enthought\_example\.example\_ui\_hooks package
 Subpackages
 -----------
 
+.. toctree::
+
+    enthought_example.example_ui_hooks.tests
 
 Submodules
 ----------
