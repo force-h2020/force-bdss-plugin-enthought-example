@@ -8,9 +8,9 @@ from .example_kpi_calculator import ExampleKPICalculator
 
 class ExampleKPICalculatorFactory(BaseKPICalculatorFactory):
     """Refer to the data source example"""
-    id = String(factory_id("enthought", "kpi_adder"))
+    id = String(factory_id("enthought", "example_kpi_calculator"))
 
-    name = String("KPI Adder")
+    name = String("Example KPI Calculator (Adder)")
 
     def create_model(self, model_data=None):
         if model_data is None:
