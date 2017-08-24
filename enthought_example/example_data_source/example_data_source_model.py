@@ -12,16 +12,19 @@ class ExampleDataSourceModel(BaseDataSourceModel):
     your workflow and do not change as the workflow is computed.
     """
 
-    #: In this data source, we specify the power factor once and for all.
+    #: In this data source, we specify the power factor default.
+    #: It will appear in the UI as an appropriate UI control.
     #: The default is 1.0, meaning that the input data will be elevated to
     #: the power of one to produce the output data.
     power = Float(1.0)
 
-    #: This is an example, still work in progess, to handle CUBA types.
+    #: This is an example, still work in progess, of how to handle variable
+    #: (customizable) CUBA types, that is, a source that can return a specified
+    #: CBUA type.
     #: We assume that this data source accepts data having some CUBA type,
     #: and, potentially after transformation, generates the same or different
     #: CUBA type. In this case, the CUBA type is specified by the user.
-    #: There are legal reasons for this. For example, if you have a data
+    #: There are valid instances of this case. For example, if you have a data
     #: source extracting from a CSV file, there might be no information about
     #: the type in the file, but you know that it represents a pressure.
     cuba_type_in = String()

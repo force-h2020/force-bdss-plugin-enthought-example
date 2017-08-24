@@ -13,8 +13,8 @@ from enthought_example.tests.kpi_calculator_factory_test_mixin import (
 )
 
 
-class TestDummyKPICalculatorFactory(KPICalculatorFactoryTestMixin,
-                                    unittest.TestCase):
+class TestExampleKPICalculatorFactory(KPICalculatorFactoryTestMixin,
+                                      unittest.TestCase):
 
     @property
     def factory_class(self):

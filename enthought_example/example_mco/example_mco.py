@@ -7,6 +7,8 @@ from force_bdss.api import BaseMCO
 
 
 def rotated_range(start, stop, starting_value):
+    """Produces a range of integers, then rotates so that the starting value
+    is starting_value"""
     r = list(range(start, stop))
     start_idx = r.index(starting_value)
     d = collections.deque(r)
@@ -28,9 +30,9 @@ class ExampleMCO(BaseMCO):
     - monitor its output (e.g. via standard output) as new points are
       generated
     - report new events as they happen, specifically::
-      - when the MCO starts its execution::
+      - when the MCO starts its execution, set::
 
-           set self.started = True
+           self.started = True
 
       - when the MCO has computed a new result. Set new_data with a
         dictionary, as indicated::
@@ -40,15 +42,15 @@ class ExampleMCO(BaseMCO):
                 'output': tuple(output_kpi_values)
             }
 
-      - when the MCO ends its execution::
+      - when the MCO ends its execution, set::
 
-            set self.finished = True
+            self.finished = True
 
     Currently there's no error handling.
     """
     def run(self, model):
         # This implementation mimics the expected behavior of dakota
-        # by spawning the force-bdss with the evaluate option to compute
+        # by spawning the force_bdss with the evaluate option to compute
         # a single point. Your specific implementation should be quite
         # different, in the sense that it is supposed to spawn your MCO
         # as a separate process, collect its results via stdout or any
