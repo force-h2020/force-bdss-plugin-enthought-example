@@ -1,7 +1,5 @@
 import unittest
-import sys
-from contextlib import contextmanager
-from six import StringIO
+from enthought_example.tests.utils import captured_output
 
 try:
     import mock
@@ -47,14 +45,3 @@ class TestExampleNotificationListener(unittest.TestCase):
             "MCOFinishEvent\n"
             "Finalizing\n"
         )
-
-
-@contextmanager
-def captured_output():
-    new_out, new_err = StringIO(), StringIO()
-    old_out, old_err = sys.stdout, sys.stderr
-    try:
-        sys.stdout, sys.stderr = new_out, new_err
-        yield sys.stdout, sys.stderr
-    finally:
-        sys.stdout, sys.stderr = old_out, old_err
