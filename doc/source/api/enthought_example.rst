@@ -10,6 +10,8 @@ Subpackages
     enthought_example.example_kpi_calculator
     enthought_example.example_mco
     enthought_example.example_notification_listener
+    enthought_example.example_ui_hooks
+    enthought_example.tests
 
 Submodules
 ----------
