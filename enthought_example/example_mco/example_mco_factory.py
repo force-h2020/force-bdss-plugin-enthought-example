@@ -1,11 +1,10 @@
 from traits.api import String
 from force_bdss.api import factory_id, BaseMCOFactory
-from force_bdss.core_plugins.dummy.dummy_dakota.parameters import \
-    RangedMCOParameterFactory
 
-from .example_mco_communicator import DummyDakotaCommunicator
-from .example_mco_model import DummyDakotaModel
-from .example_mco import DummyDakotaOptimizer
+from .example_mco_communicator import ExampleMCOCommunicator
+from .example_mco_model import ExampleMCOModel
+from .example_mco import ExampleMCO
+from .parameters import RangedMCOParameterFactory
 
 
 class ExampleMCOFactory(BaseMCOFactory):
@@ -39,17 +38,17 @@ class ExampleMCOFactory(BaseMCOFactory):
       all of the above.
     """
     #: See notes on Data Source Factory for everything not described.
-    id = String(factory_id("enthought", "dummy_dakota"))
+    id = String(factory_id("enthought", "example_mco"))
 
-    name = "Dummy Dakota"
+    name = "Example MCO"
 
     def create_model(self, model_data=None):
         if model_data is None:
             model_data = {}
-        return DummyDakotaModel(self, **model_data)
+        return ExampleMCOModel(self, **model_data)
 
     def create_optimizer(self):
-        return DummyDakotaOptimizer(self)
+        return ExampleMCO(self)
 
     #: This method creates the communicator. It is the class that does
     #: interfacing between the executing MCO and the external program this
@@ -57,7 +56,7 @@ class ExampleMCOFactory(BaseMCOFactory):
     #: By design, this external program is the BDSS itself with the option
     #: --evaluate.
     def create_communicator(self):
-        return DummyDakotaCommunicator(self)
+        return ExampleMCOCommunicator(self)
 
     #: This method must return a list of all the possible
     #: parameter factories. This depends on what kind of parameters
