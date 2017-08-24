@@ -10,15 +10,17 @@ sys.path.insert(0, os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "..", "..")
     )
 
-from force_bdss.version import __version__ as RELEASE
+from enthought_example.version import __version__ as RELEASE
 
-MOCK_MODULES=[]
+MOCK_MODULES = []
+
 
 def _warn_node(self, msg, node, **kwargs):
     if not msg.startswith('nonlocal image URI found:'):
         self._warnfunc(msg, '%s:%s' % get_source_line(node), **kwargs)
 
 sphinx.environment.BuildEnvironment.warn_node = _warn_node
+
 
 def mock_modules():
     import sys

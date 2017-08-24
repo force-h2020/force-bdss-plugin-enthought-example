@@ -27,17 +27,22 @@ class ExampleMCO(BaseMCO):
       it is completed
     - monitor its output (e.g. via standard output) as new points are
       generated
-    - report new events as they happen, specifically:
-      - when the MCO starts its execution.
-         set self.started = True
+    - report new events as they happen, specifically::
+      - when the MCO starts its execution::
+
+           set self.started = True
+
       - when the MCO has computed a new result. Set new_data with a
-        dictionary, as indicated:
+        dictionary, as indicated::
+
             self.new_data = {
                 'input': tuple(input_parameter_values),
                 'output': tuple(output_kpi_values)
             }
-      - when the MCO ends its execution.
-        set self.finished = True
+
+      - when the MCO ends its execution::
+
+            set self.finished = True
 
     Currently there's no error handling.
     """
