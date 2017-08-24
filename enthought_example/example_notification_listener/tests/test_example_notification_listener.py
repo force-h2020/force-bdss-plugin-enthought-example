@@ -9,7 +9,6 @@ except ImportError:
     from unittest import mock
 
 from force_bdss.api import MCOStartEvent, MCOProgressEvent, MCOFinishEvent
-from force_bdss.tests.utils import captured_output
 
 
 from enthought_example.example_notification_listener\
