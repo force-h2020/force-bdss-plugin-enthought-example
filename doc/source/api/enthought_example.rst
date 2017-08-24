@@ -1,6 +1,15 @@
 enthought\_example package
 ==========================
 
+Subpackages
+-----------
+
+.. toctree::
+
+    enthought_example.example_data_source
+    enthought_example.example_kpi_calculator
+    enthought_example.example_mco
+
 Submodules
 ----------
 
