@@ -16,7 +16,7 @@ class ExampleKPICalculatorFactory(BaseKPICalculatorFactory):
         if model_data is None:
             model_data = {}
 
-        return KPIAdderModel(self, **model_data)
+        return ExampleKPICalculatorModel(self, **model_data)
 
     def create_kpi_calculator(self):
-        return KPIAdderCalculator(self)
+        return ExampleKPICalculator(self)

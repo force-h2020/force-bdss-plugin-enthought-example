@@ -4,8 +4,12 @@ from force_bdss.api import BaseKPICalculator, DataValue, Slot
 class ExampleKPICalculator(BaseKPICalculator):
     """Refer to the Data Source example.
 
-    This KPI calculator takes three values sums them together, and
+    This KPI calculator takes three values, sums them together, and
     returns the sum.
+
+    Note that the values are summed regardless of their type.
+    This is a current limitation of our system (we don't check and match
+    types between slots).
     """
     def run(self, model, data_source_results):
         sum = 0.0
