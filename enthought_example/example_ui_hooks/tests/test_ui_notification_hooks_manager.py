@@ -1,7 +1,5 @@
 import unittest
 
-from pyface.tasks.task import Task
-
 try:
     import mock
 except ImportError:
@@ -26,7 +24,7 @@ class TestExampleUIHooksManager(unittest.TestCase):
         mock_factory = mock.Mock(spec=ExampleUIHooksFactory)
         manager = ExampleUIHooksManager(factory=mock_factory)
 
-        mock_task = mock.Mock(spec=Task)
+        mock_task = mock.Mock()
         with captured_output() as (stdout, stderr):
             manager.before_execution(mock_task)
             manager.after_execution(mock_task)
