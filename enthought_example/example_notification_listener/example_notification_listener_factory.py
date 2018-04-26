@@ -26,17 +26,17 @@ class ExampleNotificationListenerFactory(BaseNotificationListenerFactory):
     #: override the create_model method instead.
     #: For example::
     #:
-    #: def create_model(self, model_data=None):
-    #:    if model_data is None:
-    #:        model_data = {}
+    #:     def create_model(self, model_data=None):
+    #:        if model_data is None:
+    #:            model_data = {}
     #:
-    #:    return ExampleNotificationListenerModel(self, **model_data)
+    #:        return ExampleNotificationListenerModel(self, **model_data)
     model_class = ExampleNotificationListenerModel
 
     #: The listener class to instantiate. For a more flexible initialization
     #: you can override the create_listener method instead.
     #: For example::
     #:
-    #: def create_listener(self):
-    #:    return ExampleNotificationListener(self)
+    #:     def create_listener(self):
+    #:        return ExampleNotificationListener(self)
     listener_class = ExampleNotificationListener
