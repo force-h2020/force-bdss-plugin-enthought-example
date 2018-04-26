@@ -3,7 +3,6 @@ from force_bdss.api import BaseExtensionPlugin, plugin_id
 from .example_notification_listener import ExampleNotificationListenerFactory
 from .example_mco import ExampleMCOFactory
 from .example_data_source import ExampleDataSourceFactory
-from .example_kpi_calculator import ExampleKPICalculatorFactory
 from .example_ui_hooks import ExampleUIHooksFactory
 
 
@@ -14,10 +13,6 @@ class ExamplePlugin(BaseExtensionPlugin):
 
     - data sources: entities that perform calculations or
       retrieve data from external sources
-    - KPI calculators: entities performing final evaluation of
-      the KPIs. Note that this is probably going to disappear,
-      and it will be replaced by data sources that can support
-      marking of a returned value as a KPI.
     - MCO: multi criteria optimizer support. Note that the MCO
       must obey an execution model as in Dakota, that is,
       this plugin spawns the MCO, which spawns subprocesses
@@ -47,9 +42,6 @@ class ExamplePlugin(BaseExtensionPlugin):
 
     def _mco_factories_default(self):
         return [ExampleMCOFactory(self)]
-
-    def _kpi_calculator_factories_default(self):
-        return [ExampleKPICalculatorFactory(self)]
 
     def _notification_listener_factories_default(self):
         return [ExampleNotificationListenerFactory(self)]

@@ -25,17 +25,27 @@ class ExampleDataSourceFactory(BaseDataSourceFactory):
     #: the UI. Choose something meaningful.
     name = String("Example Data Source (Power Evaluator)")
 
-    #: The following two methods must be implemented.
-    #: They must return the model class for the data source
-    #: and the data source itself, respectively.
-    def create_model(self, model_data=None):
-        """Define this method to generate your model.
-        In general, this boilerplate is enough."""
-        if model_data is None:
-            model_data = {}
+    #: You can specify the model class here. If you want to have a more complex
+    #: model initialization, you can leave this variable unspecified, and
+    #: override the create_model method instead.
+    #: For example::
+    #:
+    #:     def create_model(self, model_data=None):
+    #:         """Define this method to generate your model.
+    #:         In general, this boilerplate is enough."""
+    #:         if model_data is None:
+    #:             model_data = {}
+    #:
+    #:         return ExampleDataSourceModel(self, **model_data)
+    model_class = ExampleDataSourceModel
 
-        return ExampleDataSourceModel(self, **model_data)
+    #: You can specify your Data Source here. If you want to have a more
+    #: complex initialization, you can reimplement the create_data_source
+    #: method instead.
+    #: For example::
+    #:
+    #:     def create_data_source(self):
+    #:         """Return the Data Source instance."""
+    #:         return ExampleDataSource(self)
+    data_source_class = ExampleDataSource
 
-    def create_data_source(self):
-        """Return the Data Source instance."""
-        return ExampleDataSource(self)
