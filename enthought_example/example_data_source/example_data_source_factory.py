@@ -48,4 +48,3 @@ class ExampleDataSourceFactory(BaseDataSourceFactory):
     #:         """Return the Data Source instance."""
     #:         return ExampleDataSource(self)
     data_source_class = ExampleDataSource
-
