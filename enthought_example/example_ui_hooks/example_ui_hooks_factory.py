@@ -10,5 +10,11 @@ class ExampleUIHooksFactory(BaseUIHooksFactory):
     #: As described in the data source factory
     id = factory_id("enthought", "example_ui_hooks")
 
-    def create_ui_hooks_manager(self):
-        return ExampleUIHooksManager(self)
+    #: The UI Hooks manager class to instantiate. For a more flexible
+    #: initialization, you can reimplement the create_ui_hooks_manager
+    #: instead.
+    #: For example::
+    #:
+    #:     def create_ui_hooks_manager(self):
+    #:        return ExampleUIHooksManager(self)
+    ui_hooks_manager_class = ExampleUIHooksManager

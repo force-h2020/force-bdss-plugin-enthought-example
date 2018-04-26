@@ -42,21 +42,37 @@ class ExampleMCOFactory(BaseMCOFactory):
 
     name = "Example MCO"
 
-    def create_model(self, model_data=None):
-        if model_data is None:
-            model_data = {}
-        return ExampleMCOModel(self, **model_data)
+    #: The model class to instantiate. For more flexible initialization,
+    #: you can instead reimplement the create_model method.
+    #: For example::
+    #:
+    #:     def create_model(self, model_data=None):
+    #:         if model_data is None:
+    #:             model_data = {}
+    #:         return ExampleMCOModel(self, **model_data)
+    model_class = ExampleMCOModel
 
-    def create_optimizer(self):
-        return ExampleMCO(self)
+    #: The optimizer class, which is the class handling the actual MCO
+    #: process. For a more flexible initialization, you can instead override
+    #: the create_optimizer method.
+    #: For example::
+    #:
+    #:     def create_optimizer(self):
+    #:        return ExampleMCO(self)
+    optimizer_class = ExampleMCO
 
-    #: This method creates the communicator. It is the class that does
+    #: The communicator class to instantiate. It is the class that does
     #: interfacing between the executing MCO and the external program this
     #: executing MCO spawns to compute a single evaluation.
     #: By design, this external program is the BDSS itself with the option
     #: --evaluate.
-    def create_communicator(self):
-        return ExampleMCOCommunicator(self)
+    #: For a more flexible initialization, you can reimplement the
+    #: create_communicator method instead.
+    #: For example::
+    #:
+    #:     def create_communicator(self):
+    #:         return ExampleMCOCommunicator(self)
+    communicator_class = ExampleMCOCommunicator
 
     #: This method must return a list of all the possible
     #: parameter factories. This depends on what kind of parameters

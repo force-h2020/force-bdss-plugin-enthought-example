@@ -21,11 +21,22 @@ class ExampleNotificationListenerFactory(BaseNotificationListenerFactory):
 
     name = String("Example Notification Listener (stdout print)")
 
-    def create_model(self, model_data=None):
-        if model_data is None:
-            model_data = {}
+    #: You can specify the model class here. If you want to have a more complex
+    #: model initialization, you can leave this variable unspecified, and
+    #: override the create_model method instead.
+    #: For example::
+    #:
+    #:     def create_model(self, model_data=None):
+    #:        if model_data is None:
+    #:            model_data = {}
+    #:
+    #:        return ExampleNotificationListenerModel(self, **model_data)
+    model_class = ExampleNotificationListenerModel
 
-        return ExampleNotificationListenerModel(self, **model_data)
-
-    def create_listener(self):
-        return ExampleNotificationListener(self)
+    #: The listener class to instantiate. For a more flexible initialization
+    #: you can override the create_listener method instead.
+    #: For example::
+    #:
+    #:     def create_listener(self):
+    #:        return ExampleNotificationListener(self)
+    listener_class = ExampleNotificationListener
