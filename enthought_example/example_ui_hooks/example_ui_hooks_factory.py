@@ -15,6 +15,6 @@ class ExampleUIHooksFactory(BaseUIHooksFactory):
     #: instead.
     #: For example::
     #:
-    #: def create_ui_hooks_manager(self):
-    #:    return ExampleUIHooksManager(self)
+    #:     def create_ui_hooks_manager(self):
+    #:        return ExampleUIHooksManager(self)
     ui_hooks_manager_class = ExampleUIHooksManager
