@@ -26,25 +26,22 @@ class ExamplePlugin(BaseExtensionPlugin):
     - UI Hooks: provides hook methods that are called in some
       specific moments of the FORCE UI.
     """
-    #: Define this id using the plugin_id function.
-    #: The first parameter is your organization unique identifier.
-    #: The second is a unique string of your liking. Make sure that
+    #: Define your organization unique identifier.
+    def get_producer(self):
+        return "enthought"
+
+    #: Define a unique string of your liking. Make sure that
     #: is not reused by any of your other plugins. You are fully
     #: responsible for the uniqueness of this second string.
-    id = plugin_id("enthought", "example")
+    def get_identifier(self):
+        return "example"
 
-    #: You define these methods to return a list of "factory"
-    #: classes. You are free to implement only the methods that
-    #: you need. If you are not exporting any data sources, for
-    #: example the following method is not needed.
-    def _data_source_factories_default(self):
-        return [ExampleDataSourceFactory(self)]
+    #: Define the factory classes that you want to export to this list.
+    def get_factory_classes(self):
+        return [
+            ExampleDataSourceFactory,
+            ExampleMCOFactory,
+            ExampleNotificationListenerFactory,
+            ExampleUIHooksFactory
+        ]
 
-    def _mco_factories_default(self):
-        return [ExampleMCOFactory(self)]
-
-    def _notification_listener_factories_default(self):
-        return [ExampleNotificationListenerFactory(self)]
-
-    def _ui_hooks_factories_default(self):
-        return [ExampleUIHooksFactory(self)]
