@@ -1,4 +1,4 @@
-from force_bdss.api import BaseExtensionPlugin, plugin_id
+from force_bdss.api import BaseExtensionPlugin
 
 from .example_notification_listener import ExampleNotificationListenerFactory
 from .example_mco import ExampleMCOFactory
