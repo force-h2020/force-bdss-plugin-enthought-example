@@ -1,4 +1,4 @@
-from force_bdss.api import BaseExtensionPlugin
+from force_bdss.api import BaseExtensionPlugin, plugin_id
 
 from .example_notification_listener import ExampleNotificationListenerFactory
 from .example_mco import ExampleMCOFactory
@@ -26,15 +26,13 @@ class ExamplePlugin(BaseExtensionPlugin):
     - UI Hooks: provides hook methods that are called in some
       specific moments of the FORCE UI.
     """
-    #: Define your organization unique identifier.
-    def get_producer(self):
-        return "enthought"
-
-    #: Define a unique string of your liking. Make sure that
-    #: is not reused by any of your other plugins. You are fully
-    #: responsible for the uniqueness of this second string.
-    def get_identifier(self):
-        return "example"
+    #: Define the id of the plugin by calling the plugin_id function, and
+    #: passing three information:
+    #: - the producer: a unique string identifying the company or research
+    #: institute.
+    #: - the plugin identifier: a unique string identifying the plugin.
+    #: - the version number of the plugin, as an integer.
+    id = plugin_id("enthought", "example", 0)
 
     #: Define the factory classes that you want to export to this list.
     def get_factory_classes(self):

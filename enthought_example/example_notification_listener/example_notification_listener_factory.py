@@ -1,8 +1,4 @@
-from traits.api import String
-
-from force_bdss.api import (
-    factory_id,
-    BaseNotificationListenerFactory)
+from force_bdss.api import BaseNotificationListenerFactory
 
 from .example_notification_listener import ExampleNotificationListener
 from .example_notification_listener_model import \
@@ -15,28 +11,19 @@ class ExampleNotificationListenerFactory(BaseNotificationListenerFactory):
     and performs operations accordingly.
     """
 
-    #: For all the code following, see the documentation on the example
-    #: data source for this
-    id = String(factory_id("enthought", "example_notification_listener"))
+    #: Return a unique string identifier within the scope of your plugin for
+    #: this factory
+    def get_identifier(self):
+        return "example_notification_listener"
 
-    name = String("Example Notification Listener (stdout print)")
+    #: Return a user-visible name for the factory
+    def get_name(self):
+        return "Example Notification Listener (stdout print)"
 
-    #: You can specify the model class here. If you want to have a more complex
-    #: model initialization, you can leave this variable unspecified, and
-    #: override the create_model method instead.
-    #: For example::
-    #:
-    #:     def create_model(self, model_data=None):
-    #:        if model_data is None:
-    #:            model_data = {}
-    #:
-    #:        return ExampleNotificationListenerModel(self, **model_data)
-    model_class = ExampleNotificationListenerModel
+    #: Return the model class associated to this factory.
+    def get_model_class(self):
+        return ExampleNotificationListenerModel
 
-    #: The listener class to instantiate. For a more flexible initialization
-    #: you can override the create_listener method instead.
-    #: For example::
-    #:
-    #:     def create_listener(self):
-    #:        return ExampleNotificationListener(self)
-    listener_class = ExampleNotificationListener
+    #: Return the class of the notification listener.
+    def get_listener_class(self):
+        return ExampleNotificationListener
