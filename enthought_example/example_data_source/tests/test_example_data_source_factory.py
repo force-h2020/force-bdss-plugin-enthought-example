@@ -1,29 +1,28 @@
 import unittest
 
-from enthought_example.tests.data_source_factory_test_mixin import (
-    DataSourceFactoryTestMixin)
-
-from enthought_example.example_data_source.example_data_source import (
+from enthought_example.example_data_source.example_data_source import \
     ExampleDataSource
-)
-from enthought_example.example_data_source.example_data_source_model import (
+from enthought_example.example_data_source.example_data_source_model import \
     ExampleDataSourceModel
-)
-from enthought_example.example_data_source.example_data_source_factory import (
-    ExampleDataSourceFactory
-)
+from enthought_example.example_plugin import ExamplePlugin
 
 
-class TestExampleDataSourceFactory(DataSourceFactoryTestMixin,
-                                   unittest.TestCase):
-    @property
-    def factory_class(self):
-        return ExampleDataSourceFactory
+class DataSourceFactoryTestMixin(unittest.TestCase):
+    def setUp(self):
+        self.plugin = ExamplePlugin()
+        self.factory = self.plugin.data_source_factories[0]
 
-    @property
-    def model_class(self):
-        return ExampleDataSourceModel
+    def test_initialization(self):
+        self.assertNotEqual(self.factory.id, "")
+        self.assertEqual(self.factory.plugin, self.plugin)
 
-    @property
-    def data_source_class(self):
-        return ExampleDataSource
+    def test_create_model(self):
+        model = self.factory.create_model({})
+        self.assertIsInstance(model, ExampleDataSourceModel)
+
+        model = self.factory.create_model()
+        self.assertIsInstance(model, ExampleDataSourceModel)
+
+    def test_create_data_source(self):
+        ds = self.factory.create_data_source()
+        self.assertIsInstance(ds, ExampleDataSource)

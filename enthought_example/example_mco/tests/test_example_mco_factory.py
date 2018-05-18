@@ -2,6 +2,8 @@ import unittest
 
 from envisage.plugin import Plugin
 
+from enthought_example.example_plugin import ExamplePlugin
+
 try:
     import mock
 except ImportError:
@@ -19,8 +21,8 @@ from enthought_example.example_mco.example_mco import ExampleMCO
 
 class TestExampleMCOFactory(unittest.TestCase):
     def setUp(self):
-        self.plugin = mock.Mock(spec=Plugin)
-        self.factory = ExampleMCOFactory(self.plugin)
+        self.plugin = ExamplePlugin()
+        self.factory = self.plugin.mco_factories[0]
 
     def test_initialization(self):
         self.assertIn("example_mco", self.factory.id)
