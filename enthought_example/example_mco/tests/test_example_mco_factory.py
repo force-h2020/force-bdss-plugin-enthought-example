@@ -1,15 +1,7 @@
 import unittest
 
-from envisage.plugin import Plugin
-
 from enthought_example.example_plugin import ExamplePlugin
 
-try:
-    import mock
-except ImportError:
-    from unittest import mock
-
-from enthought_example.example_mco.example_mco_factory import ExampleMCOFactory
 from enthought_example.example_mco.example_mco_communicator import (
     ExampleMCOCommunicator
 )

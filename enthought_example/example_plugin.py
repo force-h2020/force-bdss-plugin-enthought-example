@@ -42,4 +42,3 @@ class ExamplePlugin(BaseExtensionPlugin):
             ExampleNotificationListenerFactory,
             ExampleUIHooksFactory
         ]
-

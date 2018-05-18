@@ -5,11 +5,6 @@ from enthought_example.example_ui_hooks.example_ui_hooks_manager import (
     ExampleUIHooksManager
 )
 
-try:
-    import mock
-except ImportError:
-    from unittest import mock
-
 
 class TestExampleUIHooksFactory(unittest.TestCase):
     def setUp(self):
