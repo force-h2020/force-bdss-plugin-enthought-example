@@ -15,16 +15,16 @@ Subpackages
 Submodules
 ----------
 
-enthought\_example\.example\_plugin module
-------------------------------------------
+enthought\_example.example\_plugin module
+-----------------------------------------
 
 .. automodule:: enthought_example.example_plugin
     :members:
     :undoc-members:
     :show-inheritance:
 
-enthought\_example\.version module
-----------------------------------
+enthought\_example.version module
+---------------------------------
 
 .. automodule:: enthought_example.version
     :members:

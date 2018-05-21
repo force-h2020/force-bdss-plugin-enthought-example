@@ -1,28 +1,26 @@
 import unittest
 
+from enthought_example.example_plugin import ExamplePlugin
 from force_bdss.api import DataValue
-from enthought_example.example_mco.example_mco_factory import ExampleMCOFactory
-from enthought_example.example_mco.parameters import (
-    RangedMCOParameterFactory,
-    RangedMCOParameter)
 
 try:
     import mock
 except ImportError:
     from unittest import mock
 
-from envisage.plugin import Plugin
-
 
 class TestExampleMCOCommunicator(unittest.TestCase):
+    def setUp(self):
+        self.plugin = ExamplePlugin()
+        self.factory = self.plugin.mco_factories[0]
+
     def test_receive_from_mco(self):
-        factory = ExampleMCOFactory(mock.Mock(spec=Plugin))
-        mock_parameter_factory = mock.Mock(spec=RangedMCOParameterFactory)
-        model = factory.create_model()
+        model = self.factory.create_model()
+        parameter_factory = self.factory.parameter_factories()[0]
         model.parameters = [
-            RangedMCOParameter(mock_parameter_factory)
+            parameter_factory.create_model()
         ]
-        comm = factory.create_communicator()
+        comm = self.factory.create_communicator()
 
         with mock.patch("sys.stdin") as stdin:
             stdin.read.return_value = "1"
@@ -34,9 +32,8 @@ class TestExampleMCOCommunicator(unittest.TestCase):
             self.assertEqual(data[0].type, "")
 
     def test_send_to_mco(self):
-        factory = ExampleMCOFactory(mock.Mock(spec=Plugin))
-        model = factory.create_model()
-        comm = factory.create_communicator()
+        model = self.factory.create_model()
+        comm = self.factory.create_communicator()
 
         with mock.patch("sys.stdout") as stdout:
             dv = DataValue(value=100)
