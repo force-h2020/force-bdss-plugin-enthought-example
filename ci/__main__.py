@@ -24,7 +24,7 @@ python_version_option = click.option(
     help="Python version for the environment")
 
 
-@cli.command(name="install", help="Creates the execution environment")
+@cli.command(name="install", help="Installs the code and its dependencies")
 @python_version_option
 def install(python_version):
     env_name = get_env_name(python_version)
