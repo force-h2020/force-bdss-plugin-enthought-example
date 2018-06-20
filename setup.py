@@ -37,7 +37,4 @@ setup(
         ]
     },
     packages=find_packages(),
-    install_requires=[
-        "force_bdss >= 0.1.0",
-    ]
 )
