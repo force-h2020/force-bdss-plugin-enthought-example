@@ -5,7 +5,6 @@ try:
 except ImportError:
     from unittest import mock
 
-from traits.testing.api import UnittestTools
 from force_bdss.api import DataValue, Slot, BaseDataSourceFactory
 
 from enthought_example.example_data_source.example_data_source import (
@@ -16,9 +15,8 @@ from enthought_example.example_data_source.example_data_source_model import (
 )
 
 
-class TestPowerEvaluatorDataSource(unittest.TestCase, UnittestTools):
+class TestPowerEvaluatorDataSource(unittest.TestCase):
     def setUp(self):
-        super(TestPowerEvaluatorDataSource, self).setUp()
         self.factory = mock.Mock(spec=BaseDataSourceFactory)
 
     def test_initialization(self):
@@ -54,9 +52,8 @@ class TestPowerEvaluatorDataSource(unittest.TestCase, UnittestTools):
         self.assertIsInstance(slots[0][0], Slot)
         self.assertIsInstance(slots[1][0], Slot)
 
-        with self.assertTraitChanges(model, 'changes_slots'):
-            model.cuba_type_in = 'METER'
-            model.cuba_type_out = 'METER'
+        model.cuba_type_in = 'METER'
+        model.cuba_type_out = 'METER'
         slots = ds.slots(model)
         self.assertEqual(slots[0][0].type, 'METER')
         self.assertEqual(slots[1][0].type, 'METER')
