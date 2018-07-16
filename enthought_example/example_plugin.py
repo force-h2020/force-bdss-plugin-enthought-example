@@ -5,6 +5,8 @@ from .example_mco import ExampleMCOFactory
 from .example_data_source import ExampleDataSourceFactory
 from .example_ui_hooks import ExampleUIHooksFactory
 
+PLUGIN_VERSION = 0
+
 
 class ExamplePlugin(BaseExtensionPlugin):
     """This is an example of the plugin system for the BDSS.
@@ -32,7 +34,16 @@ class ExamplePlugin(BaseExtensionPlugin):
     #: institute.
     #: - the plugin identifier: a unique string identifying the plugin.
     #: - the version number of the plugin, as an integer.
-    id = plugin_id("enthought", "example", 0)
+    id = plugin_id("enthought", "example", PLUGIN_VERSION)
+
+    def get_name(self):
+        return u"Enthought example"
+
+    def get_description(self):
+        return u"An example plugin from Enthought"
+
+    def get_version(self):
+        return PLUGIN_VERSION
 
     #: Define the factory classes that you want to export to this list.
     def get_factory_classes(self):
