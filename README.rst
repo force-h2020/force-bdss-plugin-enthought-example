@@ -3,10 +3,6 @@ It provides example implementations of the following entities:
 
 - data sources: entities that perform calculations or
   retrieve data from external sources
-- KPI calculators: entities performing final evaluation of
-  the KPIs. Note that this is probably going to disappear,
-  and it will be replaced by data sources that can support
-  marking of a returned value as a KPI.
 - MCO: multi criteria optimizer support. Note that the MCO
   must obey an execution model as in Dakota, that is,
   this plugin spawns the MCO, which spawns subprocesses
