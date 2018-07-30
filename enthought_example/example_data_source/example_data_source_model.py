@@ -1,4 +1,4 @@
-from traits.api import Float, String
+from traits.api import Float, Unicode
 
 from force_bdss.api import BaseDataSourceModel
 
@@ -34,5 +34,5 @@ class ExampleDataSourceModel(BaseDataSourceModel):
     #: input. The meta information "changes_slots=True" to the trait tells
     #: the rest of the application that when these traits are changed, the
     #: slots need to be recomputed, as these options affects them.
-    cuba_type_in = String(changes_slots=True)
-    cuba_type_out = String(changes_slots=True)
+    cuba_type_in = Unicode(changes_slots=True)
+    cuba_type_out = Unicode(changes_slots=True)

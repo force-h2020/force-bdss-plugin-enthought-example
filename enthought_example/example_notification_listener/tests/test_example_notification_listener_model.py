@@ -1,9 +1,6 @@
 import unittest
 
-try:
-    import mock
-except ImportError:
-    from unittest import mock
+from unittest import mock
 
 from enthought_example.example_notification_listener\
      .example_notification_listener_factory import (

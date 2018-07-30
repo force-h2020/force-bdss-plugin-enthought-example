@@ -3,10 +3,7 @@ import unittest
 from enthought_example.example_plugin import ExamplePlugin
 from force_bdss.api import DataValue
 
-try:
-    import mock
-except ImportError:
-    from unittest import mock
+from unittest import mock
 
 
 class TestExampleMCOCommunicator(unittest.TestCase):

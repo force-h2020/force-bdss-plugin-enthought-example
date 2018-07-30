@@ -37,10 +37,10 @@ class ExamplePlugin(BaseExtensionPlugin):
     id = plugin_id("enthought", "example", PLUGIN_VERSION)
 
     def get_name(self):
-        return u"Enthought example"
+        return "Enthought example"
 
     def get_description(self):
-        return u"An example plugin from Enthought"
+        return "An example plugin from Enthought"
 
     def get_version(self):
         return PLUGIN_VERSION
