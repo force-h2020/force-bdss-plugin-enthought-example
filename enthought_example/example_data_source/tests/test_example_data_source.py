@@ -1,9 +1,6 @@
 import unittest
 
-try:
-    import mock
-except ImportError:
-    from unittest import mock
+from unittest import mock
 
 from traits.testing.api import UnittestTools
 from force_bdss.api import DataValue, Slot, BaseDataSourceFactory

@@ -1,10 +1,7 @@
 import unittest
 from enthought_example.tests.utils import captured_output
 
-try:
-    import mock
-except ImportError:
-    from unittest import mock
+from unittest import mock
 
 from force_bdss.api import MCOStartEvent, MCOProgressEvent, MCOFinishEvent
 

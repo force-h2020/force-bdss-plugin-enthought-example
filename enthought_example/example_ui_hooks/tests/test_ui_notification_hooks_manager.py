@@ -1,9 +1,6 @@
 import unittest
 
-try:
-    import mock
-except ImportError:
-    from unittest import mock
+from unittest import mock
 
 from enthought_example.tests.utils import captured_output
 from enthought_example.example_ui_hooks.example_ui_hooks_factory import (
