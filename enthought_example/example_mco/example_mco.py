@@ -3,7 +3,7 @@ import sys
 import itertools
 import collections
 
-from force_bdss.api import BaseMCO
+from force_bdss.api import BaseMCO, DataValue
 
 
 def rotated_range(start, stop, starting_value):
@@ -73,9 +73,6 @@ class ExampleMCO(BaseMCO):
 
         application = self.factory.plugin.application
 
-        # Inform that the evaluation has started. Missing this is a crime.
-        self.started = True
-
         for value in value_iterator:
             # Spawn the single point evaluation, which is the bdss itself
             # with the option evaluate.
@@ -97,11 +94,6 @@ class ExampleMCO(BaseMCO):
 
             # When there is new data, this operation informs the system that
             # new data has been received. It must be a dictionary as given.
-            self.new_data = {
-                'input': tuple(value),
-                'output': tuple(out_data)
-            }
-
-        # To inform the rest of the system that the evaluation has completed.
-        # we set this event to True
-        self.finished = True
+            self.notify_new_point([DataValue(value=value)],
+                                  [DataValue(value=out_data)],
+                                   [1.0])
