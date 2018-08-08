@@ -29,22 +29,24 @@ class ExampleMCO(BaseMCO):
       it is completed
     - monitor its output (e.g. via standard output) as new points are
       generated
-    - report new events as they happen, specifically::
-      - when the MCO starts its execution, set::
+    - report new events as they happen, specifically, when the MCO has
+      computed a new result, it can be broadcast with the notify_new_point:
 
-           self.started = True
-
-      - when the MCO has computed a new result. Set new_data with a
-        dictionary, as indicated::
-
-            self.new_data = {
-                'input': tuple(input_parameter_values),
-                'output': tuple(output_kpi_values)
+            self.notify_new_point(
+                optimal_point=[
+                    DataValue(value=parameter_1),
+                    DataValue(value=parameter_2),
+                    DataValue(value=parameter_3)
+                ],
+                optimal_kpis=[
+                    DataValue(value=kpi_1),
+                    DataValue(value=kpi_2),
+                ],
+                weights=[
+                    kpi_weight_1,
+                    kpi_weight_2
+                ]
             }
-
-      - when the MCO ends its execution, set::
-
-            self.finished = True
 
     Currently there's no error handling.
     """
@@ -94,6 +96,6 @@ class ExampleMCO(BaseMCO):
 
             # When there is new data, this operation informs the system that
             # new data has been received. It must be a dictionary as given.
-            self.notify_new_point([DataValue(value=value)],
-                                  [DataValue(value=out_data)],
-                                  [1.0])
+            self.notify_new_point([DataValue(value=v) for v in value],
+                                  [DataValue(value=v) for v in out_data],
+                                  [1.0/len(out_data)]*len(out_data))
