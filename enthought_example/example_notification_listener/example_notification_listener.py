@@ -32,8 +32,8 @@ class ExampleNotificationListener(BaseNotificationListener):
                   event.kpi_names)
         elif isinstance(event, MCOProgressEvent):
             print(event.__class__.__name__,
-                  event.optimal_point,
-                  event.optimal_kpis,
+                  [dv.value for dv in event.optimal_point],
+                  [dv.value for dv in event.optimal_kpis],
                   event.weights)
         elif isinstance(event, MCOFinishEvent):
             print(event.__class__.__name__)
