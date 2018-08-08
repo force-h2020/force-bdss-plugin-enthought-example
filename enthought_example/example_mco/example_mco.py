@@ -96,4 +96,4 @@ class ExampleMCO(BaseMCO):
             # new data has been received. It must be a dictionary as given.
             self.notify_new_point([DataValue(value=value)],
                                   [DataValue(value=out_data)],
-                                   [1.0])
+                                  [1.0])
