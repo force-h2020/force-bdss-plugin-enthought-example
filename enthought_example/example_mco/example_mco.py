@@ -30,7 +30,7 @@ class ExampleMCO(BaseMCO):
     - monitor its output (e.g. via standard output) as new points are
       generated
     - report new events as they happen, specifically, when the MCO has
-      computed a new result, it can be broadcast with the notify_new_point:
+      computed a new result, it can be broadcast with the notify_new_point::
 
             self.notify_new_point(
                 optimal_point=[
