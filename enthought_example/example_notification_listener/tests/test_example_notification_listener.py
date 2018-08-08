@@ -3,7 +3,8 @@ from enthought_example.tests.utils import captured_output
 
 from unittest import mock
 
-from force_bdss.api import MCOStartEvent, MCOProgressEvent, MCOFinishEvent
+from force_bdss.api import (
+    MCOStartEvent, MCOProgressEvent, MCOFinishEvent, DataValue)
 
 
 from enthought_example.example_notification_listener\
@@ -25,11 +26,12 @@ class TestExampleNotificationListener(unittest.TestCase):
         with captured_output() as (out, err):
             listener.initialize(model)
             listener.deliver(MCOStartEvent(
-                input_names=("foo", "bar"),
-                output_names=("baz", "quux")))
+                parameter_names=["foo", "bar"],
+                kpi_names=["baz", "quux"]))
             listener.deliver(MCOProgressEvent(
-                input=(1.0, 2.0),
-                output=(3.0, 4.0)
+                optimal_point=[DataValue(value=1.0), DataValue(value=2.0)],
+                optimal_kpis=[DataValue(value=3.0), DataValue(value=4.0)],
+                weights=[0.5, 0.5]
             ))
             listener.deliver(MCOFinishEvent())
             listener.finalize()
@@ -37,8 +39,8 @@ class TestExampleNotificationListener(unittest.TestCase):
         self.assertEqual(
             out.getvalue(),
             "Initializing\n"
-            "MCOStartEvent ('foo', 'bar') ('baz', 'quux')\n"
-            "MCOProgressEvent (1.0, 2.0) (3.0, 4.0)\n"
+            "MCOStartEvent ['foo', 'bar'] ['baz', 'quux']\n"
+            "MCOProgressEvent [1.0, 2.0] [3.0, 4.0] [0.5, 0.5]\n"
             "MCOFinishEvent\n"
             "Finalizing\n"
         )
