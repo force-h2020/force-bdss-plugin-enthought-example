@@ -36,4 +36,4 @@ class TestExampleMCOFactory(unittest.TestCase):
         self.assertIsInstance(ds, ExampleMCOCommunicator)
 
     def test_parameter_factories(self):
-        self.assertNotEqual(len(self.factory.parameter_factories()), 0)
+        self.assertNotEqual(len(self.factory.parameter_factories), 0)

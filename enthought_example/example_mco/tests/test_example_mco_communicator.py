@@ -13,7 +13,7 @@ class TestExampleMCOCommunicator(unittest.TestCase):
 
     def test_receive_from_mco(self):
         model = self.factory.create_model()
-        parameter_factory = self.factory.parameter_factories()[0]
+        parameter_factory = self.factory.parameter_factories[0]
         model.parameters = [
             parameter_factory.create_model()
         ]
