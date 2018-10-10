@@ -44,6 +44,12 @@ class ExampleMCOFactory(BaseMCOFactory):
     def get_name(self):
         return "Example MCO"
 
+    #: Returns a description of what the MCO does.
+    def get_description(self):
+        return (
+            "An example \"MCO\" which does not actually do any optimising!"
+        )
+
     #: Returns the model class
     def get_model_class(self):
         return ExampleMCOModel
