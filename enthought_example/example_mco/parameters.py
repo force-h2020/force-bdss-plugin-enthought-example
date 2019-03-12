@@ -19,7 +19,9 @@ class RangedMCOParameter(BaseMCOParameter):
         depends_on="lower_bound,upper_bound",
     )
 
-    traits_view = View(Item("lower_bound"), Item("upper_bound"), Item("initial_value"))
+    traits_view = View(Item("lower_bound"),
+                       Item("upper_bound"),
+                       Item("initial_value"))
 
     def __init__(self, *args, **model_data):
         """ Custom init to prevent argument ordering issues after

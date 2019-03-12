@@ -67,7 +67,8 @@ class TestExampleMCO(unittest.TestCase):
         # test whether arugment order matters on object creation
         model_data = {"initial_value": 2, "upper_bound": 3, "lower_bound": 1}
         model.parameters = [
-            RangedMCOParameter(mock.Mock(spec=RangedMCOParameterFactory), **model_data)
+            RangedMCOParameter(mock.Mock(spec=RangedMCOParameterFactory),
+                               **model_data)
         ]
 
         mock_process = mock.Mock()
@@ -80,7 +81,6 @@ class TestExampleMCO(unittest.TestCase):
         self.assertEqual(mock_popen.call_count, 2)
 
     def test_failure(self):
-        opt = ExampleMCO(self.factory)
         model = ExampleMCOModel(self.factory)
         with self.assertRaises(TraitError):
             model.parameters = [
