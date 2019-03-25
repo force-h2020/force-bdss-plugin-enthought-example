@@ -31,7 +31,7 @@ class TestEggboxPESDataSource(unittest.TestCase, UnittestTools):
 
         i = 0
         while i < 10:
-            random = 2 * (np.random.rand() - 0.5)
+            random = np.random.rand()
             mock_params = [DataValue(value=random, type="float")]
             result = ds.run(model, mock_params)
             self.assertEqual(len(model.basin_depths), 5)
@@ -48,7 +48,7 @@ class TestEggboxPESDataSource(unittest.TestCase, UnittestTools):
 
         i = 0
         while i < 10:
-            random = 2 * (np.random.rand(2) - 0.5)
+            random = np.random.rand(2)
             mock_params = [DataValue(value=random[0], type="float"),
                            DataValue(value=random[1], type='float')]
             result = ds.run(model, mock_params)
@@ -56,6 +56,18 @@ class TestEggboxPESDataSource(unittest.TestCase, UnittestTools):
             self.assertEqual(len(model.basin_depths), 9)
             self.assertEqual(len(model.basin_positions), 9)
             i += 1
+
+    def test_out_of_bounds(self):
+        ds = EggboxPESDataSource(self.factory)
+        model = EggboxPESDataSourceModel(self.factory)
+        model.num_cells = 3
+        model.dimension = 1
+        model.sigma_star = 0.5
+
+        with self.assertRaises(RuntimeError):
+            mock_params = [DataValue(value=4, type="float")]
+            ds.run(model, mock_params)
+
 
     def test_slots(self):
         ds = EggboxPESDataSource(self.factory)
