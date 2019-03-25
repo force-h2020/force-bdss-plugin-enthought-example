@@ -1,5 +1,5 @@
 import numpy as np
-from traits.api import Bool, Unicode, Enum, Float, List, on_trait_change
+from traits.api import Unicode, Enum, Float, List, on_trait_change
 from traitsui.api import Item, View
 from force_bdss.api import BaseDataSourceModel, PositiveInt
 
@@ -22,12 +22,9 @@ class EggboxPESDataSourceModel(BaseDataSourceModel):
     trials = List
     results = List
 
-    plot = Bool(False)
-
     traits_view = View([Item('sigma_star'),
                         Item('num_cells'),
                         Item('dimension'),
-                        Item('plot'),
                         Item('cuba_design_space_type'),
                         Item('cuba_potential_type')])
 
@@ -64,13 +61,3 @@ class EggboxPESDataSourceModel(BaseDataSourceModel):
         self.basin_positions = ((np.asarray(np.meshgrid(*grids))
                                  .reshape(self.dimension, -1).T)
                                 .tolist())
-
-    @on_trait_change('plot')
-    def _plot_surface_to_file(self):
-        """ Plot the current state of the PES to a file. """
-        if self.dimension <= 2:
-            from .utils import plot_surface_to_file
-            plot_surface_to_file(self)
-        else:
-            raise NotImplementedError('Plotting not implemented for {}D'
-                                      .format(self.dimension))
