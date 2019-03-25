@@ -1,7 +1,8 @@
 import unittest
 
 # from force_bdss.core_plugins import BasicMCOCommunicator
-from enthought_example.example_mco.example_mco_communicator import ExampleMCOCommunicator
+from enthought_example.example_mco.example_mco_communicator import \
+    ExampleMCOCommunicator
 from eggbox_potential_sampler.eggbox_plugin import EggboxPlugin
 from eggbox_potential_sampler.random_sampling_mco.mco_model import (
     RandomSamplingMCOModel

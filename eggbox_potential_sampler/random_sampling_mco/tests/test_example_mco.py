@@ -1,7 +1,6 @@
 import unittest
 
 from unittest import mock
-from traits.api import TraitError
 
 from force_bdss.api import BaseMCOFactory
 
@@ -30,7 +29,8 @@ class TestRandomSamplingMCO(unittest.TestCase):
         model = RandomSamplingMCOModel(self.factory)
         model.num_trials = 7
         model.evaluation_mode = 'Subprocess'
-        model.parameters = [DummyMCOParameter(mock.Mock(spec=DummyMCOParameterFactory))]
+        model.parameters = [DummyMCOParameter(
+            mock.Mock(spec=DummyMCOParameterFactory))]
 
         mock_process = mock.Mock()
         mock_process.communicate = mock.Mock(return_value=(b"2", b"1 0"))

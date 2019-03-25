@@ -85,7 +85,7 @@ class EggboxPESDataSource(BaseDataSource):
         """
         x0 = [float(param.value) for param in parameters]
         if np.max(np.abs(x0)) > 1:
-            raise RuntimeError('MCO provided trial outside of bounds [0, 1]: {}'
+            raise RuntimeError('MCO trial outside of bounds [0, 1]: {}'
                                .format(x0))
         bounds = np.array([[0, 1]
                            for i in range(model.dimension)])

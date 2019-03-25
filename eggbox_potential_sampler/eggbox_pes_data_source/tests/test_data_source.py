@@ -68,7 +68,6 @@ class TestEggboxPESDataSource(unittest.TestCase, UnittestTools):
             mock_params = [DataValue(value=4, type="float")]
             ds.run(model, mock_params)
 
-
     def test_slots(self):
         ds = EggboxPESDataSource(self.factory)
         model = EggboxPESDataSourceModel(self.factory)
