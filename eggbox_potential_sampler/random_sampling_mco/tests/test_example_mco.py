@@ -42,7 +42,6 @@ class TestRandomSamplingMCO(unittest.TestCase):
 
         self.assertEqual(mock_popen.call_count, 7)
 
-
     def test_internal_run(self):
         opt = RandomSamplingMCO(self.factory, )
         model = RandomSamplingMCOModel(self.factory)
