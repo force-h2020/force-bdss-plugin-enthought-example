@@ -5,6 +5,7 @@ DEFAULT_PYTHON_VERSION = "3.6"
 PYTHON_VERSIONS = ["3.6"]
 
 ADDITIONAL_CORE_DEPS = [
+    'scipy>=1.0.0'
 ]
 
 
