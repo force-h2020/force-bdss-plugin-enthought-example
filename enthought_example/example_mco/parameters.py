@@ -1,9 +1,7 @@
-from traits.api import Bool, Float, Property, Range
-from traitsui.api import TextEditor, View, Item
+from traits.api import Float, Range, on_trait_change
+from traitsui.api import View, Item
 
 from force_bdss.api import BaseMCOParameter, BaseMCOParameterFactory
-
-
 
 
 class RangedMCOParameter(BaseMCOParameter):
@@ -11,48 +9,31 @@ class RangedMCOParameter(BaseMCOParameter):
     point values.
 
     """
+    range_start = Float(0.0)
+    range_end = Float(0.0)
+    lower_bound = Float
+    upper_bound = Float
 
-    lower_bound = Property(Float)
-    _lower_bound = Float(0.0)
-    upper_bound = Property(Float)
-    _upper_bound = Float(0.0)
     initial_value = Range(
-        low="_lower_bound",
-        high="_upper_bound",
+        low="lower_bound",
+        high="upper_bound",
         label="Initial value",
         depends_on="lower_bound,upper_bound",
     )
 
-
     def default_traits_view(self):
         return View(
-            Item("lower_bound"),
-            Item("upper_bound"),
+            Item("range_start"),
+            Item("range_end"),
             Item("initial_value")
         )
 
-    def _set_lower_bound(self, val):
-        if val <= self.upper_bound:
-            self._lower_bound = val
-
-        if self.initial_value < self.lower_bound:
+    @on_trait_change("range_start,range_end")
+    def set_bounds(self):
+        self.lower_bound = min(self.range_start, self.range_end)
+        self.upper_bound = max(self.range_start, self.range_end)
+        if not self.lower_bound <= self.initial_value <= self.upper_bound:
             self.initial_value = (self.lower_bound + self.upper_bound) / 2.0
-
-    def _set_upper_bound(self, val):
-        if val >= self.lower_bound:
-            self._upper_bound = val
-
-        if self.initial_value > self.upper_bound:
-            self.initial_value = (self.lower_bound + self.upper_bound) / 2.0
-
-    def _get_lower_bound(self):
-        return self._lower_bound
-
-    def _get_upper_bound(self):
-        return self._upper_bound
-
-    # def valid(self):
-    #     return self.lower_bound < self.initial_value < self.upper_bound
 
 
     def __init__(self, *args, **model_data):
