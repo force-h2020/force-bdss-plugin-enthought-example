@@ -1,5 +1,5 @@
 import numpy as np
-from traits.api import Unicode, Enum, Float, List, on_trait_change
+from traits.api import Unicode, Enum, Float, List, on_trait_change, Bool
 from traitsui.api import Item, View
 from force_bdss.api import BaseDataSourceModel, PositiveInt
 
@@ -15,6 +15,7 @@ class EggboxPESDataSourceModel(BaseDataSourceModel):
     cuba_potential_type = Unicode(changes_slots=True)
     num_cells = PositiveInt(2)
     sigma_star = Float(name='σ*')
+    locally_optimize = Bool(True)
 
     lattice = Enum('Square lattice')
     basin_depths = List
@@ -22,7 +23,8 @@ class EggboxPESDataSourceModel(BaseDataSourceModel):
     trials = List
     results = List
 
-    traits_view = View([Item('sigma_star'),
+    traits_view = View([Item('locally_optimize'),
+                        Item('sigma_star'),
                         Item('num_cells'),
                         Item('dimension'),
                         Item('cuba_design_space_type'),

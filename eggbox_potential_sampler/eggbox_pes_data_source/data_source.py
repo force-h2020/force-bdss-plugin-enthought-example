@@ -90,19 +90,30 @@ class EggboxPESDataSource(BaseDataSource):
         bounds = np.array([[0, 1]
                            for i in range(model.dimension)])
         model.trials.append(x0)
-        result = scipy.optimize.minimize(
-            self.evaluate_potential, x0,
-            args=(model,),
-            bounds=bounds)
 
-        results = [DataValue(value=result.x[i],
-                             type=model.cuba_design_space_type)
-                   for i in range(model.dimension)]
+        if model.locally_optimize:
+            result = scipy.optimize.minimize(
+                self.evaluate_potential, x0,
+                args=(model,),
+                bounds=bounds)
 
-        model.results.append(result.x)
+            results = [DataValue(value=result.x[i],
+                                 type=model.cuba_design_space_type)
+                       for i in range(model.dimension)]
+            results.append(DataValue(value=result.fun,
+                                     type=model.cuba_potential_type))
 
-        results.append(DataValue(value=result.fun,
-                                 type=model.cuba_potential_type))
+            model.results.append(result.x)
+
+        else:
+            result = self.evaluate_potential(x0, model)
+            results = [DataValue(value=x0[i],
+                                 type=model.cuba_design_space_type)
+                       for i in range(model.dimension)]
+            results.append(DataValue(value=result,
+                                     type=model.cuba_potential_type))
+
+            model.results.append(x0)
 
         return results
 
