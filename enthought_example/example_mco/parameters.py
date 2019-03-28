@@ -35,7 +35,6 @@ class RangedMCOParameter(BaseMCOParameter):
         if not self.lower_bound <= self.initial_value <= self.upper_bound:
             self.initial_value = (self.lower_bound + self.upper_bound) / 2.0
 
-
     def __init__(self, *args, **model_data):
         """ Custom init to prevent argument ordering issues after
         expansion; since the validity of `intial_value` is checked when
