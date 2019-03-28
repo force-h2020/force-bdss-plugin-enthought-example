@@ -8,6 +8,10 @@ ADDITIONAL_CORE_DEPS = [
     'scipy>=1.0.0'
 ]
 
+PIP_DEPS = [
+    'scikit-optimize'
+]
+
 
 @click.group()
 def cli():
@@ -29,6 +33,11 @@ def install(python_version):
     check_call([
         "edm", "install", "-e", env_name,
         "--yes"] + ADDITIONAL_CORE_DEPS)
+
+    for dep in PIP_DEPS:
+        check_call([
+            "edm", "run", "-e", env_name, "--",
+            "pip", "install", dep])
 
     check_call([
         "edm", "run", "-e", env_name, "--",

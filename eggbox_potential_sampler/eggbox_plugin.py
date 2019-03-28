@@ -2,6 +2,8 @@ from force_bdss.api import BaseExtensionPlugin, plugin_id
 
 from .eggbox_pes_data_source.factory import EggboxPESDataSourceFactory
 from .random_sampling_mco.mco_factory import RandomSamplingMCOFactory
+from .skopt_mco.mco_factory import ModelBasedOptimizationMCOFactory
+
 
 PLUGIN_VERSION = 0
 
@@ -25,8 +27,8 @@ class EggboxPlugin(BaseExtensionPlugin):
         return "Potential energy surface sampler"
 
     def get_description(self):
-        return ("An example plugin for sampling arbitrary-dimensional eggbox "
-                "potential energy surfaces, developed by Enthought.")
+        return ("An example plugin for sampling arbitrary dimensional "
+                "potential energy surfaces, developed at Enthought.")
 
     def get_version(self):
         return PLUGIN_VERSION
@@ -34,5 +36,6 @@ class EggboxPlugin(BaseExtensionPlugin):
     def get_factory_classes(self):
         return [
             EggboxPESDataSourceFactory,
-            RandomSamplingMCOFactory
+            RandomSamplingMCOFactory,
+            ModelBasedOptimizationMCOFactory
         ]
