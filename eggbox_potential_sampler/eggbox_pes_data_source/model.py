@@ -10,6 +10,8 @@ class EggboxPESDataSourceModel(BaseDataSourceModel):
     in the model, not at the instance-level.
 
     """
+
+    # traits controlled by user
     dimension = PositiveInt(
         2,
         label='Dimensionality',
@@ -25,16 +27,23 @@ class EggboxPESDataSourceModel(BaseDataSourceModel):
     )
     num_cells = PositiveInt(
         2,
-        label='Number of lattice points in each direction'
+        label='Number of cells',
+        desc='Number of lattice points in each direction'
     )
     sigma_star = Float(
         label='σ*',
         desc='Variance of basin depths: σ*~0 will lead to identical basins '
              'σ*~1 will normally lead to one basin dominating'
     )
-    locally_optimize = Bool(True, label='Locally optimize trials?')
-
+    locally_optimize = Bool(
+        True,
+        label='Locally optimize trials?',
+        desc='Whether or not to locally optimize each '
+             'trial and return the local minima'
+    )
     lattice = Enum('Square lattice', label='Lattice type')
+
+    # traits set by calculation
     basin_depths = List
     basin_positions = List
     trials = List
