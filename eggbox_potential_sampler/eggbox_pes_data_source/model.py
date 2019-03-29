@@ -10,14 +10,31 @@ class EggboxPESDataSourceModel(BaseDataSourceModel):
     in the model, not at the instance-level.
 
     """
-    dimension = PositiveInt(2, changes_slots=True)
-    cuba_design_space_type = Unicode(changes_slots=True)
-    cuba_potential_type = Unicode(changes_slots=True)
-    num_cells = PositiveInt(2)
-    sigma_star = Float(name='σ*')
-    locally_optimize = Bool(True)
+    dimension = PositiveInt(
+        2,
+        label='Dimensionality',
+        changes_slots=True
+    )
+    cuba_design_space_type = Unicode(
+        changes_slots=True,
+        label='Parameter space type/units'
+    )
+    cuba_potential_type = Unicode(
+        changes_slots=True,
+        label='Potential type'
+    )
+    num_cells = PositiveInt(
+        2,
+        label='Number of lattice points in each direction'
+    )
+    sigma_star = Float(
+        label='σ*',
+        desc='Variance of basin depths: σ*~0 will lead to identical basins '
+             'σ*~1 will normally lead to one basin dominating'
+    )
+    locally_optimize = Bool(True, label='Locally optimize trials?')
 
-    lattice = Enum('Square lattice')
+    lattice = Enum('Square lattice', label='Lattice type')
     basin_depths = List
     basin_positions = List
     trials = List
