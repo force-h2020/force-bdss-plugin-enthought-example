@@ -1,7 +1,6 @@
 import subprocess
 import sys
 import logging
-import numpy as np
 
 from skopt import Optimizer
 
@@ -36,19 +35,21 @@ class ModelBasedOptimizationMCO(BaseMCO):
                 model.parameters
             )
 
-        optimizer = Optimizer([(0, 1) for i in range(len(model.parameters))],
-                              base_estimator="gp")
+        optimizer = Optimizer([(0.0, 1.0)
+                               for i in range(len(model.parameters))],
+                              base_estimator=model.estimator,
+                              n_initial_points=model.num_random_trials)
 
+        n_total = model.num_trials + model.num_random_trials
         counter = 0
-        while counter < model.num_trials:
+        while counter < n_total:
             counter += 1
-            log.info("MCO iteration {}/{}".format(counter, model.num_trials))
+            log.info("MCO iteration {}/{}".format(counter, n_total))
             trial_position = optimizer.ask()
 
             kpis = single_point_evaluator.evaluate(trial_position)
             # use first KPI only for now
             optimizer.tell(trial_position, kpis[0])
-            print('told opt', trial_position, kpis[0])
             self.notify_new_point(
                 [DataValue(value=v) for v in trial_position],
                 [DataValue(value=v) for v in kpis],
