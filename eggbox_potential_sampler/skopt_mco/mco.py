@@ -42,14 +42,17 @@ class ModelBasedOptimizationMCO(BaseMCO):
 
         n_total = model.num_trials + model.num_random_trials
         counter = 0
+        fit = False
         while counter < n_total:
             counter += 1
+            if counter >= model.num_random_trials:
+                fit = True
             log.info("MCO iteration {}/{}".format(counter, n_total))
             trial_position = optimizer.ask()
 
             kpis = single_point_evaluator.evaluate(trial_position)
             # use first KPI only for now
-            optimizer.tell(trial_position, kpis[0])
+            optimizer.tell(trial_position, kpis[0], fit=fit)
             self.notify_new_point(
                 [DataValue(value=v) for v in trial_position],
                 [DataValue(value=v) for v in kpis],
