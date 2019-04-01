@@ -1,5 +1,8 @@
+import itertools
+
 import numpy as np
 import scipy.optimize
+
 from force_bdss.api import BaseDataSource, DataValue, Slot
 
 
@@ -63,19 +66,30 @@ class EggboxPESDataSource(BaseDataSource):
 
         """
 
-        # TODO: generalise PBCs for n-dimensional potentials with lattice vecs
-        # Side effect of this should be generalisation to arbitrary lattice
-        if isinstance(trial, float) or len(trial) == 1:
-            contrib = np.min(
-                [np.abs(np.abs(trial - basin_positions) - 1),
-                 trial - basin_positions],
-                axis=-1
-            )
-        else:
-            contrib = (trial - basin_positions).T
-            contrib = np.linalg.norm(contrib, axis=0)
-        basins = 0.5 * contrib**2 - basin_depths
+        # construct matrix of lattice vector combinations
+        # (this could be extended to other lattices by modifiying the
+        # matrix from the identity to a different basis).
+        images = (np.asarray(list(itertools.product([0, 1],
+                                                    repeat=len(trial))))
+                  @ np.identity(len(trial)))
 
+        # construct matrix of image basin positions (M, n, d) for
+        # M basins, n images and d dimensions
+        pos_images = images[None, :, :] + basin_positions[:, None, :]
+
+        # construct the (M, n, d) matrix of displacements to image basins
+        pos_disps = pos_images[:, :, None] - trial
+
+        # contract over spatial index to yield (M, n) distance matrix
+        distances = np.linalg.norm(pos_disps, axis=-1)
+
+        # minimise over image index to yield (M, ) array of minimum dists
+        min_dists = np.min(distances, axis=1).flatten()
+
+        # compute potential from each closest image
+        basins = 0.5 * min_dists**2 - basin_depths
+
+        # return minimum potential at chosen point across basins
         return np.min(basins)
 
     def run(self, model, parameters):
