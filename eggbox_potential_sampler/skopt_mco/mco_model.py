@@ -1,4 +1,5 @@
-from traits.api import BaseInt, Enum
+from traits.api import BaseInt, Enum, Trait
+from traitsui.api import EnumEditor, Item, View
 from force_bdss.api import BaseMCOModel
 
 
@@ -32,12 +33,20 @@ class ModelBasedOptimizationMCOModel(BaseMCOModel):
         label='Workflow evaluation mode',
         desc="Whether to execute each point in a new BDSS subprocess"
     )
-    estimator = Enum(
-        'GP',
-        values={"Gaussian process": "GP",
-                "Random forest": "RF",
-                "Extra trees": "ET",
-                "Gradient-boosed tree": "GBRT"},
+    estimator = Trait(
+        "GP",
         label='Model Estimator',
         desc="The estimator to use for the Bayesian search"
     )
+
+    def traits_view(self):
+        return View(
+            [Item('num_trials'),
+             Item('num_random_trials'),
+             Item('evaluation_mode'),
+             Item('estimator',
+                  editor=EnumEditor(values={"GP": "Gaussian process",
+                                            "RF": "Random forest",
+                                            "ET": "Extra trees",
+                                            "GBRT": "Gradient-boosed tree"}))]
+        )
