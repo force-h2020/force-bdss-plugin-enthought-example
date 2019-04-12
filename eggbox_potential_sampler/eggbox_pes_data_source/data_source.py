@@ -7,15 +7,19 @@ from force_bdss.api import BaseDataSource, DataValue, Slot
 
 
 class EggboxPESDataSource(BaseDataSource):
-    """ Constructs a random 2D potential energy surface (PES)
-    with Gaussian distributed eggbox basins, following the work
-    of Massen et al. [1].
+    """ Samples a random 2D potential energy surface (PES) with
+    Gaussian distributed eggbox basins, following the work of Massen et
+    al. [1].
 
-    Basin depths are drawn from a zero-mean Gaussian parameterised
-    by dimensionless width sigma*. These basins are placed on a
-    specified lattice. The height of the PES at a given point is
-    the lowest energy across all basins at that point, with
-    periodic boundary conditions.
+    The parameters of the potential are defined by the DataSourceModel.
+    Each trial point will be locally optimised with SciPy to its local
+    minimum, unless the `locally_optimize` has been set to false in
+    the model.
+
+    Basin depths are drawn from a zero-mean Gaussian parameterised by
+    dimensionless width sigma*. These basins are placed on the specified
+    lattice. The height of the PES at a given point is the lowest energy
+    across all basins at that point, with periodic boundary conditions.
 
     Note
     ----
@@ -24,20 +28,36 @@ class EggboxPESDataSource(BaseDataSource):
 
     [1]. Exploring the origins of the power-law properties of energy
     landscapes: An egg-box model.
-    arXiv:cond-mat/0612205 / 10.1016/j.physa.2007.04.054.
+    arXiv:cond-mat/0612205 & 10.1016/j.physa.2007.04.054.
 
     Attributes
     ----------
-    surface (Array): traits Array containing the pre-mapped
-        PES for plotting.
-    lattice (Array): traits Array containing the lattice points.
-    energies (Array): traits Array containing basin depths.
+    surface: Array
+        traits Array containing the pre-mapped PES for plotting.
+    lattice: Array
+        traits Array containing the lattice points.
+    energies: Array
+        traits Array containing basin depths.
 
     """
 
     @staticmethod
     def evaluate_potential(trial, model):
-        """ Return the value of the potential at the points (x, y). """
+        """ Evaluate the value of the potential at trial point.
+
+        Parameters
+        ----------
+        trial: Array
+            the position at which to evaluate the potential.
+        model: :obj:`EggboxPESDataSourceModel`
+            the model containing the parameters of the PES.
+
+        Returns
+        -------
+        float:
+            the value of the potential at the trial point.
+
+        """
         basin_positions = np.asarray(model.basin_positions)
         basin_depths = np.asarray(model.basin_depths)
 
@@ -45,18 +65,17 @@ class EggboxPESDataSource(BaseDataSource):
             trial, basin_positions, basin_depths)
 
     @staticmethod
-    def calculate_pbc_potential(
-            trial, basin_positions, basin_depths):
+    def calculate_pbc_potential(trial, basin_positions, basin_depths):
         """ Calculate an N-dimensional egg-box potential in PBCs
         at a given position from the set of M basin depths and positions.
 
         Parameters
         ----------
-        trial (numpy.ndarray):
+        trial: numpy.ndarray
             (N, ) array containing the trial position.
-        basin_positions (list):
+        basin_positions: list
             (M, N) array containing the positions of each of the M basins.
-        basin_depths (list):
+        basin_depths: list
             (M, ) array containing the depth of each basin.
 
         Returns
@@ -93,8 +112,17 @@ class EggboxPESDataSource(BaseDataSource):
         return np.min(basins)
 
     def run(self, model, parameters):
-        """ Find the local minimum using Scipy from the given parameters
-        and model.
+        """ Compute the potential at the requetsed trial point. If
+        `model.locally_optimize` is True, then use SciPy to find the
+        local minmimum corresponding to the trial point.
+
+        Parameters
+        ----------
+        model: :obj:`EggboxPESDataSourceModel`
+            the model containing the parameters of the PES.
+        parameters: :obj:`list` of :obj:`DataValue`
+            list of parameters passed as DataValue objects, that match
+            the input slots of this instance.
 
         """
         x0 = [float(param.value) for param in parameters]
@@ -132,6 +160,25 @@ class EggboxPESDataSource(BaseDataSource):
         return results
 
     def slots(self, model):
+        """ The input/output slots for this instance.
+
+        The input slots consist of one float per dimension in the
+        simulation. The output slots consist of one float per dimension,
+        to store the output position (either the same as the trial, or
+        the optimised value) plus the value of the potential at that
+        position.
+
+        Parameters
+        ----------
+        model: :obj:`EggboxPESDataSourceModel`
+            the model containing the parameters of the PES.
+
+        Returns
+        -------
+        A tuple containing a tuple for the input slots, and a tuple for
+        the output slots.
+
+        """
         return (
             #: 1 input slot per dimension
             tuple(Slot(type=model.cuba_design_space_type,

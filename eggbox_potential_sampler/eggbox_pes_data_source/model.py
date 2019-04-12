@@ -1,13 +1,14 @@
 import numpy as np
-from traits.api import Unicode, Enum, Float, List, on_trait_change, Bool
+from traits.api import Bool, Float, List, on_trait_change, Unicode
 from traitsui.api import Item, View
 from force_bdss.api import BaseDataSourceModel, PositiveInt
 
 
 class EggboxPESDataSourceModel(BaseDataSourceModel):
-    """ This model needs to store all the data required to
-    compute the potential. All randomness must be contained
-    in the model, not at the instance-level.
+    """ This model stores all the data required to compute the
+    potential. All randomness must be contained in the model, not at
+    the instance-level. Changing any of the parameters used to generate
+    the potential will generate an entirely new random potential.
 
     """
 
@@ -33,7 +34,7 @@ class EggboxPESDataSourceModel(BaseDataSourceModel):
     sigma_star = Float(
         label='σ*',
         desc='Variance of basin depths: σ*~0 will lead to identical basins '
-             'σ*~1 will normally lead to one basin dominating'
+             'σ*~1 normally lead to a few basins dominating'
     )
     locally_optimize = Bool(
         True,
@@ -41,13 +42,16 @@ class EggboxPESDataSourceModel(BaseDataSourceModel):
         desc='Whether or not to locally optimize each '
              'trial and return the local minima'
     )
-    lattice = Enum('Square lattice', label='Lattice type')
 
     # traits set by calculation
-    basin_depths = List
-    basin_positions = List
-    trials = List
-    results = List
+    basin_depths = List()
+    basin_positions = List()
+
+    # these lists can be useful for debugging and plotting, they contain
+    # the trial values and results at each step of the MCO (see
+    # `scripts/`)
+    trials = List()
+    results = List()
 
     traits_view = View([Item('locally_optimize'),
                         Item('sigma_star'),
@@ -71,14 +75,13 @@ class EggboxPESDataSourceModel(BaseDataSourceModel):
                               np.random.rand(len(self.basin_positions)))
                              .tolist())
 
-    @on_trait_change('lattice, num_cells, dimension')
+    @on_trait_change('num_cells,dimension')
     def _set_basin_positions(self):
-        """ Construct the array of basin positions for the given lattice. """
-        if self.lattice == 'Square lattice':
-            self._set_basin_positions_square_lattice()
-        else:
-            raise NotImplementedError('Lattice {} not implemented.'
-                                      .format(self.lattice))
+        """ Construct the array of basin positions for the given lattice.
+        The square lattice is the only one implemented in this example.
+
+        """
+        self._set_basin_positions_square_lattice()
 
     def _set_basin_positions_square_lattice(self):
         """ Set the basin positions to a square lattice from 0 -> 1. """
