@@ -2,7 +2,6 @@ import unittest
 
 from unittest import mock
 
-import numpy as np
 from traits.testing.api import UnittestTools
 from force_bdss.api import DataValue, Slot, BaseDataSourceFactory
 
@@ -29,15 +28,19 @@ class TestEggboxPESDataSource(unittest.TestCase, UnittestTools):
         model.dimension = 1
         model.sigma_star = 0.1
 
-        i = 0
-        while i < 10:
-            random = np.random.rand()
-            mock_params = [DataValue(value=random, type="float")]
-            result = ds.run(model, mock_params)
-            self.assertEqual(len(model.basin_depths), 5)
-            self.assertEqual(len(model.basin_positions), 5)
-            self.assertEqual(len(result), 2)
-            i += 1
+        trial = 1.0
+        mock_params = [DataValue(value=trial, type="float")]
+        result = ds.run(model, mock_params)
+        self.assertEqual(len(model.basin_depths), 5)
+        self.assertEqual(len(model.basin_positions), 5)
+        self.assertEqual(len(result), 2)
+
+        trial = 0.0
+        mock_params = [DataValue(value=trial, type="float")]
+        result = ds.run(model, mock_params)
+        self.assertEqual(len(model.basin_depths), 5)
+        self.assertEqual(len(model.basin_positions), 5)
+        self.assertEqual(len(result), 2)
 
     def test_2d_run(self):
         ds = EggboxPESDataSource(self.factory)
@@ -46,16 +49,21 @@ class TestEggboxPESDataSource(unittest.TestCase, UnittestTools):
         model.dimension = 2
         model.sigma_star = 0.5
 
-        i = 0
-        while i < 10:
-            random = np.random.rand(2)
-            mock_params = [DataValue(value=random[0], type="float"),
-                           DataValue(value=random[1], type='float')]
-            result = ds.run(model, mock_params)
-            self.assertEqual(len(result), 3)
-            self.assertEqual(len(model.basin_depths), 9)
-            self.assertEqual(len(model.basin_positions), 9)
-            i += 1
+        trial = [0, 1]
+        mock_params = [DataValue(value=trial[0], type="float"),
+                       DataValue(value=trial[1], type='float')]
+        result = ds.run(model, mock_params)
+        self.assertEqual(len(result), 3)
+        self.assertEqual(len(model.basin_depths), 9)
+        self.assertEqual(len(model.basin_positions), 9)
+
+        trial = [0.2, 0.6]
+        mock_params = [DataValue(value=trial[0], type="float"),
+                       DataValue(value=trial[1], type='float')]
+        result = ds.run(model, mock_params)
+        self.assertEqual(len(result), 3)
+        self.assertEqual(len(model.basin_depths), 9)
+        self.assertEqual(len(model.basin_positions), 9)
 
     def test_out_of_bounds(self):
         ds = EggboxPESDataSource(self.factory)
