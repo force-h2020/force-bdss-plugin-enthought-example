@@ -27,11 +27,12 @@ class EggboxPESDataSourceModel(BaseDataSourceModel):
         label='Potential type'
     )
     num_cells = PositiveInt(
-        2,
+        5,
         label='Number of cells',
         desc='Number of lattice points in each direction'
     )
     sigma_star = Float(
+        0.1,
         label='σ*',
         desc='Variance of basin depths: σ*~0 will lead to identical basins '
              'σ*~1 normally lead to a few basins dominating'
