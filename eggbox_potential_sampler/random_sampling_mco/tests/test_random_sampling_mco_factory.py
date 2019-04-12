@@ -32,7 +32,6 @@ class TestRandomSamplingMCOFactory(unittest.TestCase):
 
     def test_create_communicator(self):
         ds = self.factory.create_communicator()
-        # self.assertIsInstance(ds, BasicMCOCommunicator)
         self.assertIsInstance(ds, ExampleMCOCommunicator)
 
     def test_parameter_factories(self):

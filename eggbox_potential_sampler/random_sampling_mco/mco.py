@@ -4,11 +4,11 @@ import logging
 import numpy as np
 
 from traits.api import (
-    HasStrictTraits, List, Str, Instance, Interface, provides
+    HasStrictTraits, Instance, Interface, List, provides, Str
 )
 
 from force_bdss.api import (
-    BaseMCO, execute_workflow, Workflow, DataValue
+    BaseMCO, DataValue, execute_workflow, Workflow
 )
 
 
@@ -18,10 +18,19 @@ log = logging.getLogger(__name__)
 class RandomSamplingMCO(BaseMCO):
     """ This MCO draws random samples in [0, 1] and samples a random
     eggbox potential constructed by EggboxPESDataSource. Calls to
-    force_bdss can be made either as a separate subprocess, or internally.
+    the BDSS can be made either as a separate subprocess, or internally.
 
     """
     def run(self, model):
+        """ Run the MCO with the desired method and communicate the
+        results.
+
+        Parameters
+        ----------
+        model: :obj:`RandomSamplingMCOModel`
+            the model that defines MCO parameters and outputs.
+
+        """
         kpis = model.kpis
         application = self.factory.plugin.application
         if model.evaluation_mode == "Subprocess":
@@ -51,7 +60,6 @@ class RandomSamplingMCO(BaseMCO):
 class ISinglePointEvaluator(Interface):
     def evaluate(self, in_values):
         """ Evaluate the potential at a single point. """
-        pass
 
 
 @provides(ISinglePointEvaluator)
