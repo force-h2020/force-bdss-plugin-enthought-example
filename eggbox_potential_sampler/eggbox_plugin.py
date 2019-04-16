@@ -10,11 +10,13 @@ class EggboxPlugin(BaseExtensionPlugin):
     """ This plugin provides the following classes and associated
     factories:
 
-    - EggboxPESDataSource: a data source that defines a random PES with
+    :obj:`EggboxPESDataSource`: a data source that defines a random PES with
     arbitrary dimensions and optionally locally optimises it at the
     points it receives.
-    - RandomSamplingMCO: an MCO that randomly samples potentials of
+
+    :obj:`RandomSamplingMCO`: an MCO that randomly samples potentials of
     arbitrary dimensions.
+
 
     """
     id = plugin_id("pes", "sampler", PLUGIN_VERSION)
