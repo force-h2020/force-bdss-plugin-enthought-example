@@ -10,7 +10,7 @@ from force_wfmanager.central_pane.plot import BasePlot, ChacoPlot
 
 class ConvergencePlot(BasePlot):
     """ This is an example of a more complicated plot that could be
-    contributed by a plug-in.
+    contributed by a plugin.
 
     Here, the running minimum of the y-values is displayed on a line
     plot.
@@ -55,7 +55,7 @@ class ConvergencePlot(BasePlot):
     @on_trait_change('x,y')
     def _update_plot_data(self):
         """ Override update_plot_data to include the new ancillary
-        array.
+        array, and an array containing the index of that array.
 
         """
         super()._update_plot_data()
