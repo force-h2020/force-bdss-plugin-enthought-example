@@ -2,6 +2,7 @@ from force_bdss.api import BaseExtensionPlugin, plugin_id
 
 from .eggbox_pes_data_source.factory import EggboxPESDataSourceFactory
 from .random_sampling_mco.mco_factory import RandomSamplingMCOFactory
+from .sampling_data_view import SamplingDataViewPane
 
 PLUGIN_VERSION = 0
 
@@ -35,4 +36,9 @@ class EggboxPlugin(BaseExtensionPlugin):
         return [
             EggboxPESDataSourceFactory,
             RandomSamplingMCOFactory
+        ]
+
+    def get_data_views(self):
+        return [
+            SamplingDataViewPane
         ]
