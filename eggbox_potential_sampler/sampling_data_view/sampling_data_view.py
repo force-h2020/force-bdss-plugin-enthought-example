@@ -95,19 +95,24 @@ class ConvergencePlot(BasePlot):
 
         """
         try:
-            min_y = 1.1 * min(self._custom_data_array)
+            min_y = min(self._custom_data_array) - 0.1
         except ValueError:
             min_y = -0.1
         try:
-            max_y = 1.1 * max(self._custom_data_array)
+            max_y = max(self._custom_data_array) + 0.1
         except ValueError:
             max_y = 1
-        try:
-            max_x = len(self._custom_data_array) + 1
-        except Exception:
-            max_x = 1
 
-        ranges = (0, max_x, min_y, max_y)
+        try:
+            max_x = 1.1 * len(self._custom_data_array)
+        except ValueError:
+            max_x = 1
+        try:
+            min_x = -0.1 * len(self._custom_data_array) + 1
+        except ValueError:
+            min_x = 0
+
+        ranges = (min_x, max_x, min_y, max_y)
         self._set_plot_range(*ranges)
 
         for idx, overlay in enumerate(self._plot.overlays):
