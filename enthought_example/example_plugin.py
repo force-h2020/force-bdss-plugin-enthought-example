@@ -4,6 +4,7 @@ from .example_notification_listener import ExampleNotificationListenerFactory
 from .example_mco import ExampleMCOFactory
 from .example_data_source import ExampleDataSourceFactory
 from .example_ui_hooks import ExampleUIHooksFactory
+from .example_data_views import ExampleDataViewPane
 
 PLUGIN_VERSION = 0
 
@@ -51,5 +52,8 @@ class ExamplePlugin(BaseExtensionPlugin):
             ExampleDataSourceFactory,
             ExampleMCOFactory,
             ExampleNotificationListenerFactory,
-            ExampleUIHooksFactory
+            ExampleUIHooksFactory,
         ]
+
+    def get_data_views(self):
+        return [ExampleDataViewPane]
