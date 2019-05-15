@@ -2,7 +2,7 @@ from force_bdss.api import BaseExtensionPlugin, plugin_id
 
 from .eggbox_pes_data_source.factory import EggboxPESDataSourceFactory
 from .random_sampling_mco.mco_factory import RandomSamplingMCOFactory
-from .skopt_mco.mco_factory import ModelBasedOptimizationMCOFactory
+from .model_based_mco.mco_factory import ModelBasedOptimizationMCOFactory
 
 
 PLUGIN_VERSION = 0

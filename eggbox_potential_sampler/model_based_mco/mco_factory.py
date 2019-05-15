@@ -5,7 +5,7 @@ from enthought_example.example_mco.example_mco_communicator import\
     ExampleMCOCommunicator
 from .mco_model import ModelBasedOptimizationMCOModel
 from .mco import ModelBasedOptimizationMCO
-from .parameters import DummyMCOParameterFactory
+from ..random_sampling_mco.parameters import DummyMCOParameterFactory
 
 
 class ModelBasedOptimizationMCOFactory(BaseMCOFactory):
