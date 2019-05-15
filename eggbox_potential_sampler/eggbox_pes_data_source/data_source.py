@@ -73,9 +73,9 @@ class EggboxPESDataSource(BaseDataSource):
         ----------
         trial: numpy.ndarray
             (N, ) array containing the trial position.
-        basin_positions: list
+        basin_positions: numpy.ndarray
             (M, N) array containing the positions of each of the M basins.
-        basin_depths: list
+        basin_depths: numpy.ndarray
             (M, ) array containing the depth of each basin.
 
         Returns
