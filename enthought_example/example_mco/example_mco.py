@@ -96,7 +96,8 @@ class ExampleMCO(BaseMCO):
 
             # When there is new data, this operation informs the system that
             # new data has been received. It must be a dictionary as given.
-            if len(out_data) != 0:
-                self.notify_new_point([DataValue(value=v) for v in value],
-                                      [DataValue(value=v) for v in out_data],
-                                      [1.0/len(out_data)]*len(out_data))
+            self.notify_new_point(
+                [DataValue(value=v) for v in value],
+                [DataValue(value=v) for v in out_data],
+                [1.0/len(out_data) for i in range(len(out_data))]
+            )
