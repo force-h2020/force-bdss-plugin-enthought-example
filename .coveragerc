@@ -1,6 +1,7 @@
 [run]
 branch = True
 source = enthought_example
+         eggbox_potential_sampler
 omit = */tests/*
        */bench/*
        */scripts/*

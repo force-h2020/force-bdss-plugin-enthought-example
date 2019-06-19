@@ -50,7 +50,7 @@ help:
 clean:
 	rm -rf $(BUILDDIR)/*
 
-html:
+html: apidoc
 	$(SPHINXBUILD) -W -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
@@ -187,4 +187,4 @@ uml:
 .PHONY: apidoc
 apidoc:
 	-rm -rf source/api/
-	sphinx-apidoc -o source/api ../enthought_example
+	sphinx-apidoc -H 'Enthought plugins' -M -o source/api ../ ../setup.py ../ci ../*tests*

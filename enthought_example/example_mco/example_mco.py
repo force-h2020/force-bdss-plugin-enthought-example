@@ -2,6 +2,7 @@ import subprocess
 import sys
 import itertools
 import collections
+import os
 
 from force_bdss.api import BaseMCO, DataValue
 
@@ -76,6 +77,10 @@ class ExampleMCO(BaseMCO):
         application = self.factory.plugin.application
 
         for value in value_iterator:
+            # Setting ETS_TOOLKIT=null before executing bdss prevents it
+            # from trying to create GUI every call, giving reducing the
+            # overhead by a factor of 2.
+            env = {**os.environ, "ETS_TOOLKIT": "null"}
             # Spawn the single point evaluation, which is the bdss itself
             # with the option evaluate.
             # We pass the specific parameter values via stdin, and read
@@ -83,12 +88,9 @@ class ExampleMCO(BaseMCO):
             # MCOCommunicator. NOTE: The communicator is involved in the
             # communication between the MCO executable and the bdss single
             # point evaluation, _not_ between the bdss and the MCO executable.
+            cmd = [sys.argv[0], "--evaluate", application.workflow_filepath]
             ps = subprocess.Popen(
-                [sys.argv[0],
-                 "--evaluate",
-                 application.workflow_filepath],
-                stdout=subprocess.PIPE,
-                stdin=subprocess.PIPE)
+                cmd, env=env, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
             out = ps.communicate(
                 " ".join([str(v) for v in value]).encode("utf-8"))

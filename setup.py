@@ -10,13 +10,15 @@ with open('README.rst', 'r') as readme:
 
 
 def write_version_py():
-    filename = os.path.join(
-        os.path.dirname(__file__),
-        'enthought_example',
-        'version.py')
-    ver = "__version__ = '{}'\n"
-    with open(filename, 'w') as fh:
-        fh.write(ver.format(VERSION))
+    plugins = ['enthought_example', 'eggbox_potential_sampler']
+    for plugin in plugins:
+        filename = os.path.join(
+            os.path.dirname(__file__),
+            plugin,
+            'version.py')
+        ver = "__version__ = '{}'\n"
+        with open(filename, 'w') as fh:
+            fh.write(ver.format(VERSION))
 
 
 write_version_py()
@@ -34,6 +36,8 @@ setup(
         "force.bdss.extensions": [
             "enthought_example = "
             "enthought_example.example_plugin:ExamplePlugin",
+            "eggbox_potential_sampler = "
+            "eggbox_potential_sampler.eggbox_plugin:EggboxPlugin",
         ]
     },
     packages=find_packages(),
