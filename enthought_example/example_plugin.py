@@ -4,7 +4,6 @@ from .example_notification_listener import ExampleNotificationListenerFactory
 from .example_mco import ExampleMCOFactory
 from .example_data_source import ExampleDataSourceFactory
 from .example_ui_hooks import ExampleUIHooksFactory
-from .example_data_views import ExampleDataViewPane
 
 PLUGIN_VERSION = 0
 
@@ -56,4 +55,8 @@ class ExamplePlugin(BaseExtensionPlugin):
         ]
 
     def get_data_views(self):
+        # This functionality is optional (the plugin can be run on the
+        # bdss without a GUI), so this quite expensive import is done
+        # inside the method.
+        from .example_data_views import ExampleDataViewPane
         return [ExampleDataViewPane]
