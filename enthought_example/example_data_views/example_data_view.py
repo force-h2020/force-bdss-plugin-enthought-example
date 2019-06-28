@@ -1,5 +1,5 @@
-from force_wfmanager.central_pane.plot import BasePlot, ChacoPlot
-from force_wfmanager.central_pane.data_view_pane import DataViewPane
+from force_wfmanager.ui.review.plot import BasePlot, ChacoPlot
+from force_wfmanager.ui.review.data_view_pane import DataViewPane
 from traits.api import Instance
 from traitsui.api import View, HGroup, UItem
 

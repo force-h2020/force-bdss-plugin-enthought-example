@@ -3,9 +3,9 @@ from traitsui.api import View, VGroup, HGroup, Item, UItem
 from enable.api import ComponentEditor
 from chaco.tools.api import PanTool, ZoomTool
 
-from force_wfmanager.central_pane.data_view_pane import DataViewPane
-from force_wfmanager.central_pane.plot import Plot
-from force_wfmanager.central_pane.plot import BasePlot, ChacoPlot
+from force_wfmanager.ui.review.data_view_pane import DataViewPane
+from force_wfmanager.ui.review.plot import Plot
+from force_wfmanager.ui.review.plot import BasePlot, ChacoPlot
 
 
 class ConvergencePlot(BasePlot):
