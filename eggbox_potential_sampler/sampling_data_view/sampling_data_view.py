@@ -127,6 +127,8 @@ class SamplingDataViewPane(DataViewPane):
 
     name = 'Potential Sampling Data View'
 
+    description = 'Potential Sampling Data View'
+
     colormap_plot = Instance(Plot)
     sampling_plot = Instance(ConvergencePlot)
 

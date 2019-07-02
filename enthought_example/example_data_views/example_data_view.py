@@ -36,6 +36,8 @@ class ExampleDataViewPane(DataViewPane):
 
     name = 'Example Data View Pane'
 
+    description = 'Example Data View Pane'
+
     line_plot = Instance(ExampleCustomPlot)
 
     traits_view = View(
