@@ -1,3 +1,3 @@
-from .sampling_data_view import SamplingDataViewPane
+from .sampling_data_view import SamplingDataView
 
-__all__ = ['SamplingDataViewPane', ]
+__all__ = ['SamplingDataView', ]

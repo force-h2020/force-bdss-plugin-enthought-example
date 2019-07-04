@@ -3,7 +3,7 @@ from traitsui.api import View, VGroup, HGroup, Item, UItem
 from enable.api import ComponentEditor
 from chaco.tools.api import PanTool, ZoomTool
 
-from force_wfmanager.ui.review.data_view_pane import DataViewPane
+from force_wfmanager.ui.review.data_view import BaseDataView
 from force_wfmanager.ui.review.plot import Plot
 from force_wfmanager.ui.review.plot import BasePlot, ChacoPlot
 
@@ -122,12 +122,12 @@ class ConvergencePlot(BasePlot):
         return ranges
 
 
-class SamplingDataViewPane(DataViewPane):
-    """ This :class:`DataViewPane` shows two plot types side-by-side. """
+class SamplingDataView(BaseDataView):
+    """ This :class:`BaseDataView` shows two plot types side-by-side. """
 
-    name = 'Potential Sampling Data View'
+    title = 'Potential Sampling'
 
-    description = 'Potential Sampling Data View'
+    description = 'Potential sampling data view'
 
     colormap_plot = Instance(Plot)
     sampling_plot = Instance(ConvergencePlot)

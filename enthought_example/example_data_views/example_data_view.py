@@ -1,7 +1,4 @@
 from force_wfmanager.ui.review.plot import BasePlot, ChacoPlot
-from force_wfmanager.ui.review.data_view_pane import DataViewPane
-from traits.api import Instance
-from traitsui.api import View, HGroup, UItem
 
 
 class ExampleCustomPlot(BasePlot):
@@ -10,7 +7,9 @@ class ExampleCustomPlot(BasePlot):
 
     """
 
-    title = 'Example line plot'
+    title = 'Line plot'
+
+    description = 'Example line plot'
 
     def plot_line(self):
         plot = ChacoPlot(self._plot_data)
@@ -30,18 +29,3 @@ class ExampleCustomPlot(BasePlot):
     def __plot_default(self):
         self._plot = self.plot_line()
         return self._plot
-
-
-class ExampleDataViewPane(DataViewPane):
-
-    name = 'Example Data View Pane'
-
-    description = 'Example Data View Pane'
-
-    line_plot = Instance(ExampleCustomPlot)
-
-    traits_view = View(
-        HGroup(UItem('line_plot', style='custom')))
-
-    def _line_plot_default(self):
-        return ExampleCustomPlot(analysis_model=self.analysis_model)

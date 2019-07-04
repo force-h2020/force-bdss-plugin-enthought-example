@@ -1,3 +1,3 @@
-from .example_data_view import ExampleDataViewPane
+from .example_data_view import ExampleCustomPlot
 
-__all__ = ['ExampleDataViewPane', ]
+__all__ = ['ExampleCustomPlot', ]
