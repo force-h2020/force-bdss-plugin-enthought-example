@@ -58,7 +58,11 @@ class ConvergencePlot(BasePlot):
         array, and an array containing the index of that array.
 
         """
+        # A recenter request will be executed here, not by the parent's method
+        recenter_required = self.recenter_required
+        self.recenter_required = False
         super()._update_plot_data()
+
         self._custom_data_array = []
 
         if self.y is None:
@@ -75,7 +79,8 @@ class ConvergencePlot(BasePlot):
             list(range(1, len(self._custom_data_array) + 1))
         )
 
-        self.resize_plot()
+        if recenter_required:
+            self.resize_plot()
 
     def __plot_default(self):
         """ Set the new default plot. """
