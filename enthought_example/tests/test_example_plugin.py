@@ -1,6 +1,12 @@
+import mock
+import sys
 import unittest
 
+from force_bdss.bdss_application import BDSSApplication
+from force_wfmanager.ui.review.data_view import BaseDataView
+
 from enthought_example.example_plugin import ExamplePlugin
+from enthought_example.tests import example_workflows
 
 
 class TestExamplePlugin(unittest.TestCase):
@@ -10,3 +16,41 @@ class TestExamplePlugin(unittest.TestCase):
         self.assertEqual(len(plugin.mco_factories), 1)
         self.assertEqual(len(plugin.notification_listener_factories), 1)
         self.assertEqual(len(plugin.ui_hooks_factories), 1)
+
+    def test_get_data_views(self):
+        plugin = ExamplePlugin()
+        plots = plugin.get_data_views()
+        self.assertEqual(len(plots), 1)
+        for plot in plots:
+            self.assertIsInstance(plot, type)
+            self.assertTrue(issubclass(plot, BaseDataView))
+
+
+class TestExamplePluginIntegration(unittest.TestCase):
+
+    def setUp(self):
+        self.empty_workflow_path = example_workflows.get("empty_workflow.json")
+
+    def test_plugins_imported(self):
+        with mock.patch(
+            "enthought_example.example_plugin.ExamplePlugin.get_name",
+            side_effect=lambda: "Example"
+        ) as mock_example_plugin_get_name:
+            # initialize the command line app
+            BDSSApplication(True, self.empty_workflow_path)
+            mock_example_plugin_get_name.assert_called_once()
+
+    def test_data_views_module_not_imported_by_bdss(self):
+        # hide the example_data_views module
+        sys.modules["enthought_example.example_data_views"] = None
+
+        plugin = ExamplePlugin()
+        # accessing get_data_view should trigger the import (and fail)
+        with self.assertRaises(ModuleNotFoundError):
+            plugin.get_data_views()
+
+        # However, BDSS shouldn't attempt the import
+        try:
+            BDSSApplication(True, self.empty_workflow_path)
+        except ModuleNotFoundError:
+            self.fail("Has BDSS attempted to import .example_data_views?")

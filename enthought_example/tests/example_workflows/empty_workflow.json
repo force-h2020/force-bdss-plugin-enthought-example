@@ -1,0 +1,8 @@
+{
+    "version": "1",
+    "workflow": {
+        "mco": null,
+        "execution_layers": [],
+        "notification_listeners": []
+    }
+}
