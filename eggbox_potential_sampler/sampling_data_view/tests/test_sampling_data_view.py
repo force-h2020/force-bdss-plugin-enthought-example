@@ -64,7 +64,7 @@ class TestConvergencePlot(unittest.TestCase):
 
     def test_resize_plot(self):
         ranges = self.plot.resize_plot()
-        self.assertEqual(ranges, (1.0, 0.0, -0.1, 1))
+        self.assertEqual(ranges, (0.0, 1.0, -0.1, 1))
         self.add_data_points()
         self.plot._update_plot_data()
 
