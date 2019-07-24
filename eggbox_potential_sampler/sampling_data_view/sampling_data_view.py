@@ -106,13 +106,11 @@ class ConvergencePlot(BasePlot):
         except ValueError:
             max_y = 1
 
-        try:
+        if self._custom_data_array:
             max_x = 1.1 * len(self._custom_data_array)
-        except ValueError:
-            max_x = 1
-        try:
             min_x = -0.1 * len(self._custom_data_array) + 1
-        except ValueError:
+        else:
+            max_x = 1
             min_x = 0
 
         ranges = (min_x, max_x, min_y, max_y)
