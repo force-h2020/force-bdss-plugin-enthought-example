@@ -51,6 +51,8 @@ class TestConvergencePlot(unittest.TestCase):
         self.data_view = SamplingDataView(analysis_model=self.analysis_model)
         self.plot = self.data_view.sampling_plot
         self.analysis_model.value_names = ("x", "y", "E")
+
+    def add_data_points(self):
         # non monotonic convergence
         for datum in [
                 (1, 3, 8), (2, 5, 7.7), (3, 2.6, 7.6), (4, 2.5, 7.62),
@@ -61,6 +63,9 @@ class TestConvergencePlot(unittest.TestCase):
         self.assertIsInstance(self.plot._axis, LinePlot)
 
     def test_resize_plot(self):
+        ranges = self.plot.resize_plot()
+        self.assertEqual(ranges, (1.0, 0.0, -0.1, 1))
+        self.add_data_points()
         self.plot._update_plot_data()
 
         # running explicitely to catch the return
@@ -69,6 +74,7 @@ class TestConvergencePlot(unittest.TestCase):
         self.assertEqual(ranges[3], 3.1)
 
     def test_change_variable(self):
+        self.add_data_points()
         self.plot._update_plot_data()
         self.assertEqual(
             self.plot._custom_data_array, [3, 3, 2.6, 2.5, 2.47, 2.465])
