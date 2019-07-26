@@ -53,14 +53,12 @@ class ConvergencePlot(BasePlot):
         return plot
 
     @on_trait_change('x,y')
-    def _update_plot_data(self):
-        """ Override update_plot_data to include the new ancillary
+    def _update_plot(self):
+        """ Override update_plot to include the new ancillary
         array, and an array containing the index of that array.
 
         """
-        # A recenter request will be executed here, not by the parent's method
-        self.recenter_required = False
-        super()._update_plot_data()
+        super()._update_plot()
 
         self._custom_data_array = []
 
@@ -78,7 +76,7 @@ class ConvergencePlot(BasePlot):
             list(range(1, len(self._custom_data_array) + 1))
         )
 
-        self.resize_plot()
+        self.recenter_plot()
 
     def __plot_default(self):
         """ Set the new default plot. """
@@ -92,8 +90,8 @@ class ConvergencePlot(BasePlot):
         plot_data.set_data('iteration', [])
         return plot_data
 
-    def resize_plot(self):
-        """ Override resize plot based on the data we're actually
+    def recenter_plot(self):
+        """ Override recenter plot based on the data we're actually
         plotting.
 
         """

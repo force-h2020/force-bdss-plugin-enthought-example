@@ -48,19 +48,18 @@ class TestConvergencePlot(unittest.TestCase):
         self.assertIsInstance(self.plot._axis, LinePlot)
 
     def test_resize_plot(self):
-        ranges = self.plot.resize_plot()
+        ranges = self.plot.recenter_plot()
         self.assertEqual(ranges, (0.0, 1.0, -0.1, 1))
         self.add_data_points()
-        self.plot._update_plot_data()
+        self.plot._update_plot()
 
-        # running explicitely to catch the return
-        ranges = self.plot.resize_plot()
+        ranges = self.plot._get_plot_range()
         # the second value for y (5) shouldn't contribute to the running min.
         self.assertEqual(ranges[3], 3.1)
 
     def test_change_variable(self):
         self.add_data_points()
-        self.plot._update_plot_data()
+        self.plot._update_plot()
         self.assertEqual(
             self.plot._custom_data_array, [3, 3, 2.6, 2.5, 2.47, 2.465])
 
