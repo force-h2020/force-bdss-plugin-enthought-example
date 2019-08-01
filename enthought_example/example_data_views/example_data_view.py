@@ -1,3 +1,5 @@
+from pyface.timer.api import do_later
+
 from force_wfmanager.ui.review.plot import BasePlot, ChacoPlot
 
 
@@ -27,5 +29,7 @@ class ExampleCustomPlot(BasePlot):
         return plot
 
     def __plot_default(self):
-        self._plot = self.plot_line()
-        return self._plot
+        plot = self.plot_line()
+        self.plot_updater.start()
+        do_later(self.recenter_plot)
+        return plot

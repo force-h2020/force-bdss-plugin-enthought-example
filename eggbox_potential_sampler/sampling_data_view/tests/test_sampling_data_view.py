@@ -37,12 +37,22 @@ class TestConvergencePlot(unittest.TestCase):
         self.plot = self.data_view.sampling_plot
         self.analysis_model.value_names = ("x", "y", "E")
 
+    def check_update_is_requested_and_apply(self):
+        # check
+        self.assertTrue(self.plot.update_required)
+        self.assertTrue(self.plot.plot_updater.active)
+        # update
+        self.plot.update_data_arrays()
+        self.plot._update_plot()
+        self.plot.update_required = False
+
     def add_data_points(self):
         # non monotonic convergence
         for datum in [
                 (1, 3, 8), (2, 5, 7.7), (3, 2.6, 7.6), (4, 2.5, 7.62),
                 (5, 2.47, 7.543), (6, 2.465, 7.54)]:
             self.analysis_model.add_evaluation_step(datum)
+        self.check_update_is_requested_and_apply()
 
     def test_init(self):
         self.assertIsInstance(self.plot._axis, LinePlot)
