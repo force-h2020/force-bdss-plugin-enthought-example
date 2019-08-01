@@ -1,14 +1,16 @@
-from force_bdss.api import BaseExtensionPlugin, plugin_id
+from force_bdss.api import plugin_id
+from force_wfmanager.ui import UIExtensionPlugin
 
 from .example_notification_listener import ExampleNotificationListenerFactory
 from .example_mco import ExampleMCOFactory
 from .example_data_source import ExampleDataSourceFactory
 from .example_ui_hooks import ExampleUIHooksFactory
+from .example_contributed_ui import ExampleContributedUI
 
 PLUGIN_VERSION = 0
 
 
-class ExamplePlugin(BaseExtensionPlugin):
+class ExamplePlugin(UIExtensionPlugin):
     """This is an example of the plugin system for the BDSS.
     This class provides access points for the various entities
     that the plugin system supports:
@@ -52,4 +54,9 @@ class ExamplePlugin(BaseExtensionPlugin):
             ExampleMCOFactory,
             ExampleNotificationListenerFactory,
             ExampleUIHooksFactory
+        ]
+
+    def get_contributed_UIs(self):
+        return [
+            ExampleContributedUI()
         ]
