@@ -1,7 +1,7 @@
 from traits.api import Float, Int, Property, on_trait_change
 from traitsui.api import Group, Heading, Item
 
-from force_wfmanager.ui.contributed_ui.contributed_ui import ContributedUI
+from force_wfmanager.ui import ContributedUI
 
 _ENTHOUGHT_PLUGIN_ID = "force.bdss.enthought.plugin.example.v0.factory"
 
