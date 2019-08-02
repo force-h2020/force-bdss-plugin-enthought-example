@@ -56,7 +56,7 @@ class ExamplePlugin(UIExtensionPlugin):
             ExampleUIHooksFactory
         ]
 
-    def get_contributed_UIs(self):
+    def get_contributed_uis(self):
         return [
-            ExampleContributedUI()
+            ExampleContributedUI
         ]
