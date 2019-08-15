@@ -2,8 +2,13 @@ import mock
 import sys
 import unittest
 
-from force_bdss.bdss_application import BDSSApplication
-from force_wfmanager.ui.review.data_view import BaseDataView
+try:
+    from force_bdss.bdss_application import BDSSApplication
+    from force_wfmanager.ui.review.data_view import BaseDataView
+except ModuleNotFoundError:
+    WFMANAGER_AVAILABLE = False
+else:
+    WFMANAGER_AVAILABLE = True
 
 from eggbox_potential_sampler.eggbox_plugin import EggboxPlugin
 from enthought_example.tests import example_workflows
@@ -18,6 +23,8 @@ class TestEggboxPlugin(unittest.TestCase):
         self.assertEqual(len(plugin.notification_listener_factories), 0)
         self.assertEqual(len(plugin.ui_hooks_factories), 0)
 
+    @unittest.skipIf(
+        not WFMANAGER_AVAILABLE, "No wfmanager found in the test environment.")
     def test_get_data_views(self):
         plugin = EggboxPlugin()
         plots = plugin.get_data_views()

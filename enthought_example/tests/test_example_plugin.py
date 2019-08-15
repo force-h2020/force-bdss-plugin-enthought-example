@@ -2,8 +2,13 @@ import mock
 import sys
 import unittest
 
-from force_bdss.bdss_application import BDSSApplication
-from force_wfmanager.ui.review.data_view import BaseDataView
+try:
+    from force_bdss.bdss_application import BDSSApplication
+    from force_wfmanager.ui.review.data_view import BaseDataView
+except ModuleNotFoundError:
+    WFMANAGER_AVAILABLE = False
+else:
+    WFMANAGER_AVAILABLE = True
 
 from enthought_example.example_plugin import ExamplePlugin
 from enthought_example.tests import example_workflows
@@ -17,6 +22,8 @@ class TestExamplePlugin(unittest.TestCase):
         self.assertEqual(len(plugin.notification_listener_factories), 1)
         self.assertEqual(len(plugin.ui_hooks_factories), 1)
 
+    @unittest.skipIf(
+        not WFMANAGER_AVAILABLE, "No wfmanager found in the test environment.")
     def test_get_data_views(self):
         plugin = ExamplePlugin()
         plots = plugin.get_data_views()
