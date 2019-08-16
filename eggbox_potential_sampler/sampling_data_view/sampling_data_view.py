@@ -136,10 +136,15 @@ class SamplingDataView(BaseDataView):
                UItem('sampling_plot', style='custom')))
 
     def _colormap_plot_default(self):
-        return Plot(analysis_model=self.analysis_model,
-                    title='Potential energy surface',
-                    color_plot=True)
+        cmap_plot = Plot(analysis_model=self.analysis_model,
+                         title='Potential energy surface',
+                         color_plot=True, is_active_view=self.is_active_view)
+        self.sync_trait("is_active_view", cmap_plot)
+        return cmap_plot
 
     def _sampling_plot_default(self):
-        return ConvergencePlot(analysis_model=self.analysis_model,
-                               title='Convergence')
+        conv_plot = ConvergencePlot(analysis_model=self.analysis_model,
+                                    title='Convergence',
+                                    is_active_view=self.is_active_view)
+        self.sync_trait("is_active_view", conv_plot)
+        return conv_plot

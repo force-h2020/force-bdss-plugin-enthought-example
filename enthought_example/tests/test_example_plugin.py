@@ -3,7 +3,15 @@ import sys
 import unittest
 
 from force_bdss.bdss_application import BDSSApplication
-from force_wfmanager.ui.review.data_view import BaseDataView
+try:
+    # It's possible to install the example plugins in a headless system or
+    # in a environment without wfmanager and the graphical stack for UIs.
+    # Some tests will be skipped.
+    from force_wfmanager.ui.review.data_view import BaseDataView
+except ModuleNotFoundError:
+    WFMANAGER_AVAILABLE = False
+else:
+    WFMANAGER_AVAILABLE = True
 
 from enthought_example.example_plugin import ExamplePlugin
 from enthought_example.tests import example_workflows
@@ -17,6 +25,9 @@ class TestExamplePlugin(unittest.TestCase):
         self.assertEqual(len(plugin.notification_listener_factories), 1)
         self.assertEqual(len(plugin.ui_hooks_factories), 1)
 
+    @unittest.skipIf(
+        not WFMANAGER_AVAILABLE,
+        "No wfmanager found in the test environment. Skipping test.")
     def test_get_data_views(self):
         plugin = ExamplePlugin()
         plots = plugin.get_data_views()
@@ -42,7 +53,9 @@ class TestExamplePluginIntegration(unittest.TestCase):
 
     def test_data_views_module_not_imported_by_bdss(self):
         # hide the example_data_views module
-        sys.modules["enthought_example.example_data_views"] = None
+        sys.modules[
+            "enthought_example.example_data_views.example_data_view"
+        ] = None
 
         plugin = ExamplePlugin()
         # accessing get_data_view should trigger the import (and fail)

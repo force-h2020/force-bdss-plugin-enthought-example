@@ -58,5 +58,6 @@ class ExamplePlugin(BaseExtensionPlugin):
         # This functionality is optional (the plugin can be run on the
         # bdss without a GUI), so this quite expensive import is done
         # inside the method.
-        from .example_data_views import ExampleCustomPlot
+        from enthought_example.example_data_views.example_data_view import \
+            ExampleCustomPlot
         return [ExampleCustomPlot]
