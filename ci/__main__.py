@@ -43,7 +43,7 @@ def test(python_version):
 
     check_call([
         "edm", "run", "-e", env_name, "--", "python", "-m", "unittest",
-        "discover"
+        "discover", "-v"
     ])
 
 
