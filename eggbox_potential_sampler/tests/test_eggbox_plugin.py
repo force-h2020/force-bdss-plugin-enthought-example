@@ -2,11 +2,11 @@ import mock
 import sys
 import unittest
 
+from force_bdss.bdss_application import BDSSApplication
 try:
     # It's possible to install the example plugins in a headless system or
     # in a environment without wfmanager and the graphical stack for UIs.
     # Some tests will be skipped.
-    from force_bdss.bdss_application import BDSSApplication
     from force_wfmanager.ui.review.data_view import BaseDataView
 except ModuleNotFoundError:
     WFMANAGER_AVAILABLE = False
