@@ -53,10 +53,18 @@ class ExamplePlugin(UIExtensionPlugin):
             ExampleDataSourceFactory,
             ExampleMCOFactory,
             ExampleNotificationListenerFactory,
-            ExampleUIHooksFactory
+            ExampleUIHooksFactory,
         ]
 
     def get_contributed_uis(self):
         return [
             ExampleContributedUI
         ]
+
+    def get_data_views(self):
+        # This functionality is optional (the plugin can be run on the
+        # bdss without a GUI), so this quite expensive import is done
+        # inside the method.
+        from enthought_example.example_data_views.example_data_view import \
+            ExampleCustomPlot
+        return [ExampleCustomPlot]

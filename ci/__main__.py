@@ -5,7 +5,8 @@ DEFAULT_PYTHON_VERSION = "3.6"
 PYTHON_VERSIONS = ["3.6"]
 
 ADDITIONAL_CORE_DEPS = [
-    'scipy>=1.2.1'
+    'mock>=2.0.0-3',
+    'scipy>=1.2.1',
 ]
 
 
@@ -42,7 +43,7 @@ def test(python_version):
 
     check_call([
         "edm", "run", "-e", env_name, "--", "python", "-m", "unittest",
-        "discover"
+        "discover", "-v"
     ])
 
 
