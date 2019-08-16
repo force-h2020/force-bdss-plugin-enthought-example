@@ -10,8 +10,8 @@ try:
     from force_wfmanager.model.analysis_model import AnalysisModel
     from force_wfmanager.ui.ui_utils import model_info
 
-    from eggbox_potential_sampler.sampling_data_view import (
-        SamplingDataView)
+    from eggbox_potential_sampler.sampling_data_view.\
+        sampling_data_view import SamplingDataView
 except ModuleNotFoundError:
     raise unittest.SkipTest(
         "No wfmanager found in the test environment. "

@@ -54,7 +54,9 @@ class TestEggboxPluginIntegration(unittest.TestCase):
 
     def test_data_views_module_not_imported_by_bdss(self):
         # hide the example_data_views module
-        sys.modules["eggbox_potential_sampler.sampling_data_view"] = None
+        sys.modules[
+            "eggbox_potential_sampler.sampling_data_view.sampling_data_view"
+        ] = None
 
         plugin = EggboxPlugin()
         # accessing get_data_view should trigger the import (and fail)

@@ -39,7 +39,8 @@ class EggboxPlugin(BaseExtensionPlugin):
 
     def get_data_views(self):
         # This import is only needed if data views are ever requested
-        from .sampling_data_view import SamplingDataView
+        from eggbox_potential_sampler.sampling_data_view.sampling_data_view \
+            import SamplingDataView
         return [
             SamplingDataView
         ]

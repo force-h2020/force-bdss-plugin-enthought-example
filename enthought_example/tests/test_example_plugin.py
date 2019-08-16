@@ -53,7 +53,9 @@ class TestExamplePluginIntegration(unittest.TestCase):
 
     def test_data_views_module_not_imported_by_bdss(self):
         # hide the example_data_views module
-        sys.modules["enthought_example.example_data_views"] = None
+        sys.modules[
+            "enthought_example.example_data_views.example_data_view"
+        ] = None
 
         plugin = ExamplePlugin()
         # accessing get_data_view should trigger the import (and fail)
