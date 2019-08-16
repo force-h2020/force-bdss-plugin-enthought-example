@@ -3,6 +3,9 @@ import sys
 import unittest
 
 try:
+    # It's possible to install the example plugins in a headless system or
+    # in a environment without wfmanager and the graphical stack for UIs.
+    # Some tests will be skipped.
     from force_bdss.bdss_application import BDSSApplication
     from force_wfmanager.ui.review.data_view import BaseDataView
 except ModuleNotFoundError:
@@ -24,7 +27,8 @@ class TestEggboxPlugin(unittest.TestCase):
         self.assertEqual(len(plugin.ui_hooks_factories), 0)
 
     @unittest.skipIf(
-        not WFMANAGER_AVAILABLE, "No wfmanager found in the test environment.")
+        not WFMANAGER_AVAILABLE,
+        "No wfmanager found in the test environment. Skipping test.")
     def test_get_data_views(self):
         plugin = EggboxPlugin()
         plots = plugin.get_data_views()
