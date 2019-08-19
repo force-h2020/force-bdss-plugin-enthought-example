@@ -1,16 +1,15 @@
-from force_bdss.api import plugin_id
-from force_wfmanager.ui import UIExtensionPlugin
+from force_bdss.api import BaseExtensionPlugin, plugin_id
 
 from .example_notification_listener import ExampleNotificationListenerFactory
 from .example_mco import ExampleMCOFactory
 from .example_data_source import ExampleDataSourceFactory
 from .example_ui_hooks import ExampleUIHooksFactory
-from .example_contributed_ui import ExampleContributedUI
+
 
 PLUGIN_VERSION = 0
 
 
-class ExamplePlugin(UIExtensionPlugin):
+class ExamplePlugin(BaseExtensionPlugin):
     """This is an example of the plugin system for the BDSS.
     This class provides access points for the various entities
     that the plugin system supports:
@@ -56,15 +55,17 @@ class ExamplePlugin(UIExtensionPlugin):
             ExampleUIHooksFactory,
         ]
 
+    # The following functionalities are optional (the plugin can be run on the
+    # bdss without a GUI), so the quite expensive imports are done
+    # inside eac method.
     def get_contributed_uis(self):
-        return [
-            ExampleContributedUI
-        ]
+        """Get any ContributedUI classes included in the plugin"""
+        from enthought_example.example_contributed_ui\
+            .example_contributed_ui import ExampleContributedUI
+        return [ExampleContributedUI]
 
     def get_data_views(self):
-        # This functionality is optional (the plugin can be run on the
-        # bdss without a GUI), so this quite expensive import is done
-        # inside the method.
+        """Get any BasePlot classes included in the plugin"""
         from enthought_example.example_data_views.example_data_view import \
             ExampleCustomPlot
         return [ExampleCustomPlot]
