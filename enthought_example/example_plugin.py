@@ -1,5 +1,6 @@
 from force_bdss.api import plugin_id
-from force_bdss.core_plugins.service_offers_plugin import ServiceOffersPlugin
+from force_bdss.core_plugins.service_offer_plugin import \
+    ServiceOfferExtensionPlugin
 
 from .example_notification_listener import ExampleNotificationListenerFactory
 from .example_mco import ExampleMCOFactory
@@ -10,7 +11,7 @@ from .example_ui_hooks import ExampleUIHooksFactory
 PLUGIN_VERSION = 0
 
 
-class ExamplePlugin(ServiceOffersPlugin):
+class ExamplePlugin(ServiceOfferExtensionPlugin):
     """This is an example of the plugin system for the BDSS.
     This class provides access points for the various entities
     that the plugin system supports:
