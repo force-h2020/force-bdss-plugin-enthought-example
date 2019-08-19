@@ -7,7 +7,8 @@ try:
     # It's possible to install the example plugins in a headless system or
     # in a environment without wfmanager and the graphical stack for UIs.
     # Some tests will be skipped.
-    from force_wfmanager.ui.review.data_view import BaseDataView
+    from force_wfmanager.ui import BaseDataView
+    from force_wfmanager.ui import ContributedUI
 except ModuleNotFoundError:
     WFMANAGER_AVAILABLE = False
 else:
@@ -35,6 +36,17 @@ class TestExamplePlugin(unittest.TestCase):
         for plot in plots:
             self.assertIsInstance(plot, type)
             self.assertTrue(issubclass(plot, BaseDataView))
+
+    @unittest.skipIf(
+        not WFMANAGER_AVAILABLE,
+        "No wfmanager found in the test environment. Skipping test.")
+    def test_get_contributed_uis(self):
+        plugin = ExamplePlugin()
+        custom_uis = plugin.get_contributed_uis()
+        self.assertEqual(len(custom_uis), 1)
+        for custom_ui in custom_uis:
+            self.assertIsInstance(custom_ui, type)
+            self.assertTrue(issubclass(custom_ui, ContributedUI))
 
 
 class TestExamplePluginIntegration(unittest.TestCase):

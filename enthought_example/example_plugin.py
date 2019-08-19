@@ -1,4 +1,5 @@
-from force_bdss.api import BaseExtensionPlugin, plugin_id
+from force_bdss.api import plugin_id
+from force_bdss.core_plugins.service_offers_plugin import ServiceOffersPlugin
 
 from .example_notification_listener import ExampleNotificationListenerFactory
 from .example_mco import ExampleMCOFactory
@@ -9,7 +10,7 @@ from .example_ui_hooks import ExampleUIHooksFactory
 PLUGIN_VERSION = 0
 
 
-class ExamplePlugin(BaseExtensionPlugin):
+class ExamplePlugin(ServiceOffersPlugin):
     """This is an example of the plugin system for the BDSS.
     This class provides access points for the various entities
     that the plugin system supports:
@@ -62,10 +63,26 @@ class ExamplePlugin(BaseExtensionPlugin):
         """Get any ContributedUI classes included in the plugin"""
         from enthought_example.example_contributed_ui\
             .example_contributed_ui import ExampleContributedUI
+
         return [ExampleContributedUI]
 
     def get_data_views(self):
         """Get any BasePlot classes included in the plugin"""
         from enthought_example.example_data_views.example_data_view import \
             ExampleCustomPlot
+
         return [ExampleCustomPlot]
+
+    def get_service_offer_factories(self):
+        """Overloaded method of ServiceOffersPlugin class used to define service_offers
+        trait"""
+        from force_wfmanager.ui import IContributedUI
+        from force_wfmanager.ui import IDataView
+
+        contributed_uis = self.get_contributed_uis()
+        data_views = self.get_data_views()
+
+        return [
+            (IContributedUI, contributed_uis),
+            (IDataView, data_views)
+        ]
