@@ -59,7 +59,7 @@ class ExamplePlugin(ServiceOfferExtensionPlugin):
 
     # The following functionalities are optional (the plugin can be run on the
     # bdss without a GUI), so the quite expensive imports are done
-    # inside eac method.
+    # inside each method.
     def get_contributed_uis(self):
         """Get any ContributedUI classes included in the plugin"""
         from enthought_example.example_contributed_ui\
@@ -76,7 +76,10 @@ class ExamplePlugin(ServiceOfferExtensionPlugin):
 
     def get_service_offer_factories(self):
         """Overloaded method of ServiceOffersPlugin class used to define service_offers
-        trait"""
+        trait. In this example, we import 2 types of custom UI objects using the
+        Interfaces for ContributedUI and DataView classes, found in force-wfmanager.
+        The methods get_contributed_uis and get_data_views return the example
+        UI subclasses provided by this plugin"""
         from force_wfmanager.ui import IContributedUI
         from force_wfmanager.ui import IDataView
 
