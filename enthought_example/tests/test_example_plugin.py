@@ -21,10 +21,10 @@ from enthought_example.tests import example_workflows
 class TestExamplePlugin(unittest.TestCase):
     def test_basic_functionality(self):
         plugin = ExamplePlugin()
-        self.assertEqual(len(plugin.data_source_factories), 1)
-        self.assertEqual(len(plugin.mco_factories), 1)
-        self.assertEqual(len(plugin.notification_listener_factories), 1)
-        self.assertEqual(len(plugin.ui_hooks_factories), 1)
+        self.assertEqual(1, len(plugin.data_source_factories))
+        self.assertEqual(1, len(plugin.mco_factories))
+        self.assertEqual(1, len(plugin.notification_listener_factories))
+        self.assertEqual(1, len(plugin.ui_hooks_factories))
 
     @unittest.skipIf(
         not WFMANAGER_AVAILABLE,
@@ -32,7 +32,7 @@ class TestExamplePlugin(unittest.TestCase):
     def test_get_data_views(self):
         plugin = ExamplePlugin()
         plots = plugin.get_data_views()
-        self.assertEqual(len(plots), 1)
+        self.assertEqual(1, len(plots))
         for plot in plots:
             self.assertIsInstance(plot, type)
             self.assertTrue(issubclass(plot, BaseDataView))
@@ -43,10 +43,23 @@ class TestExamplePlugin(unittest.TestCase):
     def test_get_contributed_uis(self):
         plugin = ExamplePlugin()
         custom_uis = plugin.get_contributed_uis()
-        self.assertEqual(len(custom_uis), 1)
+        self.assertEqual(1, len(custom_uis))
         for custom_ui in custom_uis:
             self.assertIsInstance(custom_ui, type)
             self.assertTrue(issubclass(custom_ui, ContributedUI))
+
+    @unittest.skipIf(
+        not WFMANAGER_AVAILABLE,
+        "No wfmanager found in the test environment. Skipping test.")
+    def test_get_service_offer_factories(self):
+        plugin = ExamplePlugin()
+        service_offer_factories = plugin.get_service_offer_factories()
+        self.assertEqual(2, len(service_offer_factories))
+
+        interface, factories = service_offer_factories[0]
+        self.assertEqual(IContributedUI, interface)
+        interface, factories = service_offer_factories[1]
+        self.assertEqual(IDataView, interface)
 
 
 class TestExamplePluginIntegration(unittest.TestCase):
