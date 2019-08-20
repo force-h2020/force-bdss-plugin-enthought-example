@@ -75,11 +75,12 @@ class ExamplePlugin(ServiceOfferExtensionPlugin):
         return [ExampleCustomPlot]
 
     def get_service_offer_factories(self):
-        """Overloaded method of ServiceOffersPlugin class used to define service_offers
-        trait. In this example, we import 2 types of custom UI objects using the
-        Interfaces for ContributedUI and DataView classes, found in force-wfmanager.
-        The methods get_contributed_uis and get_data_views return the example
-        UI subclasses provided by this plugin"""
+        """Overloaded method of ServiceOffersPlugin class used to define
+        service_offers trait. In this example, we import 2 types of custom UI
+        objects using the Interfaces for ContributedUI and DataView classes,
+        found in force-wfmanager. The methods get_contributed_uis and
+        get_data_views return the example UI subclasses provided by this
+        plugin"""
         from force_wfmanager.ui import IContributedUI
         from force_wfmanager.ui import IDataView
 
