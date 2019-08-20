@@ -79,3 +79,20 @@ class TestExamplePluginIntegration(unittest.TestCase):
             BDSSApplication(True, self.empty_workflow_path)
         except ModuleNotFoundError:
             self.fail("Has BDSS attempted to import .example_data_views?")
+
+    def test_contributed_ui_module_not_imported_by_bdss(self):
+        # hide the get_contributed_uis module
+        sys.modules[
+            "enthought_example.example_contributed_ui.example_contributed_ui"
+        ] = None
+
+        plugin = ExamplePlugin()
+        # accessing get_contributed_uis should trigger the import (and fail)
+        with self.assertRaises(ModuleNotFoundError):
+            plugin.get_contributed_uis()
+
+        # However, BDSS shouldn't attempt the import
+        try:
+            BDSSApplication(True, self.empty_workflow_path)
+        except ModuleNotFoundError:
+            self.fail("Has BDSS attempted to import .example_contributed_ui?")
