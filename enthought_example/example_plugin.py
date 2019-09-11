@@ -1,14 +1,17 @@
-from force_bdss.api import BaseExtensionPlugin, plugin_id
+from force_bdss.api import plugin_id
+from force_bdss.core_plugins.service_offer_plugin import \
+    ServiceOfferExtensionPlugin
 
 from .example_notification_listener import ExampleNotificationListenerFactory
 from .example_mco import ExampleMCOFactory
 from .example_data_source import ExampleDataSourceFactory
 from .example_ui_hooks import ExampleUIHooksFactory
 
+
 PLUGIN_VERSION = 0
 
 
-class ExamplePlugin(BaseExtensionPlugin):
+class ExamplePlugin(ServiceOfferExtensionPlugin):
     """This is an example of the plugin system for the BDSS.
     This class provides access points for the various entities
     that the plugin system supports:
@@ -54,10 +57,37 @@ class ExamplePlugin(BaseExtensionPlugin):
             ExampleUIHooksFactory,
         ]
 
+    # The following functionalities are optional (the plugin can be run on the
+    # bdss without a GUI), so the quite expensive imports are done
+    # inside each method.
+    def get_contributed_uis(self):
+        """Get any ContributedUI classes included in the plugin"""
+        from enthought_example.example_contributed_ui\
+            .example_contributed_ui import ExampleContributedUI
+
+        return [ExampleContributedUI]
+
     def get_data_views(self):
-        # This functionality is optional (the plugin can be run on the
-        # bdss without a GUI), so this quite expensive import is done
-        # inside the method.
+        """Get any BasePlot classes included in the plugin"""
         from enthought_example.example_data_views.example_data_view import \
             ExampleCustomPlot
+
         return [ExampleCustomPlot]
+
+    def get_service_offer_factories(self):
+        """Overloaded method of ServiceOffersPlugin class used to define
+        service_offers trait. In this example, we import 2 types of custom UI
+        objects using the Interfaces for ContributedUI and DataView classes,
+        found in force-wfmanager. The methods get_contributed_uis and
+        get_data_views return the example UI subclasses provided by this
+        plugin"""
+        from force_wfmanager.ui import IContributedUI
+        from force_wfmanager.ui import IDataView
+
+        contributed_uis = self.get_contributed_uis()
+        data_views = self.get_data_views()
+
+        return [
+            (IContributedUI, contributed_uis),
+            (IDataView, data_views)
+        ]

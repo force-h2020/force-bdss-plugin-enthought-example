@@ -24,7 +24,7 @@ class ExampleCustomPlot(BasePlot):
 
         self._plot_index_datasource = line_plot.index
         self._axis = line_plot
-        plot.set(title=self.title)
+        plot.trait_set(title=self.title)
 
         return plot
 
