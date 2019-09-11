@@ -29,7 +29,7 @@ before_install:
     - edm install -y --version 3.6 click setuptools
     - git clone git://github.com/force-h2020/force-bdss.git
     - pushd force-bdss && edm run -- python -m ci build-env && edm run -- python -m ci install && popd
-    - git clone git://github.com/force-h2020/force-wfmanager.git -b enh/refactor-custom-ui
+    - git clone git://github.com/force-h2020/force-wfmanager.git
     - pushd force-wfmanager && edm run -- python -m ci install && popd
     - if [[ ${TRAVIS_OS_NAME} == "linux" ]] ; then sudo apt-get install --yes libglu1-mesa-dev mesa-common-dev; fi
 script:
