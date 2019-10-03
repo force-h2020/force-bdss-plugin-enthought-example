@@ -124,5 +124,5 @@ class InternalSinglePointEvaluator(HasStrictTraits):
                 value_types, value_names, in_values)]
 
         kpis = self.workflow.execute(data_values)
-        print(kpis)
+
         return [kpi.value for kpi in kpis]

@@ -2,7 +2,7 @@ import mock
 import sys
 import unittest
 
-from force_bdss.bdss_application import BDSSApplication
+from force_bdss.app.bdss_application import BDSSApplication
 try:
     # It's possible to install the example plugins in a headless system or
     # in a environment without wfmanager and the graphical stack for UIs.
