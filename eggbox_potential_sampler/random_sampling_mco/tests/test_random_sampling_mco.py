@@ -49,9 +49,10 @@ class TestRandomSamplingMCO(unittest.TestCase):
         model.evaluation_mode = 'Internal'
         model.parameters = [DummyMCOParameter(
             mock.Mock(spec=DummyMCOParameterFactory))]
-        kpis = (DataValue(value=1), DataValue(value=2))
-        fn_name = ('eggbox_potential_sampler.random_sampling_mco'
-                   '.mco.execute_workflow')
-        with mock.patch(fn_name, return_value=kpis) as mock_exec:
+
+        self.factory.plugin.application.workflow = Workflow()
+        kpis = [DataValue(value=1), DataValue(value=2)]
+        with mock.patch('force_bdss.api.Workflow.execute',
+                        return_value=kpis) as mock_exec:
             opt.run(model)
             self.assertEqual(mock_exec.call_count, 7)
