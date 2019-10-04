@@ -35,11 +35,11 @@ class RandomSamplingMCO(BaseMCO):
         application = self.factory.plugin.application
         if model.evaluation_mode == "Subprocess":
             single_point_evaluator = SubprocessSinglePointEvaluator(
-                sys.argv[0], application.workflow_filepath
+                sys.argv[0], application.workflow_file.path
             )
         else:
             single_point_evaluator = InternalSinglePointEvaluator(
-                application.workflow,
+                application.workflow_file.workflow,
                 model.parameters
             )
 
