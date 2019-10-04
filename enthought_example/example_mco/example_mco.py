@@ -88,7 +88,7 @@ class ExampleMCO(BaseMCO):
             # MCOCommunicator. NOTE: The communicator is involved in the
             # communication between the MCO executable and the bdss single
             # point evaluation, _not_ between the bdss and the MCO executable.
-            cmd = [sys.argv[0], "--evaluate", application.workflow_filepath]
+            cmd = [sys.argv[0], "--evaluate", application.workflow_file.path]
             ps = subprocess.Popen(
                 cmd, env=env, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
