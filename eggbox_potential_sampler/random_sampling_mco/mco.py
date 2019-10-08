@@ -1,14 +1,8 @@
-import subprocess
-import sys
 import logging
 import numpy as np
 
-from traits.api import (
-    HasStrictTraits, Instance, Interface, List, provides, Str
-)
-
 from force_bdss.api import (
-    BaseMCO, DataValue, Workflow
+    BaseMCO, DataValue
 )
 
 
@@ -21,7 +15,7 @@ class RandomSamplingMCO(BaseMCO):
     the BDSS can be made either as a separate subprocess, or internally.
 
     """
-    def run(self, model):
+    def run(self, model, solver):
         """ Run the MCO with the desired method and communicate the
         results.
 
@@ -29,19 +23,11 @@ class RandomSamplingMCO(BaseMCO):
         ----------
         model: :obj:`RandomSamplingMCOModel`
             the model that defines MCO parameters and outputs.
-
+        solver: WorkflowSolver
+            Contains information on the Workflow and can evaluate the state
+            of the KPIs for a given set of parameter values
         """
-        kpis = model.kpis
-        application = self.factory.plugin.application
-        if model.evaluation_mode == "Subprocess":
-            single_point_evaluator = SubprocessSinglePointEvaluator(
-                sys.argv[0], application.workflow_filepath
-            )
-        else:
-            single_point_evaluator = InternalSinglePointEvaluator(
-                application.workflow,
-                model.parameters
-            )
+        solver.mode = model.evaluation_mode
 
         counter = 0
         while counter < model.num_trials:
@@ -49,80 +35,15 @@ class RandomSamplingMCO(BaseMCO):
             log.info("MCO iteration {}/{}".format(counter, model.num_trials))
             trial_position = np.random.rand(len(model.parameters))
 
-            kpis = single_point_evaluator.evaluate(trial_position)
+            kpis = solver.solve(trial_position)
+
+            if len(kpis) > 0:
+                weights = [1 / len(kpis)] * len(kpis)
+            else:
+                weights = []
+
             self.notify_new_point(
                 [DataValue(value=v) for v in trial_position],
-                [DataValue(value=v) for v in kpis],
-                [1 / len(kpis)] * len(kpis)
+                kpis,
+                weights
             )
-
-
-class ISinglePointEvaluator(Interface):
-    def evaluate(self, in_values):
-        """ Evaluate the potential at a single point. """
-
-
-@provides(ISinglePointEvaluator)
-class SubprocessSinglePointEvaluator(HasStrictTraits):
-    """ Spawns a subprocess to evaluate a single point. """
-    evaluation_executable_path = Str()
-    workflow_filepath = Str()
-
-    def __init__(self, evaluation_executable_path, workflow_filepath):
-        super(SubprocessSinglePointEvaluator, self).__init__(
-            evaluation_executable_path=evaluation_executable_path,
-            workflow_filepath=workflow_filepath
-        )
-
-    def evaluate(self, in_values):
-        cmd = [self.evaluation_executable_path,
-               "--logfile",
-               "bdss.log",
-               "--evaluate",
-               self.workflow_filepath]
-
-        log.info("Spawning subprocess: {}".format(cmd))
-        ps = subprocess.Popen(
-            cmd,
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-        )
-        log.info("Sending values: {}".format([str(v) for v in in_values]))
-
-        out = ps.communicate(
-            " ".join([str(v) for v in in_values]).encode("utf-8"))
-
-        log.info(
-            "Received values: {}".format(
-                [x for x in out[0].decode("utf-8").split()]))
-
-        return [float(x) for x in out[0].decode("utf-8").split()]
-
-
-@provides(ISinglePointEvaluator)
-class InternalSinglePointEvaluator(HasStrictTraits):
-    """ Evaluate the potential at a single point, without spawning a
-    new process.
-
-    """
-    workflow = Instance(Workflow)
-    parameters = List()
-
-    def __init__(self, workflow, parameters):
-        super(InternalSinglePointEvaluator, self).__init__(
-            workflow=workflow,
-            parameters=parameters
-        )
-
-    def evaluate(self, in_values):
-        value_names = [p.name for p in self.parameters]
-        value_types = [p.type for p in self.parameters]
-
-        data_values = [
-            DataValue(type=type_, name=name, value=value)
-            for type_, name, value in zip(
-                value_types, value_names, in_values)]
-
-        kpis = self.workflow.execute(data_values)
-
-        return [kpi.value for kpi in kpis]
