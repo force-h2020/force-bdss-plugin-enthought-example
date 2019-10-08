@@ -3,7 +3,8 @@ import unittest
 from unittest import mock
 from traits.api import TraitError
 
-from force_bdss.api import BaseMCOFactory
+from force_bdss.api import BaseMCOFactory, Workflow
+from force_bdss.core.workflow_solver import WorkflowSolver
 
 from enthought_example.example_mco.parameters import (
     RangedMCOParameter,
@@ -17,9 +18,10 @@ from enthought_example.example_mco.example_mco import ExampleMCO
 class TestExampleMCO(unittest.TestCase):
     def setUp(self):
         self.factory = mock.Mock(spec=BaseMCOFactory)
-        self.factory.plugin = mock.Mock()
-        self.factory.plugin.application = mock.Mock()
-        self.factory.plugin.application.workflow_filepath = "whatever"
+        self.solver = WorkflowSolver(
+            workflow=Workflow(),
+            workflow_filepath="whatever"
+        )
 
     def test_initialization(self):
         opt = ExampleMCO(self.factory)
@@ -36,16 +38,16 @@ class TestExampleMCO(unittest.TestCase):
                 initial_value=2)
         ]
 
+        self.solver.workflow.mco = model
         mock_process = mock.Mock()
         mock_process.communicate = mock.Mock(return_value=(b"1 2 3", b""))
-
         with mock.patch("subprocess.Popen") as mock_popen:
             mock_popen.return_value = mock_process
-            opt.run(model)
+            opt.run(model, self.solver)
 
         self.assertEqual(mock_popen.call_count, 2)
 
-        # test whether arugment order matters on object creation
+        # test whether argument order matters on object creation
         model.parameters = [
             RangedMCOParameter(
                 mock.Mock(spec=RangedMCOParameterFactory),
@@ -60,11 +62,11 @@ class TestExampleMCO(unittest.TestCase):
 
         with mock.patch("subprocess.Popen") as mock_popen:
             mock_popen.return_value = mock_process
-            opt.run(model)
+            opt.run(model, self.solver)
 
         self.assertEqual(mock_popen.call_count, 2)
 
-        # test whether arugment order matters on object creation
+        # test whether argument order matters on object creation
         model_data = {"initial_value": 2, "upper_bound": 3, "lower_bound": 1}
         model.parameters = [
             RangedMCOParameter(mock.Mock(spec=RangedMCOParameterFactory),
@@ -76,7 +78,7 @@ class TestExampleMCO(unittest.TestCase):
 
         with mock.patch("subprocess.Popen") as mock_popen:
             mock_popen.return_value = mock_process
-            opt.run(model)
+            opt.run(model, self.solver)
 
         self.assertEqual(mock_popen.call_count, 2)
 

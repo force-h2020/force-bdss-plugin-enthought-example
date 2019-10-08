@@ -1,8 +1,6 @@
-import subprocess
 import sys
 import itertools
 import collections
-import os
 
 from force_bdss.api import BaseMCO, DataValue
 
@@ -51,7 +49,7 @@ class ExampleMCO(BaseMCO):
 
     Currently there's no error handling.
     """
-    def run(self, model):
+    def run(self, model, solver):
         # This implementation mimics the expected behavior of dakota
         # by spawning the force_bdss with the evaluate option to compute
         # a single point. Your specific implementation should be quite
@@ -74,30 +72,28 @@ class ExampleMCO(BaseMCO):
 
         value_iterator = itertools.product(*values)
 
-        application = self.factory.plugin.application
-
         for value in value_iterator:
-            # Setting ETS_TOOLKIT=null before executing bdss prevents it
-            # from trying to create GUI every call, giving reducing the
-            # overhead by a factor of 2.
-            env = {**os.environ, "ETS_TOOLKIT": "null"}
-            # Spawn the single point evaluation, which is the bdss itself
-            # with the option evaluate.
+            # Set the 'Subprocess' mode of the WorflowSolver, which spawns
+            # another process running the force_bdss executable in 'evaluate'
+            # mode.
             # We pass the specific parameter values via stdin, and read
             # the result via stdout. The format is decided by the
             # MCOCommunicator. NOTE: The communicator is involved in the
             # communication between the MCO executable and the bdss single
             # point evaluation, _not_ between the bdss and the MCO executable.
-            cmd = [sys.argv[0], "--evaluate", application.workflow_filepath]
-            ps = subprocess.Popen(
-                cmd, env=env, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+            solver.mode = 'Subprocess'
 
-            out = ps.communicate(
-                " ".join([str(v) for v in value]).encode("utf-8"))
-            out_data = out[0].decode("utf-8").split()
+            solver.executable_path = sys.argv[0]
+
+            kpis = solver.solve(value)
+
+            if len(kpis) > 0:
+                weights = [1 / len(kpis)] * len(kpis)
+            else:
+                weights = []
 
             # When there is new data, this operation informs the system that
             # new data has been received. It must be a dictionary as given.
             self.notify_new_point([DataValue(value=v) for v in value],
-                                  [DataValue(value=v) for v in out_data],
-                                  [1.0/len(out_data)]*len(out_data))
+                                  kpis,
+                                  weights)
