@@ -116,7 +116,9 @@ class TestSubprocessWorkflowEvaluator(unittest.TestCase):
         stdout = self.evaluator._call_subprocess(
             'uniq', ['Hello', 'World']
         )
-        self.assertEqual(b'Hello World', stdout)
+        self.assertEqual(
+            'Hello World', stdout.decode("utf-8").strip()
+        )
 
     def test__subprocess_solve(self):
         factory = mock.Mock(spec=BaseMCOFactory)
