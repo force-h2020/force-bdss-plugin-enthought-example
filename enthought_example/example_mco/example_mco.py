@@ -101,11 +101,9 @@ class ExampleMCO(BaseMCO):
             # communication between the MCO executable and the bdss single
             # point evaluation, _not_ between the bdss and the MCO executable.
             kpis = single_point_evaluator.evaluate(value)
-
-            if len(kpis) > 0:
-                weights = [1 / len(kpis)] * len(kpis)
-            else:
-                weights = []
+            weights = []
+            for _ in kpis:
+                weights.append(1 / len(kpis))
 
             # When there is new data, this operation informs the system that
             # new data has been received. It must be a dictionary as given.

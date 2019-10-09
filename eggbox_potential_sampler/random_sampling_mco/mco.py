@@ -48,11 +48,9 @@ class RandomSamplingMCO(BaseMCO):
             trial_position = np.random.rand(len(model.parameters))
 
             kpis = single_point_evaluator.evaluate(trial_position)
-
-            if len(kpis) > 0:
-                weights = [1 / len(kpis)] * len(kpis)
-            else:
-                weights = []
+            weights = []
+            for _ in kpis:
+                weights.append(1 / len(kpis))
 
             self.notify_new_point(
                 [DataValue(value=v) for v in trial_position],
