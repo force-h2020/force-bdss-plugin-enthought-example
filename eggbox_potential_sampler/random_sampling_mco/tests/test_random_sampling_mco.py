@@ -3,7 +3,7 @@ import unittest
 from unittest import mock
 
 from force_bdss.api import BaseMCOFactory, DataValue, Workflow
-from force_bdss.core.workflow_solver import WorkflowSolver
+from force_bdss.app.workflow_evaluator import WorkflowEvaluator
 
 from eggbox_potential_sampler.random_sampling_mco.parameters import (
     DummyMCOParameter, DummyMCOParameterFactory)
@@ -11,13 +11,14 @@ from eggbox_potential_sampler.random_sampling_mco.parameters import (
 from eggbox_potential_sampler.random_sampling_mco.mco_model import (
     RandomSamplingMCOModel)
 from eggbox_potential_sampler.random_sampling_mco.mco import (
-    RandomSamplingMCO)
+    RandomSamplingMCO
+)
 
 
 class TestRandomSamplingMCO(unittest.TestCase):
     def setUp(self):
         self.factory = mock.Mock(spec=BaseMCOFactory)
-        self.solver = WorkflowSolver(
+        self.evaluator = WorkflowEvaluator(
             workflow=Workflow(),
             workflow_filepath="whatever"
         )
@@ -34,13 +35,13 @@ class TestRandomSamplingMCO(unittest.TestCase):
         model.parameters = [DummyMCOParameter(
             mock.Mock(spec=DummyMCOParameterFactory))]
 
-        self.solver.workflow.mco = model
+        self.evaluator.workflow.mco = model
 
         mock_process = mock.Mock()
         mock_process.communicate = mock.Mock(return_value=(b"2", b"1 0"))
         with mock.patch("subprocess.Popen") as mock_popen:
             mock_popen.return_value = mock_process
-            opt.run(model, self.solver)
+            opt.run(self.evaluator)
 
         self.assertEqual(mock_popen.call_count, 7)
 
@@ -52,9 +53,9 @@ class TestRandomSamplingMCO(unittest.TestCase):
         model.parameters = [DummyMCOParameter(
             mock.Mock(spec=DummyMCOParameterFactory))]
 
-        self.solver.workflow.mco = model
+        self.evaluator.workflow.mco = model
         kpis = [DataValue(value=1), DataValue(value=2)]
         with mock.patch('force_bdss.api.Workflow.execute',
                         return_value=kpis) as mock_exec:
-            opt.run(model, self.solver)
+            opt.run(self.evaluator)
             self.assertEqual(mock_exec.call_count, 7)
