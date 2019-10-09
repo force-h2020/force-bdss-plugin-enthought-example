@@ -7,7 +7,7 @@ from force_bdss.api import (
     BaseMCO, DataValue
 )
 
-from enthought_example.example_mco.example_mco import (
+from enthought_example.example_mco.subprocess_workflow_evaluator import (
     SubprocessWorkflowEvaluator
 )
 
