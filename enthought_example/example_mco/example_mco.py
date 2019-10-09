@@ -108,7 +108,7 @@ class ExampleMCO(BaseMCO):
             # When there is new data, this operation informs the system that
             # new data has been received. It must be a dictionary as given.
             self.notify_new_point([DataValue(value=v) for v in value],
-                                  kpis,
+                                  [DataValue(value=v) for v in kpis],
                                   weights)
 
 
@@ -177,14 +177,7 @@ class SubprocessWorkflowEvaluator(WorkflowEvaluator):
         # Decode stdout into KPI float values
         kpi_values = [float(x) for x in stdout.decode("utf-8").split()]
 
-        # Convert values into DataValues
-        kpi_results = [
-            DataValue(name=kpi.name,
-                      value=value)
-            for kpi, value in zip(
-                self.mco_model.kpis, kpi_values)]
-
-        return kpi_results
+        return kpi_values
 
     def evaluate(self, parameter_values):
         """Public method to evaluate the workflow at a given set of
@@ -192,14 +185,14 @@ class SubprocessWorkflowEvaluator(WorkflowEvaluator):
 
         Parameters
         ----------
-        parameter_values: List(Float)
+        parameter_values: list
             List of values to assign to each BaseMCOParameter defined
             in the workflow
 
         Returns
         -------
-        kpi_results: List(DataValue)
-            List of DataValues corresponding to each MCO KPI in the
+        kpi_results: list
+            List of values corresponding to each MCO KPI in the
             workflow
         """
 

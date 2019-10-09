@@ -128,7 +128,7 @@ class TestSubprocessWorkflowEvaluator(unittest.TestCase):
             mock_popen.return_value = self.mock_process
             kpi_results = self.evaluator._subprocess_evaluate([1.0])
 
-        self.assertEqual(0, len(kpi_results))
+        self.assertEqual(1, len(kpi_results))
 
     def test_solve_error_mco_communicator(self):
 

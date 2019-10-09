@@ -54,6 +54,6 @@ class RandomSamplingMCO(BaseMCO):
 
             self.notify_new_point(
                 [DataValue(value=v) for v in trial_position],
-                kpis,
+                [DataValue(value=v) for v in kpis],
                 weights
             )
