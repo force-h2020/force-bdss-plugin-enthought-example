@@ -1,9 +1,11 @@
 import unittest
 
-from enthought_example.example_data_source.example_data_source import \
+from enthought_example.example_data_source.example_data_source import (
     ExampleDataSource
-from enthought_example.example_data_source.example_data_source_model import \
+)
+from enthought_example.example_data_source.example_data_source_model import (
     ExampleDataSourceModel
+)
 from enthought_example.example_plugin import ExamplePlugin
 
 

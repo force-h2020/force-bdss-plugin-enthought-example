@@ -3,23 +3,24 @@ import unittest
 from unittest import mock
 
 from force_bdss.api import (
-    BaseMCOFactory, DataValue, Workflow, KPISpecification,
-    WorkflowEvaluator
+    DataValue, Workflow, KPISpecification, WorkflowEvaluator
 )
+
 
 from eggbox_potential_sampler.random_sampling_mco.parameters import (
     DummyMCOParameter, DummyMCOParameterFactory)
 
-from eggbox_potential_sampler.random_sampling_mco.mco_model import (
-    RandomSamplingMCOModel)
 from eggbox_potential_sampler.random_sampling_mco.mco import (
     RandomSamplingMCO
+)
+from eggbox_potential_sampler.random_sampling_mco.mco_factory import (
+    RandomSamplingMCOFactory
 )
 
 
 class TestRandomSamplingMCO(unittest.TestCase):
     def setUp(self):
-        self.factory = mock.Mock(spec=BaseMCOFactory)
+        self.factory = RandomSamplingMCOFactory('pid')
         self.evaluator = WorkflowEvaluator(
             workflow=Workflow(),
             workflow_filepath="whatever"
@@ -30,8 +31,8 @@ class TestRandomSamplingMCO(unittest.TestCase):
         self.assertEqual(opt.factory, self.factory)
 
     def test_subprocess_run(self):
-        opt = RandomSamplingMCO(self.factory, )
-        model = RandomSamplingMCOModel(self.factory)
+        opt = self.factory.create_optimizer()
+        model = self.factory.create_model()
         model.num_trials = 7
         model.evaluation_mode = 'Subprocess'
         model.parameters = [DummyMCOParameter(
@@ -41,7 +42,6 @@ class TestRandomSamplingMCO(unittest.TestCase):
         ]
 
         self.evaluator.workflow.mco = model
-
         mock_process = mock.Mock()
         mock_process.communicate = mock.Mock(return_value=(b"2", b"1 0"))
         with mock.patch("subprocess.Popen") as mock_popen:
@@ -51,8 +51,8 @@ class TestRandomSamplingMCO(unittest.TestCase):
         self.assertEqual(mock_popen.call_count, 7)
 
     def test_internal_run(self):
-        opt = RandomSamplingMCO(self.factory, )
-        model = RandomSamplingMCOModel(self.factory)
+        opt = self.factory.create_optimizer()
+        model = self.factory.create_model()
         model.num_trials = 7
         model.evaluation_mode = 'Internal'
         model.parameters = [DummyMCOParameter(
