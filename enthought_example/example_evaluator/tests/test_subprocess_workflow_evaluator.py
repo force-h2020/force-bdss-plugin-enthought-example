@@ -27,7 +27,7 @@ class TestSubprocessWorkflowEvaluator(unittest.TestCase):
 
         # Test simple bash command
         stdout = self.evaluator._call_subprocess(
-            'uniq', ['Hello', 'World']
+            ['uniq'], ['Hello', 'World']
         )
         self.assertEqual(
             'Hello World', stdout.decode("utf-8").strip()
