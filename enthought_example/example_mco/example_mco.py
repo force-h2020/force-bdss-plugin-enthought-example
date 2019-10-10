@@ -5,7 +5,7 @@ import sys
 
 from force_bdss.api import BaseMCO, DataValue
 
-from .subprocess_workflow_evaluator import SubprocessWorkflowEvaluator
+from enthought_example.example_evaluator.subprocess_workflow_evaluator import SubprocessWorkflowEvaluator
 
 log = logging.getLogger(__name__)
 

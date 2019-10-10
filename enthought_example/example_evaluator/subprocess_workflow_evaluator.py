@@ -4,7 +4,7 @@ import subprocess
 
 from traits.api import Unicode
 
-from force_bdss.app.workflow_evaluator import WorkflowEvaluator
+from force_bdss.api import WorkflowEvaluator
 
 log = logging.getLogger(__name__)
 
