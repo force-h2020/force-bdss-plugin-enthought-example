@@ -47,7 +47,7 @@ class ConvergencePlot(BasePlot):
         line_plot.overlays.append(ZoomTool(plot))
 
         self._plot_index_datasource = line_plot.index
-        plot.set(title=self.title, padding=75, line_width=1)
+        plot.trait_set(title=self.title, padding=75, line_width=1)
         self._axis = line_plot
 
         return plot

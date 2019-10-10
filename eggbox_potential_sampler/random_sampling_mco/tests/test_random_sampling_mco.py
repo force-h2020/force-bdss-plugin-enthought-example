@@ -2,32 +2,40 @@ import unittest
 
 from unittest import mock
 
-from force_bdss.api import BaseMCOFactory, DataValue, Workflow
+from envisage.plugin import Plugin
+from force_bdss.api import DataValue, Workflow
+from force_bdss.app.workflow_file import WorkflowFile
 
 from eggbox_potential_sampler.random_sampling_mco.parameters import (
     DummyMCOParameter, DummyMCOParameterFactory)
 
-from eggbox_potential_sampler.random_sampling_mco.mco_model import (
-    RandomSamplingMCOModel)
 from eggbox_potential_sampler.random_sampling_mco.mco import (
     RandomSamplingMCO)
+from eggbox_potential_sampler.random_sampling_mco.mco_factory import (
+    RandomSamplingMCOFactory)
+
+
+def probe_execute(*args, **kwargs):
+    return [DataValue(value=1), DataValue(value=2)]
 
 
 class TestRandomSamplingMCO(unittest.TestCase):
     def setUp(self):
-        self.factory = mock.Mock(spec=BaseMCOFactory)
-        self.factory.plugin = mock.Mock()
+        self.plugin = mock.Mock(spec=Plugin, id="pid")
+        self.factory = RandomSamplingMCOFactory(self.plugin)
         self.factory.plugin.application = mock.Mock()
-        self.factory.plugin.application.workflow_filepath = "whatever"
-        self.factory.plugin.application.workflow = mock.Mock(spec=Workflow)
+        self.factory.plugin.application.workflow_file = mock.Mock(
+            spec=WorkflowFile, path="whatever",
+            workflow=Workflow()
+        )
 
     def test_initialization(self):
         opt = RandomSamplingMCO(self.factory)
         self.assertEqual(opt.factory, self.factory)
 
     def test_subprocess_run(self):
-        opt = RandomSamplingMCO(self.factory, )
-        model = RandomSamplingMCOModel(self.factory)
+        opt = self.factory.create_optimizer()
+        model = self.factory.create_model()
         model.num_trials = 7
         model.evaluation_mode = 'Subprocess'
         model.parameters = [DummyMCOParameter(
@@ -43,14 +51,13 @@ class TestRandomSamplingMCO(unittest.TestCase):
         self.assertEqual(mock_popen.call_count, 7)
 
     def test_internal_run(self):
-        opt = RandomSamplingMCO(self.factory, )
-        model = RandomSamplingMCOModel(self.factory)
+        opt = self.factory.create_optimizer()
+        model = self.factory.create_model()
         model.num_trials = 7
         model.evaluation_mode = 'Internal'
         model.parameters = [DummyMCOParameter(
             mock.Mock(spec=DummyMCOParameterFactory))]
 
-        self.factory.plugin.application.workflow = Workflow()
         kpis = [DataValue(value=1), DataValue(value=2)]
         with mock.patch('force_bdss.api.Workflow.execute',
                         return_value=kpis) as mock_exec:

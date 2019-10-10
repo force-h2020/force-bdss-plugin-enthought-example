@@ -3,7 +3,8 @@ import unittest
 from unittest import mock
 from traits.api import TraitError
 
-from force_bdss.api import BaseMCOFactory
+from force_bdss.api import BaseMCOFactory, Workflow
+from force_bdss.app.workflow_file import WorkflowFile
 
 from enthought_example.example_mco.parameters import (
     RangedMCOParameter,
@@ -19,7 +20,10 @@ class TestExampleMCO(unittest.TestCase):
         self.factory = mock.Mock(spec=BaseMCOFactory)
         self.factory.plugin = mock.Mock()
         self.factory.plugin.application = mock.Mock()
-        self.factory.plugin.application.workflow_filepath = "whatever"
+        self.factory.plugin.application.workflow_file = mock.Mock(
+            spec=WorkflowFile, path="whatever",
+            workflow=Workflow()
+        )
 
     def test_initialization(self):
         opt = ExampleMCO(self.factory)
