@@ -3,8 +3,9 @@ import unittest
 from unittest import mock
 from traits.api import TraitError
 
-from force_bdss.api import BaseMCOFactory, Workflow
-from force_bdss.app.workflow_evaluator import WorkflowEvaluator
+from force_bdss.api import (
+    BaseMCOFactory, Workflow, KPISpecification, WorkflowEvaluator
+)
 
 from enthought_example.example_mco.parameters import (
     RangedMCOParameter,
@@ -38,6 +39,9 @@ class TestExampleMCO(unittest.TestCase):
                 lower_bound=1,
                 upper_bound=3,
                 initial_value=2)
+        ]
+        model.kpis = [
+            KPISpecification()
         ]
 
         self.evaluator.workflow.mco = model

@@ -5,7 +5,9 @@ import sys
 
 from force_bdss.api import BaseMCO, DataValue
 
-from enthought_example.example_evaluator.subprocess_workflow_evaluator import SubprocessWorkflowEvaluator
+from enthought_example.example_evaluator.subprocess_workflow_evaluator import (
+    SubprocessWorkflowEvaluator
+)
 
 log = logging.getLogger(__name__)
 
@@ -98,12 +100,9 @@ class ExampleMCO(BaseMCO):
             # communication between the MCO executable and the bdss single
             # point evaluation, _not_ between the bdss and the MCO executable.
             kpis = single_point_evaluator.evaluate(value)
-            weights = []
-            for _ in kpis:
-                weights.append(1 / len(kpis))
 
             # When there is new data, this operation informs the system that
             # new data has been received. It must be a dictionary as given.
             self.notify_new_point([DataValue(value=v) for v in value],
                                   [DataValue(value=v) for v in kpis],
-                                  weights)
+                                  [1 / len(kpis)] * len(kpis))

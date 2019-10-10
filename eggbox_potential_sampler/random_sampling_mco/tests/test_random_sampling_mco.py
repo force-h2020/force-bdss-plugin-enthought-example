@@ -2,8 +2,10 @@ import unittest
 
 from unittest import mock
 
-from force_bdss.api import BaseMCOFactory, DataValue, Workflow
-from force_bdss.app.workflow_evaluator import WorkflowEvaluator
+from force_bdss.api import (
+    BaseMCOFactory, DataValue, Workflow, KPISpecification,
+    WorkflowEvaluator
+)
 
 from eggbox_potential_sampler.random_sampling_mco.parameters import (
     DummyMCOParameter, DummyMCOParameterFactory)
@@ -34,6 +36,9 @@ class TestRandomSamplingMCO(unittest.TestCase):
         model.evaluation_mode = 'Subprocess'
         model.parameters = [DummyMCOParameter(
             mock.Mock(spec=DummyMCOParameterFactory))]
+        model.kpis = [
+            KPISpecification()
+        ]
 
         self.evaluator.workflow.mco = model
 
@@ -52,6 +57,9 @@ class TestRandomSamplingMCO(unittest.TestCase):
         model.evaluation_mode = 'Internal'
         model.parameters = [DummyMCOParameter(
             mock.Mock(spec=DummyMCOParameterFactory))]
+        model.kpis = [
+            KPISpecification()
+        ]
 
         self.evaluator.workflow.mco = model
         kpis = [DataValue(value=1), DataValue(value=2)]
