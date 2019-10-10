@@ -58,7 +58,8 @@ class TestRandomSamplingMCO(unittest.TestCase):
         model.parameters = [DummyMCOParameter(
             mock.Mock(spec=DummyMCOParameterFactory))]
 
-        with mock.patch('force_bdss.api.Workflow.execute') as mock_exec:
-            mock_exec.return_value = [DataValue(value=1), DataValue(value=2)]
+        kpis = [DataValue(value=1), DataValue(value=2)]
+        with mock.patch('force_bdss.api.Workflow.execute',
+                        return_value=kpis) as mock_exec:
             opt.run(model)
             self.assertEqual(mock_exec.call_count, 7)
