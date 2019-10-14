@@ -1,10 +1,15 @@
-import subprocess
-import sys
-import itertools
 import collections
-import os
+import itertools
+import logging
+import sys
 
 from force_bdss.api import BaseMCO, DataValue
+
+from enthought_example.example_evaluator.subprocess_workflow_evaluator import (
+    SubprocessWorkflowEvaluator
+)
+
+log = logging.getLogger(__name__)
 
 
 def rotated_range(start, stop, starting_value):
@@ -51,7 +56,7 @@ class ExampleMCO(BaseMCO):
 
     Currently there's no error handling.
     """
-    def run(self, model):
+    def run(self, evaluator):
         # This implementation mimics the expected behavior of dakota
         # by spawning the force_bdss with the evaluate option to compute
         # a single point. Your specific implementation should be quite
@@ -59,6 +64,8 @@ class ExampleMCO(BaseMCO):
         # as a separate process, collect its results via stdout or any
         # other more appropriate channel, and notify using the mechanisms
         # explained above.
+        model = evaluator.mco_model
+
         parameters = model.parameters
 
         # Generate specific parameter values as from the specification in
@@ -74,30 +81,28 @@ class ExampleMCO(BaseMCO):
 
         value_iterator = itertools.product(*values)
 
-        workflow_file = self.factory.plugin.application.workflow_file
+        # Here we create an instance of our WorkflowEvaluator subclass
+        # that allows for evaluation of a state in the workflow via calling
+        # force_bdss on a new subprocess running in 'evaluate' mode.
+        # Note: a BaseMCOCommunicator must be present to pass in parameter
+        # values and returning the KPI for a force_bdss run in 'evaluate'
+        # mode
+        single_point_evaluator = SubprocessWorkflowEvaluator(
+            workflow=evaluator.workflow,
+            workflow_filepath=evaluator.workflow_filepath,
+            executable_path=sys.argv[0]
+        )
 
         for value in value_iterator:
-            # Setting ETS_TOOLKIT=null before executing bdss prevents it
-            # from trying to create GUI every call, giving reducing the
-            # overhead by a factor of 2.
-            env = {**os.environ, "ETS_TOOLKIT": "null"}
-            # Spawn the single point evaluation, which is the bdss itself
-            # with the option evaluate.
             # We pass the specific parameter values via stdin, and read
             # the result via stdout. The format is decided by the
             # MCOCommunicator. NOTE: The communicator is involved in the
             # communication between the MCO executable and the bdss single
             # point evaluation, _not_ between the bdss and the MCO executable.
-            cmd = [sys.argv[0], "--evaluate", workflow_file.path]
-            ps = subprocess.Popen(
-                cmd, env=env, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
-
-            out = ps.communicate(
-                " ".join([str(v) for v in value]).encode("utf-8"))
-            out_data = out[0].decode("utf-8").split()
+            kpis = single_point_evaluator.evaluate(value)
 
             # When there is new data, this operation informs the system that
             # new data has been received. It must be a dictionary as given.
             self.notify_new_point([DataValue(value=v) for v in value],
-                                  [DataValue(value=v) for v in out_data],
-                                  [1.0/len(out_data)]*len(out_data))
+                                  [DataValue(value=v) for v in kpis],
+                                  [1 / len(kpis)] * len(kpis))

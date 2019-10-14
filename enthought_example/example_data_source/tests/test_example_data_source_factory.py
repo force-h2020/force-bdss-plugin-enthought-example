@@ -1,9 +1,11 @@
 import unittest
 
-from enthought_example.example_data_source.example_data_source import \
+from enthought_example.example_data_source.example_data_source import (
     ExampleDataSource
-from enthought_example.example_data_source.example_data_source_model import \
+)
+from enthought_example.example_data_source.example_data_source_model import (
     ExampleDataSourceModel
+)
 from enthought_example.example_plugin import ExamplePlugin
 
 
@@ -14,7 +16,7 @@ class DataSourceFactoryTestMixin(unittest.TestCase):
 
     def test_initialization(self):
         self.assertNotEqual(self.factory.id, "")
-        self.assertEqual(self.factory.plugin, self.plugin)
+        self.assertEqual(self.factory.plugin_id, self.plugin.id)
 
     def test_create_model(self):
         model = self.factory.create_model({})

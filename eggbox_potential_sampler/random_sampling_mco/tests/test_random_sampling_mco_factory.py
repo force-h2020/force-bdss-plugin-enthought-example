@@ -17,7 +17,7 @@ class TestRandomSamplingMCOFactory(unittest.TestCase):
 
     def test_initialization(self):
         self.assertIn("random_sampling_mco", self.factory.id)
-        self.assertEqual(self.factory.plugin, self.plugin)
+        self.assertEqual(self.factory.plugin_id, self.plugin.id)
 
     def test_create_model(self):
         model = self.factory.create_model({})

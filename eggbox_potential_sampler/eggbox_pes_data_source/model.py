@@ -1,6 +1,8 @@
 import numpy as np
+
 from traits.api import Bool, Float, List, on_trait_change, Unicode
 from traitsui.api import Item, View
+
 from force_bdss.api import BaseDataSourceModel, PositiveInt
 
 
