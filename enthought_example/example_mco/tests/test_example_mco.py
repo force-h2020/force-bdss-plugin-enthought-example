@@ -21,7 +21,8 @@ from enthought_example.example_mco.example_mco_factory import (
 
 class TestExampleMCO(TestCase):
     def setUp(self):
-        self.factory = ExampleMCOFactory('pid')
+        self.plugin = {'id': 'pid', 'name': 'Plugin'}
+        self.factory = ExampleMCOFactory(self.plugin)
         self.evaluator = WorkflowEvaluator(
             workflow=Workflow(),
             workflow_filepath="whatever"

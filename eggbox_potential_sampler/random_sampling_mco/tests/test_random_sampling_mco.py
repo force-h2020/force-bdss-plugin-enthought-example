@@ -20,7 +20,8 @@ from eggbox_potential_sampler.random_sampling_mco.mco_factory import (
 
 class TestRandomSamplingMCO(unittest.TestCase):
     def setUp(self):
-        self.factory = RandomSamplingMCOFactory('pid')
+        self.plugin = {'id': 'pid', 'name': 'Plugin'}
+        self.factory = RandomSamplingMCOFactory(self.plugin)
         self.evaluator = WorkflowEvaluator(
             workflow=Workflow(),
             workflow_filepath="whatever"
