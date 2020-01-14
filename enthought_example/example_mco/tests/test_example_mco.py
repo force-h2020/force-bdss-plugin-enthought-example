@@ -2,31 +2,23 @@ from unittest import mock, TestCase
 
 from traits.api import TraitError
 
-from force_bdss.api import (
-    Workflow, KPISpecification, WorkflowEvaluator
-)
+from force_bdss.api import Workflow, KPISpecification, WorkflowEvaluator
 
 from enthought_example.example_mco.parameters import (
     RangedMCOParameter,
-    RangedMCOParameterFactory
+    RangedMCOParameterFactory,
 )
 
-from enthought_example.example_mco.example_mco import (
-    ExampleMCO
-)
-from enthought_example.example_mco.example_mco_factory import (
-    ExampleMCOFactory
-)
+from enthought_example.example_mco.example_mco import ExampleMCO
+from enthought_example.example_mco.example_mco_factory import ExampleMCOFactory
 
 
 class TestExampleMCO(TestCase):
     def setUp(self):
-        self.plugin = {'id': 'pid', 'name': 'Plugin'}
+        self.plugin = {"id": "pid", "name": "Plugin"}
         self.factory = ExampleMCOFactory(self.plugin)
         self.evaluator = WorkflowEvaluator(
-            workflow=Workflow(),
-            workflow_filepath="whatever"
-
+            workflow=Workflow(), workflow_filepath="whatever"
         )
 
     def test_initialization(self):
@@ -41,11 +33,10 @@ class TestExampleMCO(TestCase):
                 mock.Mock(spec=RangedMCOParameterFactory),
                 lower_bound=1,
                 upper_bound=3,
-                initial_value=2)
+                initial_value=2,
+            )
         ]
-        model.kpis = [
-            KPISpecification()
-        ]
+        model.kpis = [KPISpecification()]
 
         self.evaluator.workflow.mco_model = model
         mock_process = mock.Mock()
@@ -78,8 +69,9 @@ class TestExampleMCO(TestCase):
         # test whether argument order matters on object creation
         model_data = {"initial_value": 2, "upper_bound": 3, "lower_bound": 1}
         model.parameters = [
-            RangedMCOParameter(mock.Mock(spec=RangedMCOParameterFactory),
-                               **model_data)
+            RangedMCOParameter(
+                mock.Mock(spec=RangedMCOParameterFactory), **model_data
+            )
         ]
 
         mock_process = mock.Mock()
