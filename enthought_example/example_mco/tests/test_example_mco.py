@@ -47,7 +47,7 @@ class TestExampleMCO(TestCase):
             KPISpecification()
         ]
 
-        self.evaluator.workflow.mco = model
+        self.evaluator.workflow.mco_model = model
         mock_process = mock.Mock()
         mock_process.communicate = mock.Mock(return_value=(b"1 2 3", b""))
         with mock.patch("subprocess.Popen") as mock_popen:
