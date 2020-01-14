@@ -42,7 +42,7 @@ class TestRandomSamplingMCO(unittest.TestCase):
             KPISpecification()
         ]
 
-        self.evaluator.workflow.mco = model
+        self.evaluator.workflow.mco_model = model
         mock_process = mock.Mock()
         mock_process.communicate = mock.Mock(return_value=(b"2", b"1 0"))
         with mock.patch("subprocess.Popen") as mock_popen:
@@ -62,7 +62,7 @@ class TestRandomSamplingMCO(unittest.TestCase):
             KPISpecification()
         ]
 
-        self.evaluator.workflow.mco = model
+        self.evaluator.workflow.mco_model = model
         kpis = [DataValue(value=1), DataValue(value=2)]
         with mock.patch('force_bdss.api.Workflow.execute',
                         return_value=kpis) as mock_exec:
