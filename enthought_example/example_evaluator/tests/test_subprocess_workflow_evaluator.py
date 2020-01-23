@@ -35,7 +35,7 @@ class TestSubprocessWorkflowEvaluator(unittest.TestCase):
 
     def test__subprocess_solve(self):
         factory = mock.Mock(spec=BaseMCOFactory)
-        self.evaluator.workflow.mco = ExampleMCOModel(factory)
+        self.evaluator.workflow.mco_model = ExampleMCOModel(factory)
 
         with mock.patch("subprocess.Popen") as mock_popen:
             mock_popen.return_value = self.mock_process
@@ -49,7 +49,7 @@ class TestSubprocessWorkflowEvaluator(unittest.TestCase):
             raise Exception
 
         factory = mock.Mock(spec=BaseMCOFactory)
-        self.evaluator.workflow.mco = ExampleMCOModel(factory)
+        self.evaluator.workflow.mco_model = ExampleMCOModel(factory)
 
         with mock.patch('enthought_example.example_mco.example_mco'
                         '.SubprocessWorkflowEvaluator._subprocess_evaluate',
