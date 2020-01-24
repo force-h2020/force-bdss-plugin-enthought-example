@@ -1,8 +1,9 @@
 import logging
 import os
 import subprocess
+import tempfile
 
-from traits.api import Unicode
+from traits.api import Unicode, File
 
 from force_bdss.api import Workflow
 
@@ -12,6 +13,9 @@ log = logging.getLogger(__name__)
 class SubprocessWorkflow(Workflow):
     """A subclass of WorkflowSolver that spawns a subprocess to
      evaluate a single point."""
+
+    #: File path of the Workflow object
+    workflow_filepath = File()
 
     #: The path to the force_bdss executable
     executable_path = Unicode()
@@ -46,7 +50,7 @@ class SubprocessWorkflow(Workflow):
 
         return stdout
 
-    def _subprocess_evaluate(self, parameter_values):
+    def _subprocess_evaluate(self, parameter_values, filepath):
         """Executes the workflow using the given parameter values
         running on an external process via the subprocess library.
         Values for each parameter in thw workflow to calculate a
@@ -54,15 +58,15 @@ class SubprocessWorkflow(Workflow):
         """
 
         # This command calls a force_bdss executable on another process
-        # to evaluate the same workflow at a state determined by the
-        # parameter values. A BaseMCOCommunicator will be needed to be
-        # defined in the workflow to receive the data and send back values
-        # corresponding to each KPI via the command line.
+        # to evaluate workflow serialized in filepath at a state determined
+        # by the parameter values. A BaseMCOCommunicator will be needed
+        # to be defined in the workflow to receive the data and send
+        # back values corresponding to each KPI via the command line.
         command = [self.executable_path,
                    "--logfile",
                    "bdss.log",
                    "--evaluate",
-                   self.workflow_filepath]
+                   filepath]
 
         # Converts the parameter values to a string to send via
         # subprocess
@@ -94,7 +98,15 @@ class SubprocessWorkflow(Workflow):
         """
 
         try:
-            return self._subprocess_evaluate(parameter_values)
+            # If a path to a workflow file is assigned, then use this
+            # as a reference, otherwise generate a temporary file
+            if self.workflow_filepath:
+                return self._subprocess_evaluate(
+                    parameter_values, self.workflow_filepath)
+            else:
+                with tempfile.TemporaryFile() as tmp_file:
+                    return self._subprocess_evaluate(
+                        parameter_values, tmp_file)
 
         except Exception:
             message = (

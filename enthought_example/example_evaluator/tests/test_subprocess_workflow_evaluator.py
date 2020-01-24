@@ -1,4 +1,5 @@
 import unittest
+import tempfile
 
 from unittest import mock
 
@@ -38,7 +39,9 @@ class TestSubprocessWorkflowEvaluator(unittest.TestCase):
 
         with mock.patch("subprocess.Popen") as mock_popen:
             mock_popen.return_value = self.mock_process
-            kpi_results = self.evaluator._subprocess_evaluate([1.0])
+            with tempfile.TemporaryFile() as tmp_file:
+                kpi_results = self.evaluator._subprocess_evaluate([
+                    1.0], tmp_file.name)
 
         self.assertEqual(1, len(kpi_results))
 
