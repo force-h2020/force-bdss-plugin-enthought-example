@@ -8,7 +8,7 @@ from force_bdss.api import (
 
 
 from eggbox_potential_sampler.random_sampling_mco.parameters import (
-    DummyMCOParameter, DummyMCOParameterFactory)
+    DummyMCOParameter)
 
 from eggbox_potential_sampler.random_sampling_mco.mco import (
     RandomSamplingMCO

@@ -31,10 +31,11 @@ class TestExampleMCO(TestCase):
         parameter_factory = self.factory.parameter_factories[0]
         model.parameters = [
             parameter_factory.create_model(
-                data_values=
-                    {'lower_bound': 1,
-                     'upper_bound': 3,
-                     'initial_value': 2}
+                data_values={
+                    'lower_bound': 1,
+                    'upper_bound': 3,
+                    'initial_value': 2
+                }
             )
         ]
         model.kpis = [KPISpecification()]
