@@ -6,7 +6,6 @@ from force_bdss.api import (
 class DummyMCOParameter(BaseMCOParameter):
     """ Expresses a named MCO parameter with values set directly by the
     MCO.
-
     """
 
 

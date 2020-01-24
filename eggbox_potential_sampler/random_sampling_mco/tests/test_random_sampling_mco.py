@@ -3,12 +3,12 @@ import unittest
 from unittest import mock
 
 from force_bdss.api import (
-    DataValue, Workflow, KPISpecification, WorkflowEvaluator
+    DataValue, Workflow, KPISpecification
 )
 
 
 from eggbox_potential_sampler.random_sampling_mco.parameters import (
-    DummyMCOParameter, DummyMCOParameterFactory)
+    DummyMCOParameter)
 
 from eggbox_potential_sampler.random_sampling_mco.mco import (
     RandomSamplingMCO
@@ -22,10 +22,7 @@ class TestRandomSamplingMCO(unittest.TestCase):
     def setUp(self):
         self.plugin = {'id': 'pid', 'name': 'Plugin'}
         self.factory = RandomSamplingMCOFactory(self.plugin)
-        self.evaluator = WorkflowEvaluator(
-            workflow=Workflow(),
-            workflow_filepath="whatever"
-        )
+        self.evaluator = Workflow()
 
     def test_initialization(self):
         opt = RandomSamplingMCO(self.factory)
@@ -36,13 +33,13 @@ class TestRandomSamplingMCO(unittest.TestCase):
         model = self.factory.create_model()
         model.num_trials = 7
         model.evaluation_mode = 'Subprocess'
-        model.parameters = [DummyMCOParameter(
-            mock.Mock(spec=DummyMCOParameterFactory))]
+        parameter_factory = self.factory.parameter_factories[0]
+        model.parameters = [DummyMCOParameter(parameter_factory)]
         model.kpis = [
             KPISpecification()
         ]
 
-        self.evaluator.workflow.mco_model = model
+        self.evaluator.mco_model = model
         mock_process = mock.Mock()
         mock_process.communicate = mock.Mock(return_value=(b"2", b"1 0"))
         with mock.patch("subprocess.Popen") as mock_popen:
@@ -56,13 +53,13 @@ class TestRandomSamplingMCO(unittest.TestCase):
         model = self.factory.create_model()
         model.num_trials = 7
         model.evaluation_mode = 'Internal'
-        model.parameters = [DummyMCOParameter(
-            mock.Mock(spec=DummyMCOParameterFactory))]
+        parameter_factory = self.factory.parameter_factories[0]
+        model.parameters = [DummyMCOParameter(parameter_factory)]
         model.kpis = [
             KPISpecification()
         ]
 
-        self.evaluator.workflow.mco_model = model
+        self.evaluator.mco_model = model
         kpis = [DataValue(value=1), DataValue(value=2)]
         with mock.patch('force_bdss.api.Workflow.execute',
                         return_value=kpis) as mock_exec:
