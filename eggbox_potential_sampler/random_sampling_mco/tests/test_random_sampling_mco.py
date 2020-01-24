@@ -33,8 +33,8 @@ class TestRandomSamplingMCO(unittest.TestCase):
         model = self.factory.create_model()
         model.num_trials = 7
         model.evaluation_mode = 'Subprocess'
-        model.parameters = [DummyMCOParameter(
-            mock.Mock(spec=DummyMCOParameterFactory))]
+        parameter_factory = self.factory.parameter_factories[0]
+        model.parameters = [DummyMCOParameter(parameter_factory)]
         model.kpis = [
             KPISpecification()
         ]
@@ -53,8 +53,8 @@ class TestRandomSamplingMCO(unittest.TestCase):
         model = self.factory.create_model()
         model.num_trials = 7
         model.evaluation_mode = 'Internal'
-        model.parameters = [DummyMCOParameter(
-            mock.Mock(spec=DummyMCOParameterFactory))]
+        parameter_factory = self.factory.parameter_factories[0]
+        model.parameters = [DummyMCOParameter(parameter_factory)]
         model.kpis = [
             KPISpecification()
         ]

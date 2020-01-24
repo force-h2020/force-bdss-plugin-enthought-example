@@ -28,12 +28,13 @@ class TestExampleMCO(TestCase):
     def test_run(self):
         opt = self.factory.create_optimizer()
         model = self.factory.create_model()
+        parameter_factory = self.factory.parameter_factories[0]
         model.parameters = [
-            RangedMCOParameter(
-                mock.Mock(spec=RangedMCOParameterFactory),
-                lower_bound=1,
-                upper_bound=3,
-                initial_value=2,
+            parameter_factory.create_model(
+                data_values=
+                    {'lower_bound': 1,
+                     'upper_bound': 3,
+                     'initial_value': 2}
             )
         ]
         model.kpis = [KPISpecification()]
@@ -41,42 +42,6 @@ class TestExampleMCO(TestCase):
         self.evaluator.mco_model = model
         mock_process = mock.Mock()
         mock_process.communicate = mock.Mock(return_value=(b"1 2 3", b""))
-        with mock.patch("subprocess.Popen") as mock_popen:
-            mock_popen.return_value = mock_process
-            opt.run(self.evaluator)
-
-        self.assertEqual(mock_popen.call_count, 2)
-
-        # test whether argument order matters on object creation
-        model.parameters = [
-            RangedMCOParameter(
-                mock.Mock(spec=RangedMCOParameterFactory),
-                initial_value=2,
-                upper_bound=3,
-                lower_bound=1,
-            )
-        ]
-
-        mock_process = mock.Mock()
-        mock_process.communicate = mock.Mock(return_value=(b"1 2 3", b""))
-
-        with mock.patch("subprocess.Popen") as mock_popen:
-            mock_popen.return_value = mock_process
-            opt.run(self.evaluator)
-
-        self.assertEqual(mock_popen.call_count, 2)
-
-        # test whether argument order matters on object creation
-        model_data = {"initial_value": 2, "upper_bound": 3, "lower_bound": 1}
-        model.parameters = [
-            RangedMCOParameter(
-                mock.Mock(spec=RangedMCOParameterFactory), **model_data
-            )
-        ]
-
-        mock_process = mock.Mock()
-        mock_process.communicate = mock.Mock(return_value=(b"1 2 3", b""))
-
         with mock.patch("subprocess.Popen") as mock_popen:
             mock_popen.return_value = mock_process
             opt.run(self.evaluator)
