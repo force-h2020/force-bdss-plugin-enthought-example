@@ -27,9 +27,12 @@ class ExampleContributedUI(ContributedUI):
     @on_trait_change('lower,upper,power')
     def workflow_data_update(self):
         wf_data = {
-            "mco": self._mco_data(),
-            "execution_layers": self._execution_layer_data(),
-            "notification_listeners":  self._notification_listener_data()
+            "version": "1",
+            "workflow": {
+                "mco_model": self._mco_data(),
+                "execution_layers": self._execution_layer_data(),
+                "notification_listeners":  self._notification_listener_data()
+            }
         }
         self.workflow_data = wf_data
         return wf_data
