@@ -11,7 +11,7 @@ from enthought_example.example_mco.example_mco import (
 )
 
 
-class TestSubprocessWorkflowEvaluator(unittest.TestCase):
+class TestSubprocessWorkflow(unittest.TestCase):
 
     def setUp(self):
         self.evaluator = SubprocessWorkflow(
@@ -31,9 +31,8 @@ class TestSubprocessWorkflowEvaluator(unittest.TestCase):
 
         with mock.patch("subprocess.Popen") as mock_popen:
             mock_popen.return_value = self.mock_process
-            with tempfile.TemporaryFile() as tmp_file:
-                kpi_results = self.evaluator._subprocess_evaluate([
-                    1.0], tmp_file.name)
+            kpi_results = self.evaluator._subprocess_evaluate([
+                1.0], 'dummy_filename')
 
         self.assertEqual(1, len(kpi_results))
 
