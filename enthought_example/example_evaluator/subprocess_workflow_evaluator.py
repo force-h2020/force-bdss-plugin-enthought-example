@@ -5,7 +5,7 @@ import tempfile
 
 from traits.api import Unicode, File
 
-from force_bdss.api import Workflow
+from force_bdss.api import Workflow, WorkflowWriter
 
 log = logging.getLogger(__name__)
 
@@ -15,10 +15,10 @@ class SubprocessWorkflow(Workflow):
      evaluate a single point."""
 
     #: File path of the Workflow object
-    workflow_filepath = File()
+    workflow_filepath = File(transient=True)
 
     #: The path to the force_bdss executable
-    executable_path = Unicode()
+    executable_path = Unicode(transient=True)
 
     def _call_subprocess(self, command, user_input):
         """Calls a subprocess to perform a command with parsed
@@ -99,12 +99,15 @@ class SubprocessWorkflow(Workflow):
 
         try:
             # If a path to a workflow file is assigned, then use this
-            # as a reference, otherwise generate a temporary file
+            # as a reference, otherwise generate a temporary file and
+            # save a copy of this Workflow instance there
             if self.workflow_filepath:
                 return self._subprocess_evaluate(
                     parameter_values, self.workflow_filepath)
             else:
-                with tempfile.TemporaryFile() as tmp_file:
+                with tempfile.NamedTemporaryFile() as tmp_file:
+                    writer = WorkflowWriter()
+                    writer.write(self, tmp_file.name)
                     return self._subprocess_evaluate(
                         parameter_values, tmp_file)
 
