@@ -4,12 +4,12 @@ import subprocess
 
 from traits.api import Unicode
 
-from force_bdss.api import WorkflowEvaluator
+from force_bdss.api import Workflow
 
 log = logging.getLogger(__name__)
 
 
-class SubprocessWorkflowEvaluator(WorkflowEvaluator):
+class SubprocessWorkflow(Workflow):
     """A subclass of WorkflowSolver that spawns a subprocess to
      evaluate a single point."""
 
@@ -98,7 +98,7 @@ class SubprocessWorkflowEvaluator(WorkflowEvaluator):
 
         except Exception:
             message = (
-                'SubprocessWorkflowEvaluator failed '
+                'SubprocessWorkflow failed '
                 'to run. This is likely due to an error in the '
                 'BaseMCOCommunicator assigned to {}.'.format(
                     self.mco_model.factory.__class__)
