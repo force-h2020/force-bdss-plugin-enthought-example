@@ -3,7 +3,7 @@ from unittest import mock, TestCase
 from traits.api import TraitError
 
 from force_bdss.api import (
-    Workflow, KPISpecification, WorkflowEvaluator
+    Workflow, KPISpecification
 )
 
 from enthought_example.example_mco.parameters import (
@@ -23,11 +23,7 @@ class TestExampleMCO(TestCase):
     def setUp(self):
         self.plugin = {'id': 'pid', 'name': 'Plugin'}
         self.factory = ExampleMCOFactory(self.plugin)
-        self.evaluator = WorkflowEvaluator(
-            workflow=Workflow(),
-            workflow_filepath="whatever"
-
-        )
+        self.evaluator = Workflow()
 
     def test_initialization(self):
         opt = ExampleMCO(self.factory)
@@ -47,7 +43,7 @@ class TestExampleMCO(TestCase):
             KPISpecification()
         ]
 
-        self.evaluator.workflow.mco_model = model
+        self.evaluator.mco_model = model
         mock_process = mock.Mock()
         mock_process.communicate = mock.Mock(return_value=(b"1 2 3", b""))
         with mock.patch("subprocess.Popen") as mock_popen:

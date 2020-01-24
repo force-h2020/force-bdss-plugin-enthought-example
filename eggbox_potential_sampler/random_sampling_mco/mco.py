@@ -8,7 +8,7 @@ from force_bdss.api import (
 )
 
 from enthought_example.example_evaluator.subprocess_workflow_evaluator import (
-    SubprocessWorkflowEvaluator
+    SubprocessWorkflow
 )
 
 log = logging.getLogger(__name__)
@@ -33,9 +33,10 @@ class RandomSamplingMCO(BaseMCO):
             # Note: a BaseMCOCommunicator must be present to pass in parameter
             # values and returning the KPI for a force_bdss run in 'evaluate'
             # mode
-            single_point_evaluator = SubprocessWorkflowEvaluator(
-                workflow=evaluator.workflow,
-                workflow_filepath=evaluator.workflow_filepath,
+            single_point_evaluator = SubprocessWorkflow(
+                mco_model=evaluator.mco_model,
+                execution_layers=evaluator.execution_layers,
+                notification_listeners=evaluator.notification_listeners,
                 executable_path=sys.argv[0]
             )
         else:
