@@ -14,24 +14,16 @@ from enthought_example.example_mco.example_mco import (
 class TestSubprocessWorkflowEvaluator(unittest.TestCase):
 
     def setUp(self):
-
         self.evaluator = SubprocessWorkflow(
-            workflow_filepath="test_probe.json"
-        )
+            workflow_filepath="test_probe.json")
         self.mock_process = mock.Mock()
-        self.mock_process.communicate = mock.Mock(
-            return_value=(b"2", b"1 0")
-        )
+        self.mock_process.communicate = mock.Mock(return_value=(b"2", b"1 0"))
 
     def test___call_subprocess(self):
 
         # Test simple bash command
-        stdout = self.evaluator._call_subprocess(
-            ['uniq'], ['Hello', 'World']
-        )
-        self.assertEqual(
-            'Hello World', stdout.decode("utf-8").strip()
-        )
+        stdout = self.evaluator._call_subprocess(["uniq"], ["Hello", "World"])
+        self.assertEqual("Hello World", stdout.decode("utf-8").strip())
 
     def test__subprocess_solve(self):
         factory = mock.Mock(spec=BaseMCOFactory)
@@ -46,7 +38,6 @@ class TestSubprocessWorkflowEvaluator(unittest.TestCase):
         self.assertEqual(1, len(kpi_results))
 
     def test_solve_error_mco_communicator(self):
-
         def mock_subprocess_evaluate(self, *args):
             raise Exception
 
