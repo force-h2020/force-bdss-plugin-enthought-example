@@ -38,7 +38,7 @@ class ExampleMCO(BaseMCO):
     - report new events as they happen, specifically, when the MCO has
       computed a new result, it can be broadcast with the notify_new_point::
 
-            self.notify_new_point(
+            evaluator.mco_model.notify_new_point(
                 optimal_point=[
                     DataValue(value=parameter_1),
                     DataValue(value=parameter_2),
@@ -104,6 +104,7 @@ class ExampleMCO(BaseMCO):
 
             # When there is new data, this operation informs the system that
             # new data has been received. It must be a dictionary as given.
-            self.notify_new_point([DataValue(value=v) for v in value],
-                                  [DataValue(value=v) for v in kpis],
-                                  [1 / len(kpis)] * len(kpis))
+            single_point_evaluator.mco_model.notify_new_point(
+                [DataValue(value=v) for v in value],
+                [DataValue(value=v) for v in kpis],
+                [1 / len(kpis)] * len(kpis))

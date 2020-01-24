@@ -50,7 +50,7 @@ class RandomSamplingMCO(BaseMCO):
 
             kpis = single_point_evaluator.evaluate(trial_position)
 
-            self.notify_new_point(
+            single_point_evaluator.mco_model.notify_new_point(
                 [DataValue(value=v) for v in trial_position],
                 [DataValue(value=v) for v in kpis],
                 [1 / len(kpis)] * len(kpis)
