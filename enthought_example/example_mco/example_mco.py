@@ -104,7 +104,8 @@ class ExampleMCO(BaseMCO):
 
             # When there is new data, this operation informs the system that
             # new data has been received. It must be a dictionary as given.
-            single_point_evaluator.mco_model.notify_new_point(
+            single_point_evaluator.mco_model.notify_progress_event(
                 [DataValue(value=v) for v in value],
                 [DataValue(value=v) for v in kpis],
-                [1 / len(kpis)] * len(kpis))
+                weights=[1 / len(kpis)] * len(kpis)
+            )
