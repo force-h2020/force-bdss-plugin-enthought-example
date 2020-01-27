@@ -109,7 +109,7 @@ class SubprocessWorkflow(Workflow):
                     writer = WorkflowWriter()
                     writer.write(self, tmp_file.name)
                     return self._subprocess_evaluate(
-                        parameter_values, tmp_file)
+                        parameter_values, tmp_file.name)
 
         except Exception:
             message = (
