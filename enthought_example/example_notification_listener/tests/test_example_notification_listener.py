@@ -30,8 +30,7 @@ class TestExampleNotificationListener(unittest.TestCase):
                 kpi_names=["baz", "quux"]))
             listener.deliver(MCOProgressEvent(
                 optimal_point=[DataValue(value=1.0), DataValue(value=2.0)],
-                optimal_kpis=[DataValue(value=3.0), DataValue(value=4.0)],
-                weights=[0.5, 0.5]
+                optimal_kpis=[DataValue(value=3.0), DataValue(value=4.0)]
             ))
             listener.deliver(MCOFinishEvent())
             listener.finalize()
@@ -40,7 +39,7 @@ class TestExampleNotificationListener(unittest.TestCase):
             out.getvalue(),
             "Initializing\n"
             "MCOStartEvent ['foo', 'bar'] ['baz', 'quux']\n"
-            "MCOProgressEvent [1.0, 2.0] [3.0, 4.0] [0.5, 0.5]\n"
+            "MCOProgressEvent [1.0, 2.0] [3.0, 4.0]\n"
             "MCOFinishEvent\n"
             "Finalizing\n"
         )

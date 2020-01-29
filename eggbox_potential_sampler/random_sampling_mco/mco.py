@@ -52,6 +52,5 @@ class RandomSamplingMCO(BaseMCO):
 
             single_point_evaluator.mco_model.notify_progress_event(
                 [DataValue(value=v) for v in trial_position],
-                [DataValue(value=v) for v in kpis],
-                weights=[1 / len(kpis)] * len(kpis)
+                [DataValue(value=v) for v in kpis]
             )
