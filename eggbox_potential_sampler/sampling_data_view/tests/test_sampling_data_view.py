@@ -38,6 +38,9 @@ class TestSamplingDataView(unittest.TestCase):
             self.data_view.sampling_plot.title, 'Convergence'
         )
 
+    def test_configure_traits(self):
+        self.data_view.edit_traits()
+
 
 class TestConvergencePlot(unittest.TestCase):
 
@@ -52,7 +55,8 @@ class TestConvergencePlot(unittest.TestCase):
         self.assertTrue(self.plot.update_required)
         self.assertTrue(self.plot.plot_updater.active)
         # update
-        self.plot.update_data_arrays()
+        self.plot._update_data_arrays()
+        self.plot._update_displayable_value_names()
         self.plot._update_plot()
         self.plot.update_required = False
 
@@ -65,6 +69,8 @@ class TestConvergencePlot(unittest.TestCase):
         self.check_update_is_requested_and_apply()
 
     def test_init(self):
+        self.analysis_model.add_evaluation_step((1.0, 1.0, 1.0))
+        self.plot._update_displayable_value_names()
         self.assertIsInstance(self.plot._axis, LinePlot)
 
     def test_resize_plot(self):
@@ -75,14 +81,16 @@ class TestConvergencePlot(unittest.TestCase):
 
         ranges = self.plot._get_plot_range()
         # the second value for y (5) shouldn't contribute to the running min.
-        self.assertEqual(ranges[3], 3.1)
+        self.assertEqual(3.1, ranges[3])
 
     def test_change_variable(self):
         self.add_data_points()
         self.plot._update_plot()
-        self.assertEqual(
-            self.plot._custom_data_array, [3, 3, 2.6, 2.5, 2.47, 2.465])
+        self.assertListEqual(
+            [3, 3, 2.6, 2.5, 2.47, 2.465],
+            self.plot._custom_data_array)
 
         self.plot.y = "E"
-        self.assertEqual(
-            self.plot._custom_data_array, [8, 7.7, 7.6, 7.6, 7.543, 7.54])
+        self.assertListEqual(
+            [8, 7.7, 7.6, 7.6, 7.543, 7.54],
+            self.plot._custom_data_array)

@@ -1,11 +1,17 @@
-from traits.api import on_trait_change, List, Instance, Enum
-from traitsui.api import View, VGroup, HGroup, Item, UItem
+import logging
+
+import numpy as np
+
+from traits.api import on_trait_change, List, Instance, Str
+from traitsui.api import View, VGroup, HGroup, Item, UItem, EnumEditor
 from enable.api import ComponentEditor
 from chaco.tools.api import PanTool, ZoomTool
 
 from force_wfmanager.ui.review.base_data_view import BaseDataView
 from force_wfmanager.ui.review.plot import Plot
 from force_wfmanager.ui.review.plot import BasePlot, ChacoPlot
+
+log = logging.getLogger(__name__)
 
 
 class ConvergencePlot(BasePlot):
@@ -14,30 +20,36 @@ class ConvergencePlot(BasePlot):
 
     Here, the running minimum of the y-values is displayed on a line
     plot.
-
     """
 
-    #: Simple re-labelling of the underlying :class:`BasePlot` trait.
-    y = Enum(values='_value_names', label='convergence variable')
+    #: The x plot axis name (fixed to iteration)
+    x = Str('iteration')
 
     #: Extra array to hold our custom plot data
     _custom_data_array = List()
 
-    #: The View of the plot, showing the menu to choose 'y' and the plot itself
-    view = View(
-        VGroup(
-            HGroup(
-                Item('y'),
-            ),
-            UItem('_plot', editor=ComponentEditor())
+    def _axis_hgroup_default(self):
+        """Simple re-labelling of the underlying :class:`BasePlot` trait."""
+        return HGroup(
+            Item("y",
+                 label="convergence variable",
+                 editor=EnumEditor(name="displayable_value_names")),
         )
-    )
+
+    def default_traits_view(self):
+        view = View(
+            VGroup(
+                self.axis_hgroup,
+                UItem("_plot", editor=ComponentEditor()),
+            )
+        )
+        return view
 
     def plot_cumulative_line(self):
         """ Create the Chaco line plot. """
         plot = ChacoPlot(self._plot_data)
         line_plot = plot.plot(
-            ('iteration', 'cumulative_minimum'),
+            ('x', 'y'),
             type='line',
             name='Line plot',
             marker='circle',
@@ -52,73 +64,79 @@ class ConvergencePlot(BasePlot):
 
         return plot
 
-    @on_trait_change('x,y')
-    def _update_plot(self):
-        """ Override update_plot to include the new ancillary
-        array, and an array containing the index of that array.
-
+    def _update_plot_y_data(self):
+        """ Update data points displayed by the y axis. Updates
+        the convergence data in _custom_data_array
+        Sets the y-`self._plot_data` to corresponding data in the
+        `self._custom_data_array`.
+        This method is called by the `_update_plot` method during
+        the callback update.
+        This method is called when the `y` axis is changed.
         """
-        super()._update_plot()
+        if self.y == "" or len(self.data_arrays) == 0:
+            self._plot_data.set_data("y", [])
+        else:
+            self._plot.y_axis.title = self.y
+            self._custom_data_array[:] = self._y_convergence_data()
+            self._plot_data.set_data("y", self._custom_data_array)
 
-        self._custom_data_array = []
-
-        if self.y is None:
-            return
-
-        y_index = self.analysis_model.value_names.index(self.y)
-        for ind, _ in enumerate(self._data_arrays[y_index], start=1):
-            self._custom_data_array.append(
-                min(self._data_arrays[y_index][:ind]))
-        self._plot_data.set_data('cumulative_minimum',
-                                 self._custom_data_array)
-        self._plot_data.set_data(
-            'iteration',
-            list(range(1, len(self._custom_data_array) + 1))
-        )
-
-        self.recenter_plot()
+    def _update_plot_x_data(self):
+        """ Update data points displayed by the x axis.
+        Sets the x-`self._plot_data` to corresponding data in the
+        `self.data_arrays`.
+        This method is called by the `_update_plot` method during
+        the callback update.
+        This method is called when the `x` axis is changed.
+        """
+        self._plot.x_axis.title = self.x
+        x_array = np.arange(len(self._custom_data_array))
+        self._plot_data.set_data("x", x_array)
 
     def __plot_default(self):
         """ Set the new default plot. """
-        self._plot = self.plot_cumulative_line()
-        return self._plot
+        return self.plot_cumulative_line()
 
-    def __plot_data_default(self):
-        """ Add custom columns to the default plot data. """
-        plot_data = self._get_plot_data_default()
-        plot_data.set_data('cumulative_minimum', [])
-        plot_data.set_data('iteration', [])
-        return plot_data
+    def _y_convergence_data(self):
 
-    def recenter_plot(self):
-        """ Override recenter plot based on the data we're actually
-        plotting.
+        new_data_array = []
+        y_index = self.displayable_value_names.index(self.y)
 
-        """
-        try:
-            min_y = min(self._custom_data_array) - 0.1
-        except ValueError:
-            min_y = -0.1
-        try:
-            max_y = max(self._custom_data_array) + 0.1
-        except ValueError:
-            max_y = 1
+        for ind, _ in enumerate(self.data_arrays[y_index], start=1):
+            new_data_array.append(
+                min(self.data_arrays[y_index][:ind])
+            )
 
+        return new_data_array
+
+    def recenter_x_axis(self):
+        """ Resets the bounds on the x-axis of the plot. If now x axis
+        is specified, uses the default bounds (-1, 1). Otherwise, infers
+        the bounds from the x-axis related data."""
         if self._custom_data_array:
             max_x = 1.1 * len(self._custom_data_array)
             min_x = -0.1 * len(self._custom_data_array) + 1
+            bounds = (min_x, max_x)
         else:
-            max_x = 1
-            min_x = 0
+            bounds = (0, 1)
 
-        ranges = (min_x, max_x, min_y, max_y)
-        self._set_plot_range(*ranges)
+        self._set_plot_x_range(*bounds)
+        self._reset_zoomtool()
+        return bounds
 
-        for idx, overlay in enumerate(self._plot.overlays):
-            if isinstance(overlay, ZoomTool):
-                self._plot.overlays[idx] = ZoomTool(self._plot)
+    def recenter_y_axis(self):
+        """ Resets the bounds on the x-axis of the plot. If now y axis
+        is specified, uses the default bounds (-1, 1). Otherwise, infers
+        the bounds from the y-axis related data."""
+        if self._custom_data_array:
+            max_y = max(self._custom_data_array) + 0.1
+            min_y = min(self._custom_data_array) - 0.1
+            bounds = (min_y, max_y)
+        else:
+            bounds = (-0.1, 1)
 
-        return ranges
+        self._set_plot_y_range(*bounds)
+        self._reset_zoomtool()
+        return bounds
 
 
 class SamplingDataView(BaseDataView):
@@ -129,11 +147,17 @@ class SamplingDataView(BaseDataView):
     description = 'Potential sampling data view'
 
     colormap_plot = Instance(Plot)
+
     sampling_plot = Instance(ConvergencePlot)
 
-    traits_view = View(
-        HGroup(UItem('colormap_plot', style='custom'),
-               UItem('sampling_plot', style='custom')))
+    def default_traits_view(self):
+        view = View(
+            HGroup(
+                UItem('colormap_plot', style='custom'),
+                UItem('sampling_plot', style='custom')
+            )
+        )
+        return view
 
     def _colormap_plot_default(self):
         cmap_plot = Plot(analysis_model=self.analysis_model,
