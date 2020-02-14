@@ -1,0 +1,204 @@
+{
+    "version": "1",
+    "workflow": {
+        "mco_model": {
+            "id": "force.bdss.pes.plugin.sampler.v0.factory.random_sampling_mco",
+            "model_data": {
+                "num_trials": 1800,
+                "evaluation_mode": "Internal",
+                "parameters": [
+                    {
+                        "id": "force.bdss.pes.plugin.sampler.v0.factory.random_sampling_mco.parameter.dummy",
+                        "model_data": {
+                            "name": "u_input",
+                            "type": "angstrom"
+                        }
+                    },
+                    {
+                        "id": "force.bdss.pes.plugin.sampler.v0.factory.random_sampling_mco.parameter.dummy",
+                        "model_data": {
+                            "name": "v_input",
+                            "type": "angstrom"
+                        }
+                    }
+                ],
+                "kpis": [
+                    {
+                        "name": "E",
+                        "objective": "MINIMISE",
+                        "auto_scale": true,
+                        "scale_factor": 1.0
+                    }
+                ]
+            }
+        },
+        "execution_layers": [
+            [
+                {
+                    "id": "force.bdss.pes.plugin.sampler.v0.factory.eggbox_pes_data_source",
+                    "model_data": {
+                        "dimension": 2,
+                        "cuba_design_space_type": "angstrom",
+                        "cuba_potential_type": "joules",
+                        "num_cells": 5,
+                        "sigma_star": 0.1,
+                        "locally_optimize": true,
+                        "basin_depths": [
+                            0.04410184436818124,
+                            0.004048865520520628,
+                            0.09988307188017849,
+                            0.033299967880355434,
+                            0.023944901452850366,
+                            0.03655867755444392,
+                            0.0490460284386047,
+                            0.07342770870008895,
+                            0.07052016583982733,
+                            0.09423358134248538,
+                            0.02579466328157759,
+                            0.019938947948492415,
+                            0.09044935645545465,
+                            0.01446936740520518,
+                            0.07136831809730067,
+                            0.051403624301420474,
+                            0.06842788769102358,
+                            0.028368095702763853,
+                            0.022985268505493008,
+                            0.05994397943398479,
+                            0.04131060320729338,
+                            0.0451735746361175,
+                            0.020371129911827338,
+                            0.041913969680333785,
+                            0.0077411418422350334
+                        ],
+                        "basin_positions": [
+                            [
+                                0.0,
+                                0.0
+                            ],
+                            [
+                                0.2,
+                                0.0
+                            ],
+                            [
+                                0.4,
+                                0.0
+                            ],
+                            [
+                                0.6000000000000001,
+                                0.0
+                            ],
+                            [
+                                0.8,
+                                0.0
+                            ],
+                            [
+                                0.0,
+                                0.2
+                            ],
+                            [
+                                0.2,
+                                0.2
+                            ],
+                            [
+                                0.4,
+                                0.2
+                            ],
+                            [
+                                0.6000000000000001,
+                                0.2
+                            ],
+                            [
+                                0.8,
+                                0.2
+                            ],
+                            [
+                                0.0,
+                                0.4
+                            ],
+                            [
+                                0.2,
+                                0.4
+                            ],
+                            [
+                                0.4,
+                                0.4
+                            ],
+                            [
+                                0.6000000000000001,
+                                0.4
+                            ],
+                            [
+                                0.8,
+                                0.4
+                            ],
+                            [
+                                0.0,
+                                0.6000000000000001
+                            ],
+                            [
+                                0.2,
+                                0.6000000000000001
+                            ],
+                            [
+                                0.4,
+                                0.6000000000000001
+                            ],
+                            [
+                                0.6000000000000001,
+                                0.6000000000000001
+                            ],
+                            [
+                                0.8,
+                                0.6000000000000001
+                            ],
+                            [
+                                0.0,
+                                0.8
+                            ],
+                            [
+                                0.2,
+                                0.8
+                            ],
+                            [
+                                0.4,
+                                0.8
+                            ],
+                            [
+                                0.6000000000000001,
+                                0.8
+                            ],
+                            [
+                                0.8,
+                                0.8
+                            ]
+                        ],
+                        "trials": [],
+                        "results": [],
+                        "input_slot_info": [
+                            {
+                                "source": "Environment",
+                                "name": "u_input"
+                            },
+                            {
+                                "source": "Environment",
+                                "name": "v_input"
+                            }
+                        ],
+                        "output_slot_info": [
+                            {
+                                "name": "u_output"
+                            },
+                            {
+                                "name": "v_output"
+                            },
+                            {
+                                "name": "E"
+                            }
+                        ]
+                    }
+                }
+            ]
+        ],
+        "notification_listeners": []
+    }
+}
