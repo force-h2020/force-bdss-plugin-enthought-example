@@ -3,7 +3,7 @@ from traitsui.api import View, VGroup, HGroup, Item, UItem
 from enable.api import ComponentEditor
 from chaco.tools.api import PanTool, ZoomTool
 
-from force_wfmanager.ui.review.data_view import BaseDataView
+from force_wfmanager.ui.review.base_data_view import BaseDataView
 from force_wfmanager.ui.review.plot import Plot
 from force_wfmanager.ui.review.plot import BasePlot, ChacoPlot
 
