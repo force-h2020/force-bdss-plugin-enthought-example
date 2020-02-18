@@ -2,7 +2,7 @@ import logging
 
 import numpy as np
 
-from traits.api import on_trait_change, List, Instance, Str
+from traits.api import List, Instance, on_trait_change
 from traitsui.api import View, VGroup, HGroup, Item, UItem, EnumEditor
 from enable.api import ComponentEditor
 from chaco.tools.api import PanTool, ZoomTool
@@ -22,9 +22,6 @@ class ConvergencePlot(BasePlot):
     plot.
     """
 
-    #: The x plot axis name (fixed to iteration)
-    x = Str('iteration')
-
     #: Extra array to hold our custom plot data
     _custom_data_array = List()
 
@@ -32,7 +29,7 @@ class ConvergencePlot(BasePlot):
         """Simple re-labelling of the underlying :class:`BasePlot` trait."""
         return HGroup(
             Item("y",
-                 label="convergence variable",
+                 label="Convergence Variable",
                  editor=EnumEditor(name="displayable_value_names")),
         )
 
@@ -107,6 +104,12 @@ class ConvergencePlot(BasePlot):
             )
 
         return new_data_array
+
+    @on_trait_change("displayable_value_names[]")
+    def update_plot_axis_names(self):
+        super().update_plot_axis_names()
+        self.x = "iteration"
+        self._plot.x_axis.title = "iteration"
 
     def recenter_x_axis(self):
         """ Resets the bounds on the x-axis of the plot. If now x axis

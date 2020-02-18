@@ -72,6 +72,7 @@ class TestConvergencePlot(unittest.TestCase):
         self.analysis_model.add_evaluation_step((1.0, 1.0, 1.0))
         self.plot._update_displayable_value_names()
         self.assertIsInstance(self.plot._axis, LinePlot)
+        self.assertEqual('iteration', self.plot._plot.x_axis.title)
 
     def test_resize_plot(self):
         ranges = self.plot.recenter_plot()
@@ -82,6 +83,7 @@ class TestConvergencePlot(unittest.TestCase):
         ranges = self.plot._get_plot_range()
         # the second value for y (5) shouldn't contribute to the running min.
         self.assertEqual(3.1, ranges[3])
+        self.assertEqual('iteration', self.plot._plot.x_axis.title)
 
     def test_change_variable(self):
         self.add_data_points()
