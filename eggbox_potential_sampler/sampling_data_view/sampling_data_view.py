@@ -94,8 +94,9 @@ class ConvergencePlot(BasePlot):
         return self.plot_cumulative_line()
 
     def _y_convergence_data(self):
-
+        """Calculates convergence data to display in the y axis"""
         new_data_array = []
+
         y_index = self.displayable_value_names.index(self.y)
 
         for ind, _ in enumerate(self.data_arrays[y_index], start=1):
@@ -107,7 +108,10 @@ class ConvergencePlot(BasePlot):
 
     @on_trait_change("displayable_value_names[]")
     def update_plot_axis_names(self):
+        """This method overrides any changes in the super that occur
+        to the x axis label"""
         super().update_plot_axis_names()
+
         self.x = "iteration"
         self._plot.x_axis.title = "iteration"
 
