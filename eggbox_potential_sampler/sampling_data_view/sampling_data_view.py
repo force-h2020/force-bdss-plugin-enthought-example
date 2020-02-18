@@ -34,6 +34,8 @@ class ConvergencePlot(BasePlot):
         )
 
     def default_traits_view(self):
+        """Implemented to removes the reset_plot option from the
+        parent class View"""
         view = View(
             VGroup(
                 self.axis_hgroup,
@@ -113,11 +115,11 @@ class ConvergencePlot(BasePlot):
         super().update_plot_axis_names()
 
         self.x = "iteration"
-        self._plot.x_axis.title = "iteration"
+        self._plot.x_axis.title = self.x
 
     def recenter_x_axis(self):
         """ Resets the bounds on the x-axis of the plot. If now x axis
-        is specified, uses the default bounds (-1, 1). Otherwise, infers
+        is specified, uses the default bounds (0, 1). Otherwise, infers
         the bounds from the x-axis related data."""
         if self._custom_data_array:
             max_x = 1.1 * len(self._custom_data_array)
@@ -132,7 +134,7 @@ class ConvergencePlot(BasePlot):
 
     def recenter_y_axis(self):
         """ Resets the bounds on the x-axis of the plot. If now y axis
-        is specified, uses the default bounds (-1, 1). Otherwise, infers
+        is specified, uses the default bounds (-0.1, 1). Otherwise, infers
         the bounds from the y-axis related data."""
         if self._custom_data_array:
             max_y = max(self._custom_data_array) + 0.1
