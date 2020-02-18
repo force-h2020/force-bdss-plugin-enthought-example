@@ -7,10 +7,11 @@ try:
     # It's possible to install the example plugins in a headless system or
     # in a environment without wfmanager and the graphical stack for UIs.
     # Some tests will be skipped.
-    from force_wfmanager.ui.review.data_view import BaseDataView
+    import force_wfmanager # noqa
 except ModuleNotFoundError:
     WFMANAGER_AVAILABLE = False
 else:
+    from force_wfmanager.ui.review.base_data_view import BaseDataView
     WFMANAGER_AVAILABLE = True
 
 from eggbox_potential_sampler.eggbox_plugin import EggboxPlugin
