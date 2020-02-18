@@ -7,7 +7,7 @@ try:
     # It's possible to install the example plugins in a headless system or
     # in a environment without wfmanager and the graphical stack for UIs.
     # Some tests will be skipped.
-    import force_wfmanager
+    import force_wfmanager # noqa
 except ModuleNotFoundError:
     WFMANAGER_AVAILABLE = False
 else:
