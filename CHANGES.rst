@@ -30,21 +30,36 @@ code changes for this release:
 Features
 ~~~~~~~~
 
+* New Potential Energy Surface Sampler included in ``EggboxPlugin`` (#21)
+* New custom UI features contributed to WfManager (#26, #28, #29, #40), both ``ContributedUI``
+  and ``BaseDataView`` subclasses
 
 Changes
 ~~~~~~~
 
+* Now only supporting unicode compatible strings (#14)
+* References to ``Workflow.mco`` attribute updated to ``Workflow.mco_model`` (#35, #36)
 
 Removals
 ~~~~~~~~
 
+* Removed references to ``BaseFactory.plugin`` attribute (#33)
+* Removal of deprecated ``BaseMCO.notify_driver_event`` method (#38)
+* Removal of need for arbitrary weights to be reported for each KPI in the MCO (#39)
+
 Documentation
 ~~~~~~~~~~~~~
+
+* New auto-generated Sphinx documentation (#22, #31)
 
 Maintenance and code organization
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * Moved to pure python 3 build (#13)
+* EDM version updated to 2.1.0 in Travis CI (#27, #42) using python 3.6 bootstrap environment (#20)
+* Travis CI now runs 2 jobs: Linux Ubuntu Bionic (#27) and MacOS (#27)
+* Better handling of ClickExceptions in CI (#27)
+
 
 
 Version 0.2.0
