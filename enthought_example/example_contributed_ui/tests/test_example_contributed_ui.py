@@ -47,7 +47,7 @@ class TestExampleContributedUI(unittest.TestCase):
         self.assertEqual(2, len(execution_layer_data))
 
         for execution_layer in execution_layer_data:
-            for data_source in execution_layer:
+            for data_source in execution_layer['data_sources']:
                 keys = list(data_source.keys())
                 self.assertListEqual(['id', 'model_data'], keys)
 
