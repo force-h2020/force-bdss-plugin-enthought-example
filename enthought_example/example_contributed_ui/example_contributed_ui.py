@@ -27,7 +27,7 @@ class ExampleContributedUI(ContributedUI):
     @on_trait_change('lower,upper,power')
     def workflow_data_update(self):
         wf_data = {
-            "version": "1",
+            "version": "1.1",
             "workflow": {
                 "mco_model": self._mco_data(),
                 "execution_layers": self._execution_layer_data(),
@@ -77,52 +77,58 @@ class ExampleContributedUI(ContributedUI):
 
     def _execution_layer_data(self):
         return [
-            [
-                {
-                    "id": ".".join([
-                        _ENTHOUGHT_PLUGIN_ID, "example_data_source"
-                    ]),
-                    "model_data": {
-                        "power": self.power,
-                        "cuba_type_in": "number",
-                        "cuba_type_out": "number_sq",
-                        "input_slot_info": [
-                            {
-                                "source": "Environment",
-                                "name": "input_number"
+            {
+                'data_sources':
+                    [
+                        {
+                            "id": ".".join([
+                                _ENTHOUGHT_PLUGIN_ID, "example_data_source"
+                            ]),
+                            "model_data": {
+                                "power": self.power,
+                                "cuba_type_in": "number",
+                                "cuba_type_out": "number_sq",
+                                "input_slot_info": [
+                                    {
+                                        "source": "Environment",
+                                        "name": "input_number"
+                                    }
+                                ],
+                                "output_slot_info": [
+                                    {
+                                        "name": "input_number_sq"
+                                    }
+                                ]
                             }
-                        ],
-                        "output_slot_info": [
-                            {
-                                "name": "input_number_sq"
+                        }
+                    ],
+            },
+            {
+                'data_sources':
+                    [
+                        {
+                            "id": ".".join([
+                                _ENTHOUGHT_PLUGIN_ID, "example_data_source"
+                            ]),
+                            "model_data": {
+                                "power": 4.0,
+                                "cuba_type_in": "number_sq",
+                                "cuba_type_out": "number_8",
+                                "input_slot_info": [
+                                    {
+                                        "source": "Environment",
+                                        "name": "input_number_sq"
+                                    }
+                                ],
+                                "output_slot_info": [
+                                    {
+                                        "name": "input_number_8"
+                                    }
+                                ]
                             }
-                        ]
-                    }
-                }
-            ],
-            [
-                {
-                    "id": ".".join([
-                        _ENTHOUGHT_PLUGIN_ID, "example_data_source"
-                    ]),
-                    "model_data": {
-                        "power": 4.0,
-                        "cuba_type_in": "number_sq",
-                        "cuba_type_out": "number_8",
-                        "input_slot_info": [
-                            {
-                                "source": "Environment",
-                                "name": "input_number_sq"
-                            }
-                        ],
-                        "output_slot_info": [
-                            {
-                                "name": "input_number_8"
-                            }
-                        ]
-                    }
-                }
-            ]
+                        }
+                    ]
+            }
         ]
 
     def _notification_listener_data(self):
