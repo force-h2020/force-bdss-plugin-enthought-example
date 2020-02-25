@@ -1,10 +1,21 @@
 Changelog 
 ---------
 
-Version 0.3.0
+Version 0.3.1
 -------------
 
 Released:
+
+Release notes
+~~~~~~~~~~~~~
+
+Bug fixes for version 0.3.0
+
+
+Version 0.3.0
+-------------
+
+Released: 24 Feb 2020
 
 Release notes
 ~~~~~~~~~~~~~
