@@ -4,12 +4,23 @@ Changelog
 Version 0.3.1
 -------------
 
-Released:
+Released: 12 Mar 2020
 
 Release notes
 ~~~~~~~~~~~~~
 
-Bug fixes for version 0.3.0
+Minor bug fixes for version 0.3.0
+
+The following people contributed
+code changes for this release:
+
+* Frank Longford
+
+Fixes
+~~~~~
+
+* ``ExampleContributedUI`` class now produces workflow templates adhering to version
+  1.1 formatting (#46)
 
 
 Version 0.3.0
