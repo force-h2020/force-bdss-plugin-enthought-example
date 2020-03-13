@@ -72,7 +72,7 @@ class ConvergencePlot(BasePlot):
         the callback update.
         This method is called when the `y` axis is changed.
         """
-        if self.y == "" or len(self.analysis_model.evaluation_steps) == 0:
+        if self.y == "" or len(self.data_arrays) == 0:
             self._plot_data.set_data("y", [])
         else:
             self._plot.y_axis.title = self.y
@@ -99,10 +99,12 @@ class ConvergencePlot(BasePlot):
         """Calculates convergence data to display in the y axis"""
         new_data_array = []
 
-        column = self.analysis_model.column(self.y)
+        y_index = self.displayable_value_names.index(self.y)
 
-        for ind, _ in enumerate(column, start=1):
-            new_data_array.append(min(column[:ind]))
+        for ind, _ in enumerate(self.data_arrays[y_index], start=1):
+            new_data_array.append(
+                min(self.data_arrays[y_index][:ind])
+            )
 
         return new_data_array
 
