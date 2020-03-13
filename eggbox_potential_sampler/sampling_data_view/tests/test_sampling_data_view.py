@@ -48,7 +48,7 @@ class TestConvergencePlot(unittest.TestCase):
         self.analysis_model = AnalysisModel()
         self.data_view = SamplingDataView(analysis_model=self.analysis_model)
         self.plot = self.data_view.sampling_plot
-        self.analysis_model.header = ("x", "y", "E")
+        self.analysis_model.notify(("x", "y", "E"))
 
     def check_update_is_requested_and_apply(self):
         # check
@@ -64,11 +64,11 @@ class TestConvergencePlot(unittest.TestCase):
         for datum in [
                 (1, 3, 8), (2, 5, 7.7), (3, 2.6, 7.6), (4, 2.5, 7.62),
                 (5, 2.47, 7.543), (6, 2.465, 7.54)]:
-            self.analysis_model._add_evaluation_step(datum)
+            self.analysis_model.notify(datum)
         self.check_update_is_requested_and_apply()
 
     def test_init(self):
-        self.analysis_model._add_evaluation_step((1.0, 1.0, 1.0))
+        self.analysis_model.notify((1.0, 1.0, 1.0))
         self.plot._update_displayable_value_names()
         self.assertIsInstance(self.plot._axis, LinePlot)
         self.assertEqual('iteration', self.plot._plot.x_axis.title)
