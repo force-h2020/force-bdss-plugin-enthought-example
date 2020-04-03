@@ -20,6 +20,19 @@ class SubprocessWorkflow(Workflow):
     #: The path to the force_bdss executable
     executable_path = Unicode(transient=True)
 
+    def __getstate__(self):
+        """Overloads the Workflow.__getstate__ method to ensure
+        that no UINotificationListeners instances are serialised.
+        Allowing so would cause duplicate messages to be sent to
+        the UI from a single socket when the force_bdss is run
+        on a new process."""
+        data = super(SubprocessWorkflow, self).__getstate__()
+        notification_listeners = data['notification_listeners']
+        for listener_data in notification_listeners:
+            if 'ui_notification' in listener_data['id']:
+                notification_listeners.remove(listener_data)
+        return data
+
     def _call_subprocess(self, command, user_input):
         """Calls a subprocess to perform a command with parsed
         user_input"""
