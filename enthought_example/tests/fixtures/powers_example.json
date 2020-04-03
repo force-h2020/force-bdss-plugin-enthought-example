@@ -1,0 +1,86 @@
+{
+    "version": "1.1",
+    "workflow": {
+        "mco_model": {
+            "id": "force.bdss.enthought.plugin.example.v0.factory.example_mco",
+            "model_data": {
+                "parameters": [
+                    {
+                        "id": "force.bdss.enthought.plugin.example.v0.factory.example_mco.parameter.ranged",
+                        "model_data": {
+                            "lower_bound": 0.0,
+                            "upper_bound": 10.0,
+                            "initial_value": 2.0,
+                            "name": "input_number",
+                            "type": "number"
+                        }
+                    }
+                ],
+                "kpis": [
+                    {
+                        "name": "input_number_sq",
+                        "objective": "MINIMISE"
+                    },
+                    {
+                        "name": "input_number_8",
+                        "objective": "MAXIMISE"
+                    }
+                ]
+            }
+        },
+        "execution_layers": [
+            {"data_sources":
+                [
+                    {
+                        "id": "force.bdss.enthought.plugin.example.v0.factory.example_data_source",
+                        "model_data": {
+                            "power": 2.0,
+                            "cuba_type_in": "number",
+                            "cuba_type_out": "number_sq",
+                            "input_slot_info": [
+                                {
+                                    "source": "Environment",
+                                    "name": "input_number"
+                                }
+                            ],
+                            "output_slot_info": [
+                                {
+                                    "name": "input_number_sq"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {"data_sources":
+                [
+                    {
+                        "id": "force.bdss.enthought.plugin.example.v0.factory.example_data_source",
+                        "model_data": {
+                            "power": 4.0,
+                            "cuba_type_in": "number_sq",
+                            "cuba_type_out": "number_8",
+                            "input_slot_info": [
+                                {
+                                    "source": "Environment",
+                                    "name": "input_number_sq"
+                                }
+                            ],
+                            "output_slot_info": [
+                                {
+                                    "name": "input_number_8"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        ],
+        "notification_listeners": [
+            {
+                "id": "force.bdss.enthought.plugin.example.v0.factory.example_notification_listener",
+                "model_data": {}
+            }
+        ]
+    }
+}
