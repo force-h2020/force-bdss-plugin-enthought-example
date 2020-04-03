@@ -77,6 +77,10 @@
             }
         ],
         "notification_listeners": [
+            {
+                "id": "force.bdss.enthought.plugin.example.v0.factory.example_notification_listener",
+                "model_data": {}
+            }
         ]
     }
 }
