@@ -12,8 +12,8 @@ WORKFLOW_GETSTATE_PATH = 'force_bdss.core.workflow.Workflow.__getstate__'
 
 
 def mock_workflow_getstate():
-    """Mocks the Workflow.__getstate__ method to include a
-     UINotificationListener instance"""
+    """Mocks the Workflow.__getstate__ method to include
+     BaseNotificationListener instances"""
     return {
         "mco_model": None,
         "execution_layers": [],
@@ -43,11 +43,7 @@ class TestSubprocessWorkflow(TestCase):
             self.assertDictEqual(
                 {"mco_model": None,
                  "execution_layers": [],
-                 "notification_listeners": [
-                     {"id": "force.bdss.enthought.plugin.some_listener.v0"
-                            ".factory.some_listener",
-                      "model_data": {}},
-                 ]},
+                 "notification_listeners": []},
                 self.evaluator.__getstate__())
 
     def test___call_subprocess(self):
