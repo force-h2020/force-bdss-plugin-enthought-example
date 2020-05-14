@@ -1,3 +1,6 @@
+#  (C) Copyright 2010-2020 Enthought, Inc., Austin, TX
+#  All rights reserved.
+
 from pyface.timer.api import do_later
 
 from force_wfmanager.ui.review.plot import BasePlot, ChacoPlot

@@ -1,3 +1,6 @@
+#  (C) Copyright 2010-2020 Enthought, Inc., Austin, TX
+#  All rights reserved.
+
 from force_bdss.api import plugin_id
 from force_bdss.core_plugins.service_offer_plugin import \
     ServiceOfferExtensionPlugin

@@ -1,3 +1,6 @@
+#  (C) Copyright 2010-2020 Enthought, Inc., Austin, TX
+#  All rights reserved.
+
 from force_bdss.api import BaseDataSourceFactory
 
 from .example_data_source_model import ExampleDataSourceModel
