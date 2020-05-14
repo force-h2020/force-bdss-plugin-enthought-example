@@ -1,2 +1,2 @@
 [flake8]
-exclude = build/*,venv/*,doc/source/*,force-bdss/*,force-wfmanager/*
+exclude = build/*,venv/*,doc/source/*
