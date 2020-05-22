@@ -2,7 +2,7 @@
 #  All rights reserved.
 
 from traits.api import Float
-from traitsui.api import View, Item
+from traitsui.api import View, Item, Group
 
 from force_bdss.api import BaseDataSourceModel
 
@@ -16,29 +16,35 @@ class GaussianDataSourceModel(BaseDataSourceModel):
     )
     cent_x = Float(
         -1.0,
-        label="Center (x)",
+        label="x",
         desc="x coordinate of the peak."
     )
     cent_y = Float(
         -1.0,
-        label="Centre (y)",
+        label="y",
         desc="y coordinate of the peak."
     )
     sigm_x = Float(
         0.6,
-        label="Sigma (x)",
+        label="x",
         desc="Width (standard deviation) along the x-axis."
     )
     sigm_y = Float(
         0.6,
-        label="Sigma (y)",
+        label="y",
         desc="Width (standard deviation) along the y-axis."
     )
 
     traits_view = View(
         Item("peak"),
-        Item("cent_x"),
-        Item("cent_y"),
-        Item("sigm_x"),
-        Item("sigm_y"),
+        Group(
+            Item("cent_x"),
+            Item("cent_y"),
+            label="Center"
+        ),
+        Group(
+            Item("sigm_x"),
+            Item("sigm_y"),
+            label="Sigma"
+        )
     )
