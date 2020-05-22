@@ -17,9 +17,8 @@ from troughs_and_waves.gaussian.gaussian_data_source_model import (
 )
 
 
-class TestPowerEvaluatorDataSource(unittest.TestCase, UnittestTools):
+class TestGaussianDataSource(unittest.TestCase, UnittestTools):
     def setUp(self):
-        super(TestPowerEvaluatorDataSource, self).setUp()
         self.factory = mock.Mock(spec=BaseDataSourceFactory)
 
     def test_initialization(self):

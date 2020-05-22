@@ -2,8 +2,7 @@
 #  All rights reserved.
 
 from force_bdss.api import plugin_id
-from force_bdss.core_plugins.service_offer_plugin import \
-    ServiceOfferExtensionPlugin
+from force_bdss.core_plugins.base_extension_plugin import BaseExtensionPlugin
 
 from .gaussian.gaussian_data_source_factory import GaussianDataSourceFactory
 
@@ -11,7 +10,7 @@ from .gaussian.gaussian_data_source_factory import GaussianDataSourceFactory
 PLUGIN_VERSION = 0
 
 
-class TroughsAndWavesPlugin(ServiceOfferExtensionPlugin):
+class TroughsAndWavesPlugin(BaseExtensionPlugin):
     """ Contributes data-sources useful for testing optimizers.
     It is useful to test optimizers with "ground-truth" objective functions
     where the minima, maxima and Pareto set are known.
@@ -35,14 +34,3 @@ class TroughsAndWavesPlugin(ServiceOfferExtensionPlugin):
         return [
             GaussianDataSourceFactory
         ]
-
-    def get_contributed_uis(self):
-        """Get any ContributedUI classes included in the plugin"""
-        return []
-
-    def get_data_views(self):
-        """Get any BasePlot classes included in the plugin"""
-        return []
-
-    def get_service_offer_factories(self):
-        return []
