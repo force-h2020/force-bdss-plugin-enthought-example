@@ -13,9 +13,6 @@ PLUGIN_VERSION = 0
 
 class TroughsAndWavesPlugin(ServiceOfferExtensionPlugin):
     """ Contributes data-sources useful for testing optimizers.
-
-    Extended Summary
-    ----------------
     It is useful to test optimizers with "ground-truth" objective functions
     where the minima, maxima and Pareto set are known.
     This plugin contributes several such functions as data-sources which
