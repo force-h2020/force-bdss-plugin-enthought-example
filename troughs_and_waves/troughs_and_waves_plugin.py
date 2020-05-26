@@ -4,8 +4,11 @@
 from force_bdss.api import plugin_id
 from force_bdss.core_plugins.base_extension_plugin import BaseExtensionPlugin
 
-from .gaussian.gaussian_data_source_factory import GaussianDataSourceFactory
-
+from .gaussian.gaussian_factory import GaussianFactory
+from .perpendicular_waves.perpendicular_waves_factory import (
+    PerpendicularWavesFactory
+)
+from .circular_wave.circular_wave_factory import CircularWaveFactory
 
 PLUGIN_VERSION = 0
 
@@ -32,5 +35,7 @@ class TroughsAndWavesPlugin(BaseExtensionPlugin):
     #: Define the factory classes that you want to export to this list.
     def get_factory_classes(self):
         return [
-            GaussianDataSourceFactory
+            GaussianFactory,
+            PerpendicularWavesFactory,
+            CircularWaveFactory,
         ]

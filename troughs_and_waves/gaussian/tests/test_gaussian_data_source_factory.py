@@ -3,13 +3,8 @@
 
 import unittest
 
-from troughs_and_waves.gaussian.gaussian_data_source import (
-    GaussianDataSource
-)
-
-from troughs_and_waves.gaussian.gaussian_data_source_model import (
-    GaussianDataSourceModel
-)
+from troughs_and_waves.gaussian.gaussian import Gaussian
+from troughs_and_waves.gaussian.gaussian_model import GaussianModel
 
 from troughs_and_waves.troughs_and_waves_plugin import TroughsAndWavesPlugin
 
@@ -25,11 +20,11 @@ class DataSourceFactoryTestMixin(unittest.TestCase):
 
     def test_create_model(self):
         model = self.factory.create_model({})
-        self.assertIsInstance(model, GaussianDataSourceModel)
+        self.assertIsInstance(model, GaussianModel)
 
         model = self.factory.create_model()
-        self.assertIsInstance(model, GaussianDataSourceModel)
+        self.assertIsInstance(model, GaussianModel)
 
     def test_create_data_source(self):
         ds = self.factory.create_data_source()
-        self.assertIsInstance(ds, GaussianDataSource)
+        self.assertIsInstance(ds, Gaussian)

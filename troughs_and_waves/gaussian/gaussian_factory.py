@@ -3,11 +3,11 @@
 
 from force_bdss.api import BaseDataSourceFactory
 
-from .gaussian_data_source_model import GaussianDataSourceModel
-from .gaussian_data_source import GaussianDataSource
+from .gaussian_model import GaussianModel
+from .gaussian import Gaussian
 
 
-class GaussianDataSourceFactory(BaseDataSourceFactory):
+class GaussianFactory(BaseDataSourceFactory):
     def get_identifier(self):
         return "gaussian"
 
@@ -19,7 +19,7 @@ class GaussianDataSourceFactory(BaseDataSourceFactory):
                "(xy-plane) Gaussian."
 
     def get_model_class(self):
-        return GaussianDataSourceModel
+        return GaussianModel
 
     def get_data_source_class(self):
-        return GaussianDataSource
+        return Gaussian

@@ -7,7 +7,7 @@ from traitsui.api import View, Item, Group
 from force_bdss.api import BaseDataSourceModel
 
 
-class GaussianDataSourceModel(BaseDataSourceModel):
+class GaussianModel(BaseDataSourceModel):
 
     peak = Float(
         -2.0,

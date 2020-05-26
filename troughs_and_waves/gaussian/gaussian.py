@@ -6,7 +6,7 @@ import math
 from force_bdss.api import DataValue, Slot, BaseDataSource
 
 
-class GaussianDataSource(BaseDataSource):
+class Gaussian(BaseDataSource):
 
     def run(self, model, parameters):
         x = parameters[0].value

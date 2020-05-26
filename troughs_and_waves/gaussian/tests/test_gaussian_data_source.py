@@ -8,13 +8,8 @@ from unittest import mock
 from traits.testing.api import UnittestTools
 from force_bdss.api import DataValue, Slot, BaseDataSourceFactory
 
-from troughs_and_waves.gaussian.gaussian_data_source import (
-    GaussianDataSource
-)
-
-from troughs_and_waves.gaussian.gaussian_data_source_model import (
-    GaussianDataSourceModel
-)
+from troughs_and_waves.gaussian.gaussian import Gaussian
+from troughs_and_waves.gaussian.gaussian_model import GaussianModel
 
 
 class TestGaussianDataSource(unittest.TestCase, UnittestTools):
@@ -22,12 +17,12 @@ class TestGaussianDataSource(unittest.TestCase, UnittestTools):
         self.factory = mock.Mock(spec=BaseDataSourceFactory)
 
     def test_initialization(self):
-        ds = GaussianDataSource(self.factory)
+        ds = Gaussian(self.factory)
         self.assertEqual(ds.factory, self.factory)
 
     def test_run(self):
-        ds = GaussianDataSource(self.factory)
-        model = GaussianDataSourceModel(self.factory)
+        ds = Gaussian(self.factory)
+        model = GaussianModel(self.factory)
 
         model.peak = -2.0
         model.cent_x = -1.0
@@ -45,8 +40,8 @@ class TestGaussianDataSource(unittest.TestCase, UnittestTools):
         self.assertAlmostEqual(result[0].value, -2.0)
 
     def test_slots(self):
-        ds = GaussianDataSource(self.factory)
-        model = GaussianDataSourceModel(self.factory)
+        ds = Gaussian(self.factory)
+        model = GaussianModel(self.factory)
         slots = ds.slots(model)
 
         self.assertEqual(len(slots), 2)
