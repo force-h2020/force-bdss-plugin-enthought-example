@@ -14,7 +14,7 @@ class PerpendicularWaves(BaseDataSource):
 
         a = math.sin(2 * math.pi * x / model.wavelength_x)
         a += math.sin(2 * math.pi * y / model.wavelength_y)
-        a *= model.peak
+        a *= model.peak/2.0
 
         return [
             DataValue(value=a, type="AMPLITUDE"),

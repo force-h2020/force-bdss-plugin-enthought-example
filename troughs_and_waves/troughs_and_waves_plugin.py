@@ -9,6 +9,7 @@ from .perpendicular_waves.perpendicular_waves_factory import (
     PerpendicularWavesFactory
 )
 from .circular_wave.circular_wave_factory import CircularWaveFactory
+from .gauss_valley.gauss_valley_factory import GaussValleyFactory
 
 PLUGIN_VERSION = 0
 
@@ -38,4 +39,5 @@ class TroughsAndWavesPlugin(BaseExtensionPlugin):
             GaussianFactory,
             PerpendicularWavesFactory,
             CircularWaveFactory,
+            GaussValleyFactory,
         ]
