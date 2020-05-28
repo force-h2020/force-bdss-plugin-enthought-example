@@ -4,48 +4,51 @@
 
 import unittest
 
-from unittest import mock
-
 from traits.testing.api import UnittestTools
-from force_bdss.api import DataValue, Slot, BaseDataSourceFactory
+from force_bdss.api import DataValue, Slot
+
+from troughs_and_waves.troughs_and_waves_plugin import TroughsAndWavesPlugin
 
 from troughs_and_waves.gauss_valley.gauss_valley import GaussValley
-from troughs_and_waves.gauss_valley.gauss_valley_model import GaussValleyModel
+from troughs_and_waves.gauss_valley.gauss_valley_model import (
+    GaussValleyModel
+)
+from troughs_and_waves.gauss_valley.gauss_valley_factory import (
+    GaussValleyFactory
+)
 
 
 class TestGaussian(unittest.TestCase, UnittestTools):
     def setUp(self):
-        self.factory = mock.Mock(spec=BaseDataSourceFactory)
+        self.plugin = TroughsAndWavesPlugin()
+        self.factory = GaussValleyFactory(plugin=self.plugin)
+        self.ds = self.factory.create_data_source()
+        self.model = self.factory.create_model()
 
     def test_initialization(self):
-        ds = GaussValley(self.factory)
-        self.assertEqual(ds.factory, self.factory)
+        self.assertNotEqual(self.factory.id, "")
+        self.assertEqual(self.factory.plugin_id, self.plugin.id)
+        self.assertIsInstance(self.ds, GaussValley)
+        self.assertIsInstance(self.model, GaussValleyModel)
+
+    def test_slots(self):
+        slots = self.ds.slots(self.model)
+        self.assertEqual(len(slots), 2)
+        self.assertEqual(len(slots[0]), 2)
+        self.assertEqual(len(slots[1]), 1)
+        self.assertIsInstance(slots[0][0], Slot)
+        self.assertIsInstance(slots[1][0], Slot)
 
     def test_run(self):
-        ds = GaussValley(self.factory)
-        model = GaussValleyModel(self.factory)
-
-        model.peak = -2.0
-        model.angle = 3.1415926/2.0
-        model.offset = 0.0
-        model.sigma = 1.0
+        self.model.peak = -2.0
+        self.model.angle = 3.1415926/2.0
+        self.model.offset = 0.0
+        self.model.sigma = 1.0
 
         mock_params = [
             DataValue(value=1.0),
             DataValue(value=0.0),
         ]
 
-        result = ds.run(model, mock_params)
-
+        result = self.ds.run(self.model, mock_params)
         self.assertAlmostEqual(result[0].value, -2.0)
-
-    def test_slots(self):
-        ds = GaussValley(self.factory)
-        model = GaussValleyModel(self.factory)
-        slots = ds.slots(model)
-
-        self.assertEqual(len(slots), 2)
-        self.assertEqual(len(slots[0]), 2)
-        self.assertEqual(len(slots[1]), 1)
-        self.assertIsInstance(slots[0][0], Slot)
-        self.assertIsInstance(slots[1][0], Slot)

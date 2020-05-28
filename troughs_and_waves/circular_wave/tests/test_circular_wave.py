@@ -40,7 +40,6 @@ class TestGaussian(unittest.TestCase, UnittestTools):
         self.assertIsInstance(slots[1][0], Slot)
 
     def test_run(self):
-
         self.model.peak = 2.0
         self.model.cent_x = 0.0
         self.model.cent_y = 0.0
