@@ -6,8 +6,6 @@ import unittest
 from traits.testing.api import UnittestTools
 from force_bdss.api import DataValue, Slot
 
-from troughs_and_waves.troughs_and_waves_plugin import TroughsAndWavesPlugin
-
 from troughs_and_waves.gaussian.gaussian import Gaussian
 from troughs_and_waves.gaussian.gaussian_model import (
     GaussianModel
@@ -19,14 +17,13 @@ from troughs_and_waves.gaussian.gaussian_factory import (
 
 class TestGaussian(unittest.TestCase, UnittestTools):
     def setUp(self):
-        self.plugin = TroughsAndWavesPlugin()
-        self.factory = GaussianFactory(plugin=self.plugin)
+        self.factory = GaussianFactory(
+            plugin={'id':'0', 'name': 'test'})
         self.ds = self.factory.create_data_source()
         self.model = self.factory.create_model()
 
     def test_initialization(self):
         self.assertNotEqual(self.factory.id, "")
-        self.assertEqual(self.factory.plugin_id, self.plugin.id)
         self.assertIsInstance(self.ds, Gaussian)
         self.assertIsInstance(self.model, GaussianModel)
 

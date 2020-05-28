@@ -7,8 +7,6 @@ import unittest
 from traits.testing.api import UnittestTools
 from force_bdss.api import DataValue, Slot
 
-from troughs_and_waves.troughs_and_waves_plugin import TroughsAndWavesPlugin
-
 from troughs_and_waves.perpendicular_waves.perpendicular_waves import (
     PerpendicularWaves
 )
@@ -22,14 +20,13 @@ from troughs_and_waves.perpendicular_waves.perpendicular_waves_factory import (
 
 class TestGaussian(unittest.TestCase, UnittestTools):
     def setUp(self):
-        self.plugin = TroughsAndWavesPlugin()
-        self.factory = PerpendicularWavesFactory(plugin=self.plugin)
+        self.factory = PerpendicularWavesFactory(
+            plugin={'id':'0', 'name': 'test'})
         self.ds = self.factory.create_data_source()
         self.model = self.factory.create_model()
 
     def test_initialization(self):
         self.assertNotEqual(self.factory.id, "")
-        self.assertEqual(self.factory.plugin_id, self.plugin.id)
         self.assertIsInstance(self.ds, PerpendicularWaves)
         self.assertIsInstance(self.model, PerpendicularWavesModel)
 

@@ -7,8 +7,6 @@ import unittest
 from traits.testing.api import UnittestTools
 from force_bdss.api import DataValue, Slot
 
-from troughs_and_waves.troughs_and_waves_plugin import TroughsAndWavesPlugin
-
 from troughs_and_waves.gauss_valley.gauss_valley import GaussValley
 from troughs_and_waves.gauss_valley.gauss_valley_model import (
     GaussValleyModel
@@ -20,14 +18,13 @@ from troughs_and_waves.gauss_valley.gauss_valley_factory import (
 
 class TestGaussian(unittest.TestCase, UnittestTools):
     def setUp(self):
-        self.plugin = TroughsAndWavesPlugin()
-        self.factory = GaussValleyFactory(plugin=self.plugin)
+        self.factory = GaussValleyFactory(
+            plugin={'id':'0', 'name': 'test'})
         self.ds = self.factory.create_data_source()
         self.model = self.factory.create_model()
 
     def test_initialization(self):
         self.assertNotEqual(self.factory.id, "")
-        self.assertEqual(self.factory.plugin_id, self.plugin.id)
         self.assertIsInstance(self.ds, GaussValley)
         self.assertIsInstance(self.model, GaussValleyModel)
 
