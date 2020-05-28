@@ -21,7 +21,7 @@ from troughs_and_waves.perpendicular_waves.perpendicular_waves_factory import (
 class TestGaussian(unittest.TestCase, UnittestTools):
     def setUp(self):
         self.factory = PerpendicularWavesFactory(
-            plugin={'id':'0', 'name': 'test'})
+            plugin={'id': '0', 'name': 'test'})
         self.ds = self.factory.create_data_source()
         self.model = self.factory.create_model()
 
