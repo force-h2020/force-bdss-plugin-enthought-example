@@ -16,7 +16,7 @@ from troughs_and_waves.gauss_valley.gauss_valley_factory import (
 )
 
 
-class TestGaussian(unittest.TestCase, UnittestTools):
+class TestGaussValley(unittest.TestCase, UnittestTools):
     def setUp(self):
         self.factory = GaussValleyFactory(
             plugin={'id': '0', 'name': 'test'})
