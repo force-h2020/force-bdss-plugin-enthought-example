@@ -13,7 +13,11 @@ with open('README.rst', 'r') as readme:
 
 
 def write_version_py():
-    plugins = ['enthought_example', 'eggbox_potential_sampler']
+    plugins = [
+        'enthought_example',
+        'eggbox_potential_sampler',
+        'troughs_and_waves',
+    ]
     for plugin in plugins:
         filename = os.path.join(
             os.path.dirname(__file__),
@@ -41,6 +45,8 @@ setup(
             "enthought_example.example_plugin:ExamplePlugin",
             "eggbox_potential_sampler = "
             "eggbox_potential_sampler.eggbox_plugin:EggboxPlugin",
+            "troughs_and_waves = "
+            "troughs_and_waves.troughs_and_waves_plugin:TroughsAndWavesPlugin",
         ]
     },
     packages=find_packages(),
