@@ -12,8 +12,8 @@ class Gaussian(BaseDataSource):
         x = parameters[0].value
         y = parameters[1].value
 
-        a = ((x - model.cent_x)**2)/(2.0*model.sigm_x**2)
-        a += ((y - model.cent_y)**2) / (2.0*model.sigm_y**2)
+        a = ((x - model.cent_x) ** 2)/(2.0*model.sigm_x ** 2)
+        a += ((y - model.cent_y) ** 2) / (2.0*model.sigm_y ** 2)
         a = model.peak * math.exp(-a)
 
         return [
