@@ -24,6 +24,4 @@ class MonteCarloPlugin(BaseExtensionPlugin):
 
     #: Define the factory classes that you want to export to this list.
     def get_factory_classes(self):
-        return [
-            MonteCarloFactory,
-        ]
+        return [MonteCarloFactory]
