@@ -4,7 +4,7 @@
 from force_bdss.api import plugin_id
 from force_bdss.core_plugins.base_extension_plugin import BaseExtensionPlugin
 
-from .monte_carlo_factory import MonteCarloFactory
+from .mco.monte_carlo_factory import MonteCarloFactory
 
 PLUGIN_VERSION = 0
 
