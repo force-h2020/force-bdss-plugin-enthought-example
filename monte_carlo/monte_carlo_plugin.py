@@ -8,6 +8,7 @@ from .monte_carlo_factory import MonteCarloFactory
 
 PLUGIN_VERSION = 0
 
+
 class MonteCarloPlugin(BaseExtensionPlugin):
 
     id = plugin_id("enthought", "monte_carlo", PLUGIN_VERSION)
