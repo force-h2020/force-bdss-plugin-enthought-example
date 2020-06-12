@@ -17,6 +17,12 @@ log = logging.getLogger(__name__)
 
 
 class MonteCarloMCO(BaseMCO):
+    """ MCO using the Monte-Carlo Engine with the Scipy optimizer.
+
+    Notes
+    -----
+    See the description of the engine (MonteCarloEngine).
+    """
 
     def run(self, evaluator):
 
@@ -25,6 +31,9 @@ class MonteCarloMCO(BaseMCO):
         optimizer = ScipyOptimizer(algorithms=model.algorithms)
 
         engine = MonteCarloEngine(
+            single_point_evaluator=evaluator,
+            parameters=model.parameters,
+            kpis=model.kpis,
             method=model.method,
             n_sample=model.n_sample,
             optimizer=optimizer
@@ -46,4 +55,3 @@ class MonteCarloMCO(BaseMCO):
                 [DataValue(value=v) for v in optimal_point],
                 [DataValue(value=v) for v in optimal_kpis],
             )
-

@@ -4,21 +4,20 @@
 from traits.api import Enum, Int
 from traitsui.api import View, Item
 
-from force_bdss.api import BaseMCOModel
+from force_bdss.api import BaseMCOModel, PositiveInt, SCIPY_ALGORITHMS_KEYS
 
 
 class MonteCarloModel(BaseMCOModel):
+    """ Model class for MonteCarloMCO.
+    """
 
     # sample or optimize
     method = Enum(['sample', 'optimize'])
 
     # number of samples.
-    n_sample = Int(100)
+    n_sample = PositiveInt(100)
 
-    algorithms = Enum("SLSQP", "Nelder-Mead", "Powell", "CG", "BFGS",
-                      "Newton-CG", "L-BFGS-B", "TNC", "COBYLA",
-                      "trust-constr", "dogleg",
-                      "trust-ncg", "trust-exact", "trust-krylov")
+    algorithms = Enum(*SCIPY_ALGORITHMS_KEYS)
 
     def default_traits_view(self):
         return View(

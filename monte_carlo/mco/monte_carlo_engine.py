@@ -10,6 +10,7 @@ from traits.api import Str, Instance, Enum, Int
 from force_bdss.api import (
     BaseOptimizerEngine,
     IOptimizer,
+    PositiveInt,
     FixedMCOParameter,
     RangedMCOParameter,
     RangedVectorMCOParameter,
@@ -21,12 +22,21 @@ log = logging.getLogger(__name__)
 
 
 class MonteCarloEngine(BaseOptimizerEngine):
-    """
+    """ Ane engine for random (Monte Carlo) sampling and optimization.
 
-
+    Extended Summary
+    ----------------
+    To get a picture of the overall parameter-space the user might want to
+    randomly sample points. If the parameter-space contains many local
+    minima (or maxima) the user might want to optimize from multiple random
+    initial points, to discover those locals.
 
     Notes
     -----
+    To find local minima/maxima it only makes sense to use a single-criterion
+    optimizer (such as Scipy) or a priori multi-criterion optimizer:
+    a posteriori multi-criterion optimizers usually set initial points
+    themselves.
     There is no initial value/condition/choice for categorical/level/set
     parameterization in either BDSS or Nevergrad. Therefore the optimization
     mode will not work for these.
@@ -38,11 +48,10 @@ class MonteCarloEngine(BaseOptimizerEngine):
     # sample or optimize
     method = Enum(['sample', 'optimize'])
 
-    # number of samples.
-    n_sample = Int(100)
+    # number of samples/initial-points.
+    n_sample = PositiveInt(100)
 
-    #: IOptimizer class that provides library backend for optimizing a
-    #: callable
+    #: IOptimizer class, provides library backend for optimizing a callable
     optimizer = Instance(IOptimizer, transient=True)
 
     def optimize(self, *vargs):
@@ -54,25 +63,29 @@ class MonteCarloEngine(BaseOptimizerEngine):
             Point of evaluation, objective value
         """
 
-        if self.n_sample < 0:
-            self.n_sample = -self.n_sample
-        elif self.n_sample == 0:
-            self.n_sample = 1
-
-        # sample
+        # Sample
         if self.method == 'sample':
 
+            # loop through sample points
             for _ in range(self.n_sample):
 
+                # get point
                 point = self.sample()
+
+                # yield point and KPIs
                 kpis = self._score(point)
                 yield point, kpis
 
-        # optimize
+        # Optimize
         else:
 
+            # loop through initial points
             for _ in range(self.n_sample):
+
+                # set initial point
                 self.sample(set_initial=True)
+
+                # yield optimial point and KPIs (should yield once)
                 for point in self.optimizer.optimize_function(
                         self._score,
                         self.parameters):
@@ -80,8 +93,23 @@ class MonteCarloEngine(BaseOptimizerEngine):
                     yield point, kpis
 
     def sample(self, set_initial=False):
-        """ Generate random samples.
+        """ Generate a random point in parameter space.
 
+        Parameters
+        ----------
+        set_initial: bool
+            Also set the initial points/conditions of the parametrization.
+
+        Returns
+        -------
+        list of Any
+            The random point in parameter-space.
+
+        Notes
+        -----
+        There is no initial value/condition/choice for categorical/level/set
+        parameterization in either BDSS or Nevergrad. Therefore
+        set_initial=True will do nothing fot these.
         """
 
         sample = []

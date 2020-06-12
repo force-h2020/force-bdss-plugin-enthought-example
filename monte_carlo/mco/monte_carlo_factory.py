@@ -12,10 +12,15 @@ from force_bdss.api import (
 )
 
 from .monte_carlo_model import MonteCarloModel
-from .monte_carlo_mco import MonteCarloMCO, MonteCarloEngine
+from .monte_carlo_mco import MonteCarloMCO
 
 
 class MonteCarloFactory(BaseMCOFactory):
+    """ Base MonteCarlo MCO Factory with generic configuration.
+        Users might want to add custom MCOCommunicator instead of the
+        BaseMCOCommunicator. Also, the parameter_factory method can
+        be updated for custom MCOParameterFactories.
+    """
 
     def get_identifier(self):
         return "monte_carlo_mco"
