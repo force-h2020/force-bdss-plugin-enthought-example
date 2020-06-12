@@ -24,8 +24,8 @@ log = logging.getLogger(__name__)
 class MonteCarloEngine(BaseOptimizerEngine):
     """ Ane engine for random (Monte Carlo) sampling and optimization.
 
-    Extended Summary
-    ----------------
+    Summary
+    -------
     To get a picture of the overall parameter-space the user might want to
     randomly sample points. If the parameter-space contains many local
     minima (or maxima) the user might want to optimize from multiple random
