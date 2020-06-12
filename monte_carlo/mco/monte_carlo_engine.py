@@ -5,7 +5,7 @@ import logging
 
 import random
 
-from traits.api import Str, Instance, Enum, Int
+from traits.api import Str, Instance, Enum
 
 from force_bdss.api import (
     BaseOptimizerEngine,
@@ -34,12 +34,21 @@ class MonteCarloEngine(BaseOptimizerEngine):
     Notes
     -----
     To find local minima/maxima it only makes sense to use a single-criterion
-    optimizer (such as Scipy) or a priori multi-criterion optimizer:
-    a posteriori multi-criterion optimizers usually set initial points
+    optimizer (such as Scipy) or an a priori multi-criterion optimizer:
+    a posteriori multi-criterion optimizers usually set random initial points
     themselves.
-    There is no initial value/condition/choice for categorical/level/set
-    parameterization in either BDSS or Nevergrad. Therefore the optimization
-    mode will not work for these.
+
+    Although in this plugin we use the Scipy optimizer, which only accepts
+    RangedMCOParameter and RangedVectorMCOParameter, there is no reason why
+    it could not be used with a non-gradient based optimizer that accepts
+    categorical/level parameterizations.
+
+    Of course at the moment there is no initial value/condition/choice for
+    categorical/level parameterization in either BDSS or Nevergrad: the choice
+    of initial value/condition/choice would seem to be down to the optimizer
+    and therefore may not give the desired result: i.e. if the optimizer
+    does not randomize the initial value/condition/choice, then only a single
+    local or global minimum might be found along the parameter's axis.
     """
 
     #: Optimizer name

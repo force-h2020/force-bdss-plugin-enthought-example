@@ -1,7 +1,7 @@
 #  (C) Copyright 2010-2020 Enthought, Inc., Austin, TX
 #  All rights reserved.
 
-from traits.api import Enum, Int
+from traits.api import Enum
 from traitsui.api import View, Item
 
 from force_bdss.api import BaseMCOModel, PositiveInt, SCIPY_ALGORITHMS_KEYS

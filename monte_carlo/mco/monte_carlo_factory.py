@@ -5,10 +5,11 @@ from force_bdss.api import (
     BaseMCOFactory,
     BaseMCOCommunicator,
     FixedMCOParameterFactory,
-    ListedMCOParameterFactory,
     RangedMCOParameterFactory,
     RangedVectorMCOParameterFactory,
+    ListedMCOParameterFactory,
     CategoricalMCOParameterFactory,
+    BaseMCOParameterFactory,
 )
 
 from .monte_carlo_model import MonteCarloModel
@@ -42,10 +43,15 @@ class MonteCarloFactory(BaseMCOFactory):
 
     #: Factory classes of the parameters the MCO supports.
     def get_parameter_factory_classes(self):
+        """ For sampling, all parameterizations will work, but for
+        optimization we use the Scipy optimizer, which will crash
+        if anything else then RangedMCOParameter or RangedVectorMCOParameter
+        are passed.
+        """
         return [
             FixedMCOParameterFactory,
-            ListedMCOParameterFactory,
             RangedMCOParameterFactory,
+            RangedVectorMCOParameterFactory,
+            ListedMCOParameterFactory,
             CategoricalMCOParameterFactory,
-            RangedVectorMCOParameterFactory
         ]
