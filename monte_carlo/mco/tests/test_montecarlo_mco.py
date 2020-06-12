@@ -1,7 +1,7 @@
 #  (C) Copyright 2010-2020 Enthought, Inc., Austin, TX
 #  All rights reserved.
 
-from unittest import TestCase, mock
+from unittest import TestCase
 
 from traits.testing.unittest_tools import UnittestTools
 

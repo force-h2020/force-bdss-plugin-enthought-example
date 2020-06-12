@@ -9,7 +9,6 @@ from force_bdss.api import (
     RangedVectorMCOParameterFactory,
     ListedMCOParameterFactory,
     CategoricalMCOParameterFactory,
-    BaseMCOParameterFactory,
 )
 
 from .monte_carlo_model import MonteCarloModel
