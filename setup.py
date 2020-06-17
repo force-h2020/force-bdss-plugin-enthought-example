@@ -17,6 +17,7 @@ def write_version_py():
         'enthought_example',
         'eggbox_potential_sampler',
         'troughs_and_waves',
+        'monte_carlo',
     ]
     for plugin in plugins:
         filename = os.path.join(
@@ -47,6 +48,8 @@ setup(
             "eggbox_potential_sampler.eggbox_plugin:EggboxPlugin",
             "troughs_and_waves = "
             "troughs_and_waves.troughs_and_waves_plugin:TroughsAndWavesPlugin",
+            "monte_carlo = "
+            "monte_carlo.monte_carlo_plugin:MonteCarloPlugin",
         ]
     },
     packages=find_packages(),
