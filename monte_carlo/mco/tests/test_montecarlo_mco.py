@@ -75,7 +75,7 @@ class TestMCO(TestCase, UnittestTools):
         # test sampling
         for (point, kpis) in engine.optimize():
             # fixed is fixed
-            self.assertEqual(point[0], 0.0)
+            self.assertEqual(0.0, point[0])
             # ranged is in range
             self.assertGreaterEqual(point[1], -1.0)
             self.assertLessEqual(point[1], 1.0)

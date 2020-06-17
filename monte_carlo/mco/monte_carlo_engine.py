@@ -22,7 +22,7 @@ log = logging.getLogger(__name__)
 
 
 class MonteCarloEngine(BaseOptimizerEngine):
-    """ Ane engine for random (Monte Carlo) sampling and optimization.
+    """ An engine for random (Monte Carlo) sampling and optimization.
     To get a picture of the overall parameter-space the user might want to
     randomly sample points. If the parameter-space contains many local
     minima (or maxima) the user might want to optimize from multiple random
@@ -115,7 +115,7 @@ class MonteCarloEngine(BaseOptimizerEngine):
         -----
         There is no initial value/condition/choice for categorical/level/set
         parameterization in either BDSS or Nevergrad. Therefore
-        set_initial=True will do nothing fot these.
+        set_initial=True will do nothing for these.
         """
 
         sample = []
