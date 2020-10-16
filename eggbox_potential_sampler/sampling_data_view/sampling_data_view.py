@@ -10,9 +10,7 @@ from traitsui.api import View, VGroup, HGroup, Item, UItem, EnumEditor
 from enable.api import ComponentEditor
 from chaco.tools.api import PanTool, ZoomTool
 
-from force_wfmanager.ui.review.base_data_view import BaseDataView
-from force_wfmanager.ui.review.plot import Plot
-from force_wfmanager.ui.review.plot import BasePlot, ChacoPlot
+from force_wfmanager.ui import BaseDataView, BasePlot, ScatterPlot
 
 log = logging.getLogger(__name__)
 
@@ -42,14 +40,13 @@ class ConvergencePlot(BasePlot):
         view = View(
             VGroup(
                 self.axis_hgroup,
-                UItem("_plot", editor=ComponentEditor()),
+                UItem("_component", editor=ComponentEditor()),
             )
         )
         return view
 
-    def plot_cumulative_line(self):
+    def plot_cumulative_line(self, plot):
         """ Create the Chaco line plot. """
-        plot = ChacoPlot(self._plot_data)
         line_plot = plot.plot(
             ('x', 'y'),
             type='line',
@@ -60,7 +57,6 @@ class ConvergencePlot(BasePlot):
         line_plot.tools.append(PanTool(plot))
         line_plot.overlays.append(ZoomTool(plot))
 
-        self._plot_index_datasource = line_plot.index
         plot.trait_set(title=self.title, padding=75, line_width=1)
         self._axis = line_plot
 
@@ -94,9 +90,9 @@ class ConvergencePlot(BasePlot):
         x_array = np.arange(len(self._custom_data_array))
         self._plot_data.set_data("x", x_array)
 
-    def __plot_default(self):
+    def customize_plot(self, plot):
         """ Set the new default plot. """
-        return self.plot_cumulative_line()
+        self.plot_cumulative_line(plot)
 
     def _y_convergence_data(self):
         """Calculates convergence data to display in the y axis"""
@@ -118,7 +114,7 @@ class ConvergencePlot(BasePlot):
         self.x = "iteration"
         self._plot.x_axis.title = self.x
 
-    def recenter_x_axis(self):
+    def _recenter_x_axis(self):
         """ Resets the bounds on the x-axis of the plot. If now x axis
         is specified, uses the default bounds (0, 1). Otherwise, infers
         the bounds from the x-axis related data."""
@@ -129,11 +125,11 @@ class ConvergencePlot(BasePlot):
         else:
             bounds = (0, 1)
 
-        self._set_plot_x_range(*bounds)
-        self._reset_zoomtool()
+        self._set_plot_x_range(self._plot, *bounds)
+        self._reset_zoomtool(self._plot)
         return bounds
 
-    def recenter_y_axis(self):
+    def _recenter_y_axis(self):
         """ Resets the bounds on the x-axis of the plot. If now y axis
         is specified, uses the default bounds (-0.1, 1). Otherwise, infers
         the bounds from the y-axis related data."""
@@ -144,8 +140,8 @@ class ConvergencePlot(BasePlot):
         else:
             bounds = (-0.1, 1)
 
-        self._set_plot_y_range(*bounds)
-        self._reset_zoomtool()
+        self._set_plot_y_range(self._plot, *bounds)
+        self._reset_zoomtool(self._plot)
         return bounds
 
 
@@ -156,7 +152,7 @@ class SamplingDataView(BaseDataView):
 
     description = 'Potential sampling data view'
 
-    colormap_plot = Instance(Plot)
+    colormap_plot = Instance(ScatterPlot)
 
     sampling_plot = Instance(ConvergencePlot)
 
@@ -170,9 +166,11 @@ class SamplingDataView(BaseDataView):
         return view
 
     def _colormap_plot_default(self):
-        cmap_plot = Plot(analysis_model=self.analysis_model,
-                         title='Potential energy surface',
-                         color_plot=True, is_active_view=self.is_active_view)
+        cmap_plot = ScatterPlot(
+            analysis_model=self.analysis_model,
+            title='Potential energy surface',
+            use_color_plot=True,
+            is_active_view=self.is_active_view)
         self.sync_trait("is_active_view", cmap_plot)
         return cmap_plot
 

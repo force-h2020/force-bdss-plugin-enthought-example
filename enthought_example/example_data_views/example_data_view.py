@@ -1,9 +1,7 @@
 #  (C) Copyright 2010-2020 Enthought, Inc., Austin, TX
 #  All rights reserved.
 
-from pyface.timer.api import do_later
-
-from force_wfmanager.ui.review.plot import BasePlot, ChacoPlot
+from force_wfmanager.ui import BasePlot
 
 
 class ExampleCustomPlot(BasePlot):
@@ -16,8 +14,7 @@ class ExampleCustomPlot(BasePlot):
 
     description = 'Example line plot'
 
-    def plot_line(self):
-        plot = ChacoPlot(self._plot_data)
+    def plot_line(self, plot):
         line_plot = plot.plot(
             ('x', 'y'),
             type='line',
@@ -25,14 +22,8 @@ class ExampleCustomPlot(BasePlot):
             marker='circle',
             bgcolor='white')[0]
 
-        self._plot_index_datasource = line_plot.index
         self._axis = line_plot
         plot.trait_set(title=self.title)
 
-        return plot
-
-    def __plot_default(self):
-        plot = self.plot_line()
-        self.plot_updater.start()
-        do_later(self.recenter_plot)
-        return plot
+    def customize_plot(self, plot):
+        self.plot_line(plot)
